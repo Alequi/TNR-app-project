@@ -168,3 +168,10 @@
   object-fit: cover;         
 }
 
+.hero-img {
+  width: 100%;
+  height: auto;
+  max-height: 420px;   /* ajusta este valor a tu gusto */
+  object-fit: cover;   /* recorta sin deformar */
+}
+
