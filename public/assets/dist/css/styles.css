@@ -194,3 +194,32 @@
   height: 100%;
   object-fit: cover;    
 }
+.table thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f3f5 !important;
+}
+
+.table td, .table th {
+    padding: 0.75rem 1rem;
+}
+.pagination .page-link {
+    color: #178e79;
+    border-color: #178e79;
+}
+
+.pagination .page-link:hover {
+    background-color: #178e79;
+    color: white;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #178e79;
+    border-color: #178e79;
+    color: white;
+}
+
+
