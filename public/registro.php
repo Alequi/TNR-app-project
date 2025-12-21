@@ -46,6 +46,14 @@ session_start();
         <div class="card shadow-sm border-0">
           <div class="card-body p-4">
 
+            <?php if (isset($_SESSION['error_mail'])): ?>
+              <div class="alert alert-danger"><?php echo $_SESSION['error_mail']; unset($_SESSION['error_mail']); ?></div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['error_general'])): ?>
+              <div class="alert alert-danger"><?php echo $_SESSION['error_general']; unset($_SESSION['error_general']); ?></div>
+            <?php endif; ?>
+
             <h2 class="mb-2 text-center fw-bold">Crear cuenta </h2>
 
             <form method="post" action="../app/actions/register_action.php">
