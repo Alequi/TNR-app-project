@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -19,7 +23,7 @@
       class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-light text-dark">
 
       <div class="col-md-3 mb-2 mb-md-0">
-        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+        <a href="../index.html" class="d-inline-flex link-body-emphasis text-decoration-none">
           <img src="../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="100" height="auto" />
         </a>
       </div>
@@ -34,7 +38,7 @@
       <div class="col-md-3 text-end">
         <button type="button" class="btn btn-outline-primary me-2">Login</button>
 
-        <a href="registro.html"><button type="button" class="btn btn-primary">Registro</button></a>
+        <a href="registro.php"><button type="button" class="btn btn-primary">Registro</button></a>
       </div>
     </header>
   </div>
@@ -47,24 +51,24 @@
           <div class="card-body p-4 ">
 
 
-
+            <!--FORMULARIO -->
             <h2 class="mb-2 text-center fw-bold">Entra a tu panel</h2>
             <p class="text-center text-body-secondary lead">Gestión de campañas CER</p>
 
-            <form>
+            <form method="POST" action="../app/actions/login_action.php">
 
 
 
               <!-- Email -->
               <div class="mb-3">
                 <label for="email" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" id="email" placeholder="tucorreo@email.com" required>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@email.com" required>
               </div>
 
               <!-- Contraseña -->
               <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
               </div>
               <p class="text-center mt-2 mb-3">
                 ¿Has olvidado tu contraseña?
@@ -80,7 +84,7 @@
 
             <p class="text-center mt-3 mb-0">
               ¿No tienes cuenta?
-              <a href="registro.html" class="text-primary m-2">Regístrate aquí</a>
+              <a href="registro.php" class="text-primary m-2">Regístrate aquí</a>
             </p>
             <p class="text-center mt-3 mb-0 fw-bold">
               <a href="adminDashboard.html" class="text-primary m-2">Pincha aquí para ir al Dashboard</a>

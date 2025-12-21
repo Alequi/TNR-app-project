@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -30,9 +34,9 @@
         </ul>
       </ul>
       <div class="col-md-3 text-end">
-        <a href="login.html"><button type="button" class="btn btn-outline-primary me-2">Login</button></a>
+        <a href="login.php"><button type="button" class="btn btn-outline-primary me-2">Login</button></a>
 
-        <a href="registro.html"><button type="button" class="btn btn-primary">Registro</button></a>
+        <a href="registro.php"><button type="button" class="btn btn-primary">Registro</button></a>
       </div>
     </header>
   </div>
@@ -44,31 +48,37 @@
 
             <h2 class="mb-2 text-center fw-bold">Crear cuenta </h2>
 
-            <form>
+            <form method="post" action="../app/actions/register_action.php">
 
               <!-- Nombre -->
               <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" placeholder="Tu nombre" required>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Tu nombre"  maxlength="30" required>
               </div>
 
               <!-- Apellidos -->
               <div class="mb-3">
                 <label for="apellidos" class="form-label">Apellidos</label>
-                <input type="text" class="form-control" id="apellidos" placeholder="Tus apellidos" required>
+                <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Tus apellidos" required>
               </div>
 
               <!-- Email -->
               <div class="mb-3">
                 <label for="email" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" id="email" placeholder="tucorreo@email.com" required>
+                <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@email.com" required>
               </div>
 
               <!-- Contraseña -->
               <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
               </div>
+
+                <!-- telefono -->
+                <div class="mb-3">
+                    <label for="telefono" class="form-label">Telefono</label>
+                    <input type="text" class="form-control" id="telefono" name="telefono" placeholder="666666666" pattern="[0-9]{9}" size="9" required>
+                </div>
 
               <!-- Botón -->
               <div class="d-grid">
@@ -79,7 +89,7 @@
 
             <p class="text-center mt-3 mb-0">
               ¿Ya tienes cuenta?
-              <a href="login.html" class="text-primary">Inicia sesión aquí</a>
+              <a href="login.php" class="text-primary">Inicia sesión aquí</a>
             </p>
 
           </div>
