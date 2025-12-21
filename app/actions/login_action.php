@@ -25,9 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['nombre'] = $usuario['nombre'];
 
             if ($_SESSION['rol'] === 'admin') {
-                header("Location: ../public/adminDashboard.html");
+                header("Location: ../../public/adminDashboard.php");
             } else {
-                header("Location: ../public/voluntarioDashboard.html");
+                header("Location: ../../views/panelUsuario/index.php");
             }
         } else {
             echo "Credenciales incorrectas.";
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: " . $e->getMessage();
     }
 }else{
-    header("Location: ../public/login.html");
+    header("Location: ../public/login.php");
     exit();
 }
 ?>
