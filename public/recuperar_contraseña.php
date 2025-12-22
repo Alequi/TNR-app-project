@@ -8,22 +8,20 @@ session_start();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicia sesión | CES Gatos Elche</title>
+  <title>Registro | CES Gatos Elche</title>
   <link rel="icon" type="image/png" href="../public/assets/brand/LOGO-CES-2.png" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
   <link href="../public/assets/dist/css/styles.css" rel="stylesheet" />
 </head>
 
 <body class="bg-light d-flex flex-column min-vh-100">
-
 
   <div class="container-xxl">
     <header
       class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-light text-dark">
 
       <div class="col-md-3 mb-2 mb-md-0">
-        <a href="../index.html" class="d-inline-flex link-body-emphasis text-decoration-none">
+        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
           <img src="../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="100" height="auto" />
         </a>
       </div>
@@ -36,71 +34,61 @@ session_start();
         </ul>
       </ul>
       <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-outline-primary me-2">Login</button>
+        <a href="login.php"><button type="button" class="btn btn-outline-primary me-2">Login</button></a>
 
         <a href="registro.php"><button type="button" class="btn btn-primary">Registro</button></a>
       </div>
     </header>
   </div>
-
   <main class="bg-body-secondary flex-grow-1 d-flex justify-content-center align-items-center">
-
-    <div class="container col-12 col-md-8 col-lg-6 py-5 px-2 ">
+    <div class="container col-12 col-md-8 col-lg-6 py-5">
       <div class="mx-auto" style="max-width: 460px;">
-        <div class="card shadow-sm border-0 ">
-          <div class="card-body p-4 ">
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4">
 
+           
 
-            <!--FORMULARIO -->
-            <h2 class="mb-2 text-center fw-bold">Entra a tu panel</h2>
-            <p class="text-center text-body-secondary lead">Gestión de campañas CER</p>
+            <h2 class="mb-2 text-center fw-bold">Recuperar contraseña </h2>
 
-            <form method="POST" action="../app/actions/login_action.php">
+            <form method="post" action="../app/actions/recuperar_action.php">
+                <p class="text-center mt-3 mb-0"> Introduce tu nombre y el correo electrónico con el que te registraste. <br>
+                Si coinciden, generaremos una nueva contraseña temporal.</p>
 
+              <!-- Nombre -->
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Tu nombre"  maxlength="30" required>
+              </div>
 
+             
 
               <!-- Email -->
               <div class="mb-3">
                 <label for="email" class="form-label">Correo electrónico</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@email.com" required>
+                <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@email.com" required>
               </div>
 
-              <!-- Contraseña -->
-              <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
-              </div>
-              <p class="text-center mt-2 mb-3">
-                ¿Has olvidado tu contraseña?
-                <a href="recuperar_contraseña.php" class="text-primary m-2">Recupérala </a>
-              </p>
+        
+
               <!-- Botón -->
               <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg d-inline-flex justify-content-center gap-2"> Iniciar
-                  sesión<i class="bi bi-box-arrow-in-right"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg">Recuperar contraseña</button>
               </div>
 
             </form>
 
             <p class="text-center mt-3 mb-0">
-              ¿No tienes cuenta?
-              <a href="registro.php" class="text-primary m-2">Regístrate aquí</a>
+              <a href="login.php" class="text-primary">← Volver al Login</a>
             </p>
-            <p class="text-center mt-3 mb-0 fw-bold">
-              <a href="adminDashboard.html" class="text-primary m-2">Pincha aquí para ir al Dashboard</a>
-            </p>
-
 
           </div>
         </div>
       </div>
-    </div>
 
   </main>
   <!-- FOOTER -->
 
   <footer class="bg-dark text-light py-4 mt-auto">
-
     <div class="container d-flex flex-column flex-md-row flex-wrap 
               justify-content-center justify-content-md-between 
               align-items-center text-center text-md-start">
