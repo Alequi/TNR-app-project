@@ -66,9 +66,15 @@ session_start();
               </div>
 
               <!-- Contraseña -->
-              <div class="mb-3">
+               <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+
+                <div class="position-relative"> 
+                  <input type="password" class="form-control pe-5" id="password"   name="password" placeholder="••••••••" required>
+
+                  <i class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 cursor-pointer" id="togglePass" ></i>
+                  
+                </div>
               </div>
               <p class="text-center mt-2 mb-3">
                 ¿Has olvidado tu contraseña?
@@ -145,7 +151,7 @@ session_start();
 
     </div>
   </footer>
-
+  <script src="../public/assets/js/script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

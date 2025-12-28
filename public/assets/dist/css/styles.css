@@ -222,4 +222,15 @@
     color: white;
 }
 
+.bi-eye {
+    font-size: 1.2em;
+    cursor: pointer;
+    transform: translateX(-50px);
+}
+.bi-eye-slash {
+    font-size: 1.2em;
+    cursor: pointer;
+    transform: translateX(-50px);
+}
+
 
