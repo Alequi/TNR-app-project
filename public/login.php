@@ -61,7 +61,7 @@ session_start();
               </div>
               <p class="text-center mt-2 mb-3">
                 ¿Has olvidado tu contraseña?
-                <a href="recuperar_contraseña.php" class="text-primary m-2">Recupérala </a>
+                <a href="recuperar_pass.php" class="text-primary m-2">Recupérala </a>
               </p>
               <!-- Botón -->
               <div class="d-grid">

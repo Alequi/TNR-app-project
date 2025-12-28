@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once __DIR__ . '/../config/conexion.php';
+
+
 ?>
 
 <!DOCTYPE html>
@@ -31,16 +34,8 @@ session_start();
             <h2 class="mb-2 text-center fw-bold">Recuperar contraseña </h2>
 
             <form method="post" action="../app/actions/recuperar_action.php">
-                <p class="text-center mt-3 mb-0"> Introduce tu nombre y el correo electrónico con el que te registraste. <br>
+                <p class="text-center mt-3 mb-0">Introduce el correo electrónico con el que te registraste. <br>
                 Si coinciden, generaremos una nueva contraseña temporal.</p>
-
-              <!-- Nombre -->
-              <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Tu nombre"  maxlength="30" required>
-              </div>
-
-             
 
               <!-- Email -->
               <div class="mb-3">
