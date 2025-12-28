@@ -25,9 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['nombre'] = $usuario['nombre'];
 
             if ($_SESSION['rol'] === 'admin') {
-                header("Location: ../../public/adminDashboard.php");
+                header("Location: ../../views/panelAdmin/adminDashboard.php");
             } else {
-                header("Location: ../../views/panelUsuario/index.php");
+                header("Location: ../../views/panelUsuario/userDashboard.php");
             }
         } else {
             echo "Credenciales incorrectas.";
