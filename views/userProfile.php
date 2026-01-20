@@ -256,12 +256,12 @@ $user_id = $_SESSION['user_id'];
                                     <h6 class="fw-semibold text-primary mb-2">Accesos Rápidos</h6>
                                     <ul class="list-unstyled mb-0">
                                         <li class="mb-2">
-                                            <a href="panelUsuario/userDashboard.php" class="text-decoration-none">
+                                            <a href="panel.php" class="text-decoration-none">
                                                 <i class="bi bi-house-door me-2"></i>Panel de Usuario
                                             </a>
                                         </li>
                                         <li class="mb-2">
-                                            <a href="panelUsuario/jaulas.php" class="text-decoration-none">
+                                            <a href="panel.php" class="text-decoration-none">
                                                 <i class="bi bi-box me-2"></i>Gestión de Jaulas
                                             </a>
                                         </li>
@@ -365,7 +365,7 @@ $user_id = $_SESSION['user_id'];
                             <input type="password" class="form-control" id="new_password" name="new_password" required>
                         </div>
                         <div class="mb-3">
-                            <label for="confirm_password" class="form-label">Confirmar Nueva Contraseña</label>
+                            <label for="confirm_password" class="form-label">Confirmar nueva contraseña</label>
                             <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                         </div>
                     </form>
