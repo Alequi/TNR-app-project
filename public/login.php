@@ -75,9 +75,7 @@ session_start();
               ¿No tienes cuenta?
               <a href="registro.php" class="text-primary m-2">Regístrate aquí</a>
             </p>
-            <p class="text-center mt-3 mb-0 fw-bold">
-              <a href="adminDashboard.html" class="text-primary m-2">Pincha aquí para ir al Dashboard</a>
-            </p>
+
 
 
           </div>
