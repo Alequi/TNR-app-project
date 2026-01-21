@@ -119,13 +119,17 @@ admin();
     
 
     <main class="container-xxl my-4 flex-grow-1 mt-3">
+
+
          <!-- Header -->
       <div class="row mb-4">
         <div class="col-12">
-          <h1 class="display-6 fw-bold"> <i class="bi bi-box" style="font-size: 3rem;">Listado de Jaulas</i></h1>
+          <h1 class="display-6 fw-bold"> <i class="bi bi-box" style="font-size: 3rem;"></i> Listado de Jaulas</h1>
           <p class="text-muted">Jaulas disponibles para reservar</p>
         </div>
       </div>
+
+      
 
       <!--MENSAJES DE ERROR / ÉXITO-->
 
@@ -133,6 +137,45 @@ admin();
 
 
         <!-- JAULAS DISPONIBLES -->
+        <div class="row">
+        <div class="col-12">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title fw-bold"><i class="bi bi-box"></i> Listado de Jaulas Disponibles</h5>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th scope="col">Numero interno</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Clinica</th>
+                        <th scope="col">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php foreach ($available_jaulas as $jaula): ?>
+                      <tr>
+                        <td><?php echo htmlspecialchars($jaula['numero_interno']); ?></td>
+                        <td><?php echo htmlspecialchars($jaula['tipo_nombre']); ?></td>
+                        <td><?php echo htmlspecialchars($jaula['clinica_nombre']); ?></td>
+                        <td>
+                          <a href="requestJaula.php?id=<?php echo $jaula['id']; ?>" class="btn btn-sm btn-primary">
+                            <i class="bi bi-plus-lg"></i> Pedir Jaula
+                          </a>  
+                        </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+                
          
 
 
@@ -188,6 +231,7 @@ admin();
         </div>
 
     </footer>
+
 
 
 
