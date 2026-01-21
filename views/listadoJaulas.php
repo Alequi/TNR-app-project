@@ -161,9 +161,13 @@ admin();
                         <td><?php echo htmlspecialchars($jaula['tipo_nombre']); ?></td>
                         <td><?php echo htmlspecialchars($jaula['clinica_nombre']); ?></td>
                         <td>
-                          <a href="requestJaula.php?id=<?php echo $jaula['id']; ?>" class="btn btn-sm btn-primary">
+                          <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalReserva" 
+                                  data-jaula-id="<?php echo $jaula['id']; ?>"
+                                  data-jaula-numero="<?php echo htmlspecialchars($jaula['numero_interno']); ?>"
+                                  data-jaula-tipo="<?php echo htmlspecialchars($jaula['tipo_nombre']); ?>"
+                                  data-jaula-clinica="<?php echo htmlspecialchars($jaula['clinica_nombre']); ?>">
                             <i class="bi bi-plus-lg"></i> Pedir Jaula
-                          </a>  
+                          </button>
                         </td>
                         </tr>
                         <?php endforeach; ?>
@@ -232,10 +236,86 @@ admin();
 
     </footer>
 
+    <!-- Modal Reservar Jaula -->
+    <div class="modal fade" id="modalReserva" tabindex="-1" aria-labelledby="modalReservaLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalReservaLabel">Reservar Jaula</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="../app/actions/reservar_jaula_action.php" method="POST">
+            <div class="modal-body">
+              <input type="hidden" name="jaula_id" id="jaula_id">
+              
+              <div class="mb-3">
+                <label class="form-label fw-bold">Número Interno:</label>
+                <p id="jaula_numero" class="text-muted"></p>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label fw-bold">Tipo:</label>
+                <p id="jaula_tipo" class="text-muted"></p>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label fw-bold">Clínica:</label>
+                <p id="jaula_clinica" class="text-muted"></p>
+              </div>
+              
+              <hr>
+              
+              <div class="mb-3">
+                <label for="fecha_prestamo" class="form-label fw-bold">Fecha de Préstamo <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="fecha_prestamo" name="fecha_prestamo" required>
+              </div>
+              
+              <div class="mb-3">
+                <label for="fecha_devolucion" class="form-label fw-bold">Fecha de Devolución <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="fecha_devolucion" name="fecha_devolucion" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
-
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+      // Rellenar datos del modal al abrirlo
+      const modalReserva = document.getElementById('modalReserva');
+      modalReserva.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        
+        // Obtener datos del botón
+        const jaulaId = button.getAttribute('data-jaula-id');
+        const jaulaNumero = button.getAttribute('data-jaula-numero');
+        const jaulaTipo = button.getAttribute('data-jaula-tipo');
+        const jaulaClinica = button.getAttribute('data-jaula-clinica');
+        
+        // Rellenar el modal
+        document.getElementById('jaula_id').value = jaulaId;
+        document.getElementById('jaula_numero').textContent = jaulaNumero;
+        document.getElementById('jaula_tipo').textContent = jaulaTipo;
+        document.getElementById('jaula_clinica').textContent = jaulaClinica;
+        
+        // Establecer fecha mínima (hoy)
+        const hoy = new Date().toISOString().split('T')[0];
+        document.getElementById('fecha_prestamo').setAttribute('min', hoy);
+        document.getElementById('fecha_devolucion').setAttribute('min', hoy);
+      });
+      
+      // Validar que fecha de devolución sea posterior a fecha de préstamo
+      document.getElementById('fecha_prestamo').addEventListener('change', function() {
+        const fechaPrestamo = this.value;
+        document.getElementById('fecha_devolucion').setAttribute('min', fechaPrestamo);
+      });
+    </script>
 
 </body>
 </html>

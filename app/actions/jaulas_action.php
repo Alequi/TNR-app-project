@@ -28,6 +28,18 @@ $stmt_user_jaulas = $con->prepare($sql_user_jaulas);
 $stmt_user_jaulas->execute([':user_id' => $user_id]);
 $user_jaulas = $stmt_user_jaulas->fetchAll(PDO::FETCH_ASSOC);
 
+//JAULAS DISPONIBLES PARA RESERVAR
+$sql_available_jaulas = "SELECT c.id, c.numero_interno, ct.nombre as tipo_nombre, cli.nombre as clinica_nombre
+                         FROM cages c
+                         JOIN cage_types ct ON c.cage_type_id = ct.id
+                         JOIN clinics cli ON c.clinic_id = cli.id
+                         LEFT JOIN cage_loans cl ON c.id = cl.cage_id AND cl.estado = 'prestado'
+                         WHERE c.activo = 1 AND cl.id IS NULL";
+$stmt_available_jaulas = $con->prepare($sql_available_jaulas);
+$stmt_available_jaulas->execute();
+$available_jaulas = $stmt_available_jaulas->fetchAll(PDO::FETCH_ASSOC);
+
+
 
 
 
