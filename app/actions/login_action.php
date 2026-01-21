@@ -25,13 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['rol'] = $usuario['rol'];
             $_SESSION['nombre'] = $usuario['nombre'];
 
-            if ($_SESSION['rol'] === 'admin') {
-                header("Location: ../../views/panelAdmin/adminDashboard.php");
-            } else {
-                header("Location: ../../views/panelUsuario/userDashboard.php");
-            }
-        } else {
-            echo "Credenciales incorrectas.";
+           header("location: ../../views/panel.php");
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
