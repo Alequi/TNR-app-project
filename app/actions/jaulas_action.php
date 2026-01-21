@@ -17,6 +17,17 @@ $stmt_jaulas->execute([':user_id' => $user_id]);
 $stats_jaulas = $stmt_jaulas->fetch(PDO::FETCH_ASSOC);
 
 
+// JAULAS PRESTADAS AL USUARIO LOGEADO
+$sql_user_jaulas = "SELECT cl.id, c.id, c.numero_interno, ct.nombre, cl.fecha_prestamo, cl.fecha_devolucion, cli.nombre as clinica_nombre
+                    FROM cage_loans cl
+                    JOIN cages c ON cl.cage_id = c.id
+                    JOIN cage_types ct ON c.cage_type_id = ct.id
+                    JOIN clinics cli ON cl.from_clinic_id = cli.id
+                    WHERE cl.user_id = :user_id AND cl.estado = 'prestado'";
+$stmt_user_jaulas = $con->prepare($sql_user_jaulas);
+$stmt_user_jaulas->execute([':user_id' => $user_id]);
+$user_jaulas = $stmt_user_jaulas->fetchAll(PDO::FETCH_ASSOC);
+
 
 
 
