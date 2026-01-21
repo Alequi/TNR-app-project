@@ -108,7 +108,7 @@ admin();
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a class="text-dark opacity-30" href="#">Inicio</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Panel</li>
+            <li class="breadcrumb-item active" aria-current="page">Jaulas</li>
         </ol>
     </nav>
 </div>
@@ -138,7 +138,7 @@ admin();
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="card-title fw-bold"><i class="bi bi-box"></i> Prestamos actuales</h5>
-                <a href="#" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Pedir Jaula</a>
+                <a href="listadoJaulas.php" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Pedir Jaula</a>
                 
 
 
