@@ -2,7 +2,8 @@
 
 
 require_once __DIR__ . '/../app/helpers/auth.php';
-admin();
+login();
+isLoggedIn()
 ?>
 
 <!DOCTYPE html>
@@ -15,11 +16,11 @@ admin();
     <link rel="icon" type="image/png" href="../../public/assets/brand/LOGO-CES-2.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <link href="../../public/assets/dist/css/styles.css" rel="stylesheet" />
+    <link href="../public/assets/dist/css/styles.css" rel="stylesheet" />
 
 </head>
 
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100">
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-light border-bottom">
@@ -27,7 +28,7 @@ admin();
 
             <!-- LOGO -->
             <a href="/" class="navbar-brand d-inline-flex align-items-center">
-                <img src="../../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="100" height="auto" />
+                <img src="../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="100" height="auto" />
             </a>
 
             <!-- BOTÓN HAMBURGUESA -->
@@ -81,7 +82,7 @@ admin();
                                     <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta</a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="/app/actions/logout_action.php">
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="../app/actions/logout_action.php">
                                     <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión</a>
                             </li>
                         </ul>
@@ -92,7 +93,7 @@ admin();
                         <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
                             <i class="bi bi-person-circle"></i> Perfil</a>
 
-                        <a href="/app/actions/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
+                        <a href="../app/actions/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
                              Cerrar sesión<i class="bi bi-box-arrow-right "></i></a>
 
                     </div>
@@ -103,7 +104,7 @@ admin();
 
     <!-- End navbar -->
     <!-- Breadcrumb -->
-<div class="container-xxl mt-2">
+<div class="container-xxl my-4 flex-grow-1 mt-3">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a class="text-dark opacity-30" href="#">Inicio</a></li>
@@ -116,7 +117,7 @@ admin();
 
     <!-- cards -->
 
-    <div class="container-xxl">
+    <div class="container-xxl my-4 flex-grow-1 mt-3"">
         <div class="text-center">
             <h3 class="mb-0 fw-bold">Panel de Administración</h3>
             <p class="lead mb-4">Sigue y gestiona tus reservas de turnos y prestamos de jaulas</p>

@@ -25,7 +25,7 @@ $user_id = $_SESSION['user_id'];
     <link rel="stylesheet" href="../public/assets/dist/css/styles.css">
 </head>
 
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100">
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-light border-bottom">
@@ -48,7 +48,7 @@ $user_id = $_SESSION['user_id'];
                 <!-- MENÚ PRINCIPAL -->
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a href="panel.php" class="nav-link">Panel</a></li>
-                    <li class="nav-item"><a href="panelUsuario/jaulas.php" class="nav-link">Jaulas</a></li>
+                    <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="userProfile.php" class="nav-link active">Mi Perfil</a></li>
                 </ul>
 
@@ -133,7 +133,7 @@ $user_id = $_SESSION['user_id'];
     <!-- End mensajes -->
 
     <!-- Contenido Principal -->
-    <div class="container-xxl my-4 ">
+    <div class="container-xxl my-4 flex-grow-1 mt-3">
         
         <!-- Título -->
         <div class="text-center mb-4">
