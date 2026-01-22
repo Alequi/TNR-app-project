@@ -4,7 +4,21 @@
 require_once __DIR__ . '/../app/helpers/auth.php';
 require_once __DIR__ . '/../app/actions/jaulas_action.php';
 admin();
+
+$error = null;
+$success = null;
+
+if (isset($_SESSION['error_message'])) {
+    $error = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+}
+if (isset($_SESSION['success_message'])) {
+    $success = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -122,13 +136,27 @@ admin();
          <!-- Header -->
       <div class="row mb-4">
         <div class="col-12">
-          <h1 class="display-6 fw-bold"> <i class="bi bi-box" style="font-size: 3rem;"></i> Estas son tus jaulas, <?php echo $_SESSION['nombre']; ?></h1>
+          <h1 class="display-6 fw-bold"> <i class="bi bi-box text-primary" style="font-size: 3rem;"></i> Estas son tus jaulas, <?php echo $_SESSION['nombre']; ?></h1>
           <p class="text-muted">Sigue y gestiona tus prestamos de jaulas</p>
         </div>
       </div>
 
       <!--MENSAJES DE ERROR / ÉXITO-->
+  <?php if ($error): ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              <?php echo htmlspecialchars($error); ?>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      <?php endif; ?>
 
+      <?php if ($success): ?>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <i class="bi bi-check-circle-fill"></i>
+              <?php echo htmlspecialchars($success); ?>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      <?php endif; ?>
         <!--END MENSAJES DE ERROR / ÉXITO-->
 
         <!--TABLA JAULAS-->
@@ -137,8 +165,8 @@ admin();
           <div class="card shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title fw-bold"><i class="bi bi-box"></i> Prestamos actuales</h5>
-                <a href="listadoJaulas.php" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Pedir Jaula</a>
+                <h5 class="card-title fw-bold"><i class="bi bi-box text-primary"></i> Prestamos actuales</h5>
+                <a href="listadoJaulas.php" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Reservar Jaula</a>
                 
 
 
@@ -167,10 +195,10 @@ admin();
                                     <td><?php echo htmlspecialchars($jaula['numero_interno']); ?></td>
                                     <td><?php echo htmlspecialchars($jaula['nombre']); ?></td>
                                     <td><?php echo htmlspecialchars($jaula['clinica_nombre']); ?></td>
-                                    <td><?php echo htmlspecialchars($jaula['fecha_prestamo']); ?></td>
-                                    <td><?php echo htmlspecialchars($jaula['fecha_devolucion']); ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($jaula['fecha_prestamo'])); ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($jaula['fecha_prevista_devolucion'])); ?></td>
                                     <td>
-                                        <a href="#" class="btn btn-sm btn-outline-danger">Devolver</a>
+                                        <a href="/app/actions/jaulas_action.php?action=return&id=<?php echo htmlspecialchars($jaula['loan_id']); ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas devolver la jaula?');">Devolver</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -232,6 +260,7 @@ admin();
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../../public/assets/js/close-alerts.js"></script>
 
 </body>
 </html>

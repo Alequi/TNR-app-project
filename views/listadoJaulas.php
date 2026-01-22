@@ -4,6 +4,19 @@
 require_once __DIR__ . '/../app/helpers/auth.php';
 require_once __DIR__ . '/../app/actions/jaulas_action.php';
 admin();
+$error = null;
+$success = null;
+
+
+if (isset($_SESSION['error_message'])) {
+    $error = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+}
+if (isset($_SESSION['success_message'])) {
+    $success = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -124,7 +137,7 @@ admin();
          <!-- Header -->
       <div class="row mb-4">
         <div class="col-12">
-          <h1 class="display-6 fw-bold"> <i class="bi bi-box" style="font-size: 3rem;"></i> Listado de Jaulas</h1>
+          <h1 class="display-6 fw-bold"> <i class="bi bi-box text-primary" style="font-size: 3rem;"></i> Listado de Jaulas</h1>
           <p class="text-muted">Jaulas disponibles para reservar</p>
         </div>
       </div>
@@ -132,6 +145,21 @@ admin();
       
 
       <!--MENSAJES DE ERROR / ÉXITO-->
+      <?php if ($error): ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert"></div>
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              <?php echo htmlspecialchars($error); ?>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      <?php endif; ?>
+
+      <?php if ($success): ?>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <i class="bi bi-check-circle-fill"></i>
+              <?php echo htmlspecialchars($success); ?>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      <?php endif; ?>
 
         <!--END MENSAJES DE ERROR / ÉXITO-->
 
@@ -142,7 +170,7 @@ admin();
           <div class="card shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title fw-bold"><i class="bi bi-box"></i> Listado de Jaulas Disponibles</h5>
+                <h5 class="card-title fw-bold"><i class="bi bi-box text-primary"></i> Listado de Jaulas Disponibles</h5>
                 </div>
                 <div class="mb-3 ">
                   <input type="text" id="searchInput" class="form-control" placeholder="Buscar jaula por número interno, tipo o clínica...">
@@ -181,11 +209,6 @@ admin();
             </div>
         </div>
         </div>
-
-                
-         
-
-
 
 
 
@@ -247,7 +270,7 @@ admin();
             <h5 class="modal-title" id="modalReservaLabel">Reservar Jaula</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form action="../app/actions/reservar_jaula_action.php" method="POST">
+          <form action="../app/actions/jaulas_action.php" method="POST">
             <div class="modal-body">
               <input type="hidden" name="jaula_id" id="jaula_id">
               
@@ -290,6 +313,7 @@ admin();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../public/assets/js/filter.js"></script>
     <script src="../../public/assets/js/modalJaulas.js"></script>
+    <script src="../../public/assets/js/close-alerts.js"></script>
 
 </body>
 </html>
