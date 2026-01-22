@@ -107,8 +107,8 @@ admin();
 <div class="container-xxl mt-2">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a class="text-dark opacity-30" href="#">Inicio</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Jaulas</li>
+            <li class="breadcrumb-item"><a class="text-dark opacity-30" href="panel.php">Inicio</a></li>
+            <li class="breadcrumb-item"><a class="text-dark opacity-30" href="jaulas.php">Jaulas</a></li>
             <li class="breadcrumb-item active" aria-current="page">Disponibilidad</li>
         </ol>
     </nav>
@@ -144,8 +144,11 @@ admin();
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="card-title fw-bold"><i class="bi bi-box"></i> Listado de Jaulas Disponibles</h5>
                 </div>
+                <div class="mb-3 ">
+                  <input type="text" id="searchInput" class="form-control" placeholder="Buscar jaula por número interno, tipo o clínica...">
+                </div>
                 <div class="table-responsive">
-                  <table class="table table-hover align-middle">
+                  <table class="table table-hover align-middle" id="table">
                     <thead class="table-light">
                       <tr>
                         <th scope="col">Numero interno</th>
@@ -156,7 +159,7 @@ admin();
                     </thead>
                     <tbody>
                       <?php foreach ($available_jaulas as $jaula): ?>
-                      <tr>
+                      <tr style="display: table-row;">
                         <td><?php echo htmlspecialchars($jaula['numero_interno']); ?></td>
                         <td><?php echo htmlspecialchars($jaula['tipo_nombre']); ?></td>
                         <td><?php echo htmlspecialchars($jaula['clinica_nombre']); ?></td>
@@ -285,37 +288,8 @@ admin();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-      // Rellenar datos del modal al abrirlo
-      const modalReserva = document.getElementById('modalReserva');
-      modalReserva.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        
-        // Obtener datos del botón
-        const jaulaId = button.getAttribute('data-jaula-id');
-        const jaulaNumero = button.getAttribute('data-jaula-numero');
-        const jaulaTipo = button.getAttribute('data-jaula-tipo');
-        const jaulaClinica = button.getAttribute('data-jaula-clinica');
-        
-        // Rellenar el modal
-        document.getElementById('jaula_id').value = jaulaId;
-        document.getElementById('jaula_numero').textContent = jaulaNumero;
-        document.getElementById('jaula_tipo').textContent = jaulaTipo;
-        document.getElementById('jaula_clinica').textContent = jaulaClinica;
-        
-        // Establecer fecha mínima (hoy)
-        const hoy = new Date().toISOString().split('T')[0];
-        document.getElementById('fecha_prestamo').setAttribute('min', hoy);
-        document.getElementById('fecha_devolucion').setAttribute('min', hoy);
-      });
-      
-      // Validar que fecha de devolución sea posterior a fecha de préstamo
-      document.getElementById('fecha_prestamo').addEventListener('change', function() {
-        const fechaPrestamo = this.value;
-        document.getElementById('fecha_devolucion').setAttribute('min', fechaPrestamo);
-      });
-    </script>
+    <script src="../../public/assets/js/filter.js"></script>
+    <script src="../../public/assets/js/modalJaulas.js"></script>
 
 </body>
 </html>
