@@ -47,40 +47,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['jaula_id'])) {
     $fecha_prestamo = $_POST['fecha_prestamo'];
     $fecha_devolucion = $_POST['fecha_devolucion'];
 
-    // Verificar si la jaula está disponible
-    $sql_check = "SELECT COUNT(*) as count FROM cage_loans WHERE cage_id = :jaula_id AND estado = 'prestado'";
-    $stmt_check = $con->prepare($sql_check);
-    $stmt_check->execute([':jaula_id' => $jaula_id]);
-    $result_check = $stmt_check->fetch(PDO::FETCH_ASSOC);
+    try {
+        // Verificar si la jaula está disponible
+        $sql_check = "SELECT COUNT(*) as count FROM cage_loans WHERE cage_id = :jaula_id AND estado = 'prestado'";
+        $stmt_check = $con->prepare($sql_check);
+        $stmt_check->execute([':jaula_id' => $jaula_id]);
+        $result_check = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
-    if ($result_check['count'] == 0) {
-        // Insertar el préstamo - from_clinic_id es la clínica de la jaula
-        $sql_insert = "INSERT INTO cage_loans (cage_id, from_clinic_id, user_id, colony_id, fecha_prestamo, fecha_prevista_devolucion, estado) 
-                       VALUES (:jaula_id, (SELECT clinic_id FROM cages WHERE id = :jaula_id), :user_id, NULL, :fecha_prestamo, :fecha_devolucion, 'prestado')";
-        $stmt_insert = $con->prepare($sql_insert);
-        $stmt_insert->execute([
-            ':jaula_id' => $jaula_id, 
-            ':user_id' => $user_id, 
-            ':fecha_prestamo' => $fecha_prestamo, 
-            ':fecha_devolucion' => $fecha_devolucion
-        ]);
+        if ($result_check['count'] == 0) {
+            // Insertar el préstamo - from_clinic_id es la clínica de la jaula
+            $sql_insert = "INSERT INTO cage_loans (cage_id, from_clinic_id, user_id, colony_id, fecha_prestamo, fecha_prevista_devolucion, estado) 
+                           VALUES (:jaula_id, (SELECT clinic_id FROM cages WHERE id = :jaula_id), :user_id, NULL, :fecha_prestamo, :fecha_devolucion, 'prestado')";
+            $stmt_insert = $con->prepare($sql_insert);
+            $stmt_insert->execute([
+                ':jaula_id' => $jaula_id, 
+                ':user_id' => $user_id, 
+                ':fecha_prestamo' => $fecha_prestamo, 
+                ':fecha_devolucion' => $fecha_devolucion
+            ]);
 
-        // Actualizar el stock de la jaula en las clínicas
-        $sql_update_stock = "UPDATE clinic_cages 
-                             SET cantidad_prestada = cantidad_prestada + 1, cantidad_total = cantidad_total - 1
-                             WHERE clinic_id = (SELECT clinic_id FROM cages WHERE id = :jaula_id)
-                               AND cage_type_id = (SELECT cage_type_id FROM cages WHERE id = :jaula_id)";
-        $stmt_update_stock = $con->prepare($sql_update_stock);
-        $stmt_update_stock->execute([':jaula_id' => $jaula_id]);
+            // Actualizar el stock de la jaula en las clínicas
+            $sql_update_stock = "UPDATE clinic_cages 
+                                 SET cantidad_prestada = cantidad_prestada + 1, cantidad_total = cantidad_total - 1
+                                 WHERE clinic_id = (SELECT clinic_id FROM cages WHERE id = :jaula_id)
+                                   AND cage_type_id = (SELECT cage_type_id FROM cages WHERE id = :jaula_id)";
+            $stmt_update_stock = $con->prepare($sql_update_stock);
+            $stmt_update_stock->execute([':jaula_id' => $jaula_id]);
 
-        // Redirigir con mensaje de éxito
-        $_SESSION['success_message'] = "Jaula reservada con éxito.";
-        header("Location: /TNR-app-project/views/jaulas.php");
-        exit();
-    } else {
-        // Redirigir con mensaje de error
-        $_SESSION['error_message'] = "La jaula ya está reservada.";
-        header("Location: /TNR-app-project/views/jaulas.php");
+            $_SESSION['success_message'] = "Jaula reservada con éxito.";
+            header("Location: ../../views/jaulas.php");
+            exit();
+        } else {
+            $_SESSION['error_message'] = "La jaula ya está reservada.";
+            header("Location: ../../views/jaulas.php");
+            exit();
+        }
+    } catch (Exception $e) {
+        $_SESSION['error_message'] = "Error al reservar la jaula: " . $e->getMessage();
+        header("Location: ../../views/listadoJaulas.php");
         exit();
     }
 }
@@ -98,25 +102,31 @@ if (isset($_GET['action']) && $_GET['action'] === 'return' && isset($_GET['id'])
     if ($loan) {
         $cage_id = $loan['cage_id'];
         
-        // Actualizar el estado del préstamo a 'devuelto' y fecha
-        $sql_update_loan = "UPDATE cage_loans SET estado = 'devuelto', fecha_devolucion = NOW() WHERE id = :loan_id";
-        $stmt_update_loan = $con->prepare($sql_update_loan);
-        $stmt_update_loan->execute([':loan_id' => $loan_id]);
+        try {
+            // Actualizar el estado del préstamo a 'devuelto' y fecha
+            $sql_update_loan = "UPDATE cage_loans SET estado = 'devuelto', fecha_devolucion = NOW() WHERE id = :loan_id";
+            $stmt_update_loan = $con->prepare($sql_update_loan);
+            $stmt_update_loan->execute([':loan_id' => $loan_id]);
 
-        // Actualizar el stock de la jaula en las clínicas
-        $sql_update_stock = "UPDATE clinic_cages 
-                             SET cantidad_prestada = cantidad_prestada - 1, cantidad_total = cantidad_total + 1
-                             WHERE clinic_id = (SELECT clinic_id FROM cages WHERE id = :cage_id)
-                               AND cage_type_id = (SELECT cage_type_id FROM cages WHERE id = :cage_id)";
-        $stmt_update_stock = $con->prepare($sql_update_stock);
-        $stmt_update_stock->execute([':cage_id' => $cage_id]);
+            // Actualizar el stock de la jaula en las clínicas
+            $sql_update_stock = "UPDATE clinic_cages 
+                                 SET cantidad_prestada = cantidad_prestada - 1, cantidad_total = cantidad_total + 1
+                                 WHERE clinic_id = (SELECT clinic_id FROM cages WHERE id = :cage_id)
+                                   AND cage_type_id = (SELECT cage_type_id FROM cages WHERE id = :cage_id)";
+            $stmt_update_stock = $con->prepare($sql_update_stock);
+            $stmt_update_stock->execute([':cage_id' => $cage_id]);
 
-        $_SESSION['success_message'] = "Jaula devuelta con éxito.";
-        header("Location: /TNR-app-project/views/jaulas.php");
-        exit();
+            $_SESSION['success_message'] = "Jaula devuelta con éxito.";
+            header("Location: ../../views/jaulas.php");
+            exit();
+        } catch (Exception $e) {
+            $_SESSION['error_message'] = "Error al devolver la jaula: " . $e->getMessage();
+            header("Location: ../../views/jaulas.php");
+            exit();
+        }
     } else {
         $_SESSION['error_message'] = "Préstamo no encontrado.";
-        header("Location: /TNR-app-project/views/jaulas.php");
+        header("Location: ../../views/jaulas.php");
         exit();
     }
 }
