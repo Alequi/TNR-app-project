@@ -104,7 +104,7 @@ isLoggedIn()
 
     <!-- End navbar -->
     <!-- Breadcrumb -->
-<div class="container-xxl my-4 flex-grow-1 mt-3">
+<div class="container-xxl my-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a class="text-dark opacity-30" href="#">Inicio</a></li>
@@ -115,9 +115,215 @@ isLoggedIn()
 
     <!-- End Breadcrumb -->
 
+<?php if ($_SESSION['rol'] === 'voluntario'): ?>
+
+    <!--panel de voluntario-->
+    
+<div class="container-xxl my-3 flex-grow-1">
+        <div class="text-center mb-4">
+            <h3 class="mb-2 fw-bold">Este es tu resumen, <?php echo $_SESSION['nombre']; ?></h3>
+            <p class="text-muted">Sigue y gestiona tus reservas de turnos y prestamos de jaulas</p>
+        </div>
+        <!-- cards -->
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class=" bg-primary bg-opacity-10 p-3 me-3">
+                                <i class="bi bi-calendar-check text-primary fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-semibold mb-0">Próximas reservas</h5>
+                                <p class="text-muted small mb-0">3 Reservas activas</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">Turnos mañana</span>
+                                <span class="badge bg-success">2</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">Turnos tarde</span>
+                                <span class="badge bg-primary">1</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto">
+                            <button class="btn btn-primary w-100">
+                                Ver mis turnos <i class="bi bi-arrow-right-circle me-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-success bg-opacity-10 p-3 me-3">
+                                <i class="bi bi-box text-success fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-semibold mb-0">Jaulas prestadas</h5>
+                                <p class="text-muted small mb-0">2 Jaulas prestadas</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">Jaula verde</span>
+                                <span class="badge bg-success">1</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">Jaula gris</span>
+                                <span class="badge bg-secondary">1</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto">
+                            <a href="jaulas.php" class="btn btn-success w-100">
+                                Ver mis jaulas <i class="bi bi-arrow-right-circle me-2"></i>
+                            </a>
+                        </div>
+                    </div>      
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-info bg-opacity-10 p-3 me-3">
+                                <i class="bi bi-geo-alt text-info fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-semibold mb-0">Colonias asignadas</h5>
+                                <p class="text-muted small mb-0">2 Colonias asignadas</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">Colonia El Parque</span>
+                                <i class="bi bi-check-circle text-success"></i>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">Colonia La Huerta</span>
+                                <i class="bi bi-check-circle text-success"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto">
+                            <button class="btn btn-info w-100">
+                                Ver mis colonias <i class="bi bi-arrow-right-circle me-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+    <!-- Card de Tips y Guía Rápida -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-info bg-opacity-10 p-3 me-3 ">
+                                <i class="bi bi-lightbulb-fill text-info fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-semibold mb-0">Guía Rápida</h5>
+                                <p class="text-muted small mb-0">Tips para aprovechar al máximo la plataforma</p>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-3">
+                            <!-- TIP 1 -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start p-3 bg-light rounded">
+                                    <div class="me-3">
+                                        <div>
+                                            <i class="bi bi-calendar-plus text-primary fs-5"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-semibold mb-1">Reserva con antelación</h6>
+                                        <p class="text-muted small mb-0">Reserva tus turnos con al menos 24h de antelación para garantizar disponibilidad.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TIP 2 -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start p-3 bg-light rounded">
+                                    <div class="me-3">
+                                        <div>
+                                            <i class="bi bi-box-seam text-success fs-5"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-semibold mb-1">Devuelve las jaulas a tiempo</h6>
+                                        <p class="text-muted small mb-0">Asegúrate de devolver las jaulas en la fecha prevista para que otros voluntarios puedan usarlas.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TIP 3 -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start p-3 bg-light rounded">
+                                    <div class="me-3">
+                                        <div>
+                                            <i class="bi bi-bell text-warning fs-5"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-semibold mb-1">Activa las notificaciones</h6>
+                                        <p class="text-muted small mb-0">Mantente al día con recordatorios de turnos y devoluciones de jaulas.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TIP 4 -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start p-3 bg-light ">
+                                    <div class="me-3">
+                                        <div>
+                                            <i class="bi bi-phone text-danger fs-5"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-semibold mb-1">Contacto de emergencia</h6>
+                                        <p class="text-muted small mb-0">Ante cualquier imprevisto, contacta con la clínica al <strong>966 123 456</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botón de ayuda adicional -->
+                        <div class="text-center mt-4">
+                            <a href="#" class="btn btn-outline-primary">
+                                <i class="bi bi-question-circle me-2"></i>¿Necesitas más ayuda?
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+    <!-- end cards -->
+
+<?php else: ?>
+    <!--panel de administración-->
     <!-- cards -->
 
-    <div class="container-xxl my-4 flex-grow-1 mt-3"">
+    <div class="container-xxl my-4 flex-grow-1 mt-3">
         <div class="text-center">
             <h3 class="mb-0 fw-bold">Panel de Administración</h3>
             <p class="lead mb-4">Sigue y gestiona tus reservas de turnos y prestamos de jaulas</p>
@@ -275,6 +481,7 @@ isLoggedIn()
 
     </div>
     <!-- end tabla de informacion -->
+<?php endif; ?>
 
     <!-- FOOTER -->
 
