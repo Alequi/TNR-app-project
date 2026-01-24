@@ -121,7 +121,7 @@ if (isset($_SESSION['success_message'])) {
 <div class="container-xxl mt-2">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a class="text-dark opacity-30" href="#">Inicio</a></li>
+            <li class="breadcrumb-item"><a class="text-dark opacity-30" href="panel.php">Inicio</a></li>
             <li class="breadcrumb-item active" aria-current="page">Jaulas</li>
         </ol>
     </nav>
