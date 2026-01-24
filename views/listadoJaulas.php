@@ -41,7 +41,7 @@ if (isset($_SESSION['success_message'])) {
 
             <!-- LOGO -->
             <a href="/" class="navbar-brand d-inline-flex align-items-center">
-                <img src="../../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="100" height="auto" />
+                <img src="../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="100" height="auto" />
             </a>
 
             <!-- BOTÓN HAMBURGUESA -->
@@ -172,8 +172,13 @@ if (isset($_SESSION['success_message'])) {
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="card-title fw-bold"><i class="bi bi-box text-primary"></i> Listado de Jaulas Disponibles</h5>
                 </div>
-                <div class="mb-3 ">
-                  <input type="text" id="searchInput" class="form-control" placeholder="Buscar jaula por número interno, tipo o clínica...">
+                <div class="mb-3">
+                  <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                      <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="text" id="searchInput" class="form-control border-start-0" style="max-width: 600px;" placeholder="Buscar jaula por número interno, tipo o clínica...">
+                  </div>
                 </div>
                 <div class="table-responsive">
                   <table class="table table-hover align-middle" id="table">
@@ -231,7 +236,7 @@ if (isset($_SESSION['success_message'])) {
             <div
                 class="col-md-4 d-flex align-items-center justify-content-center justify-content-md-start mb-3 mb-md-0">
                 <a href="/" class="mb-3 me-2 mb-md-0 text-light text-decoration-none lh-1">
-                    <img src="../../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="50" height="auto" />
+                    <img src="../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="50" height="auto" />
                 </a>
                 <span class="mb-3 mb-md-0">&copy; 2025 CES Gatos Elche</span>
             </div>
@@ -311,9 +316,9 @@ if (isset($_SESSION['success_message'])) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../public/assets/js/filter.js"></script>
-    <script src="../../public/assets/js/modalJaulas.js"></script>
-    <script src="../../public/assets/js/close-alerts.js"></script>
+    <script src="../public/assets/js/filter.js"></script>
+    <script src="../public/assets/js/modalJaulas.js"></script>
+    <script src="../public/assets/js/close-alerts.js"></script>
 
 </body>
 </html>

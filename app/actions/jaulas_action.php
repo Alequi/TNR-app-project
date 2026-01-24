@@ -16,6 +16,17 @@ $stmt_jaulas = $con->prepare($sql_jaulas);
 $stmt_jaulas->execute([':user_id' => $user_id]);
 $stats_jaulas = $stmt_jaulas->fetch(PDO::FETCH_ASSOC);
 
+// CANTIDAD DE JAULAS POR TIPO PRESTADAS AL USUARIO
+$sql_jaulas_por_tipo = "SELECT ct.nombre as tipo_nombre, COUNT(*) as cantidad
+                        FROM cage_loans cl
+                        JOIN cages c ON cl.cage_id = c.id
+                        JOIN cage_types ct ON c.cage_type_id = ct.id
+                        WHERE cl.user_id = :user_id AND cl.estado = 'prestado'
+                        GROUP BY ct.id, ct.nombre";
+$stmt = $con->prepare($sql_jaulas_por_tipo);
+$stmt->execute([':user_id' => $user_id]);
+$jaulas_por_tipo = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 // JAULAS PRESTADAS AL USUARIO LOGEADO
 $sql_user_jaulas = "SELECT cl.id as loan_id, c.id as cage_id, c.numero_interno, ct.nombre, cl.fecha_prestamo, cl.fecha_prevista_devolucion, cli.nombre as clinica_nombre
