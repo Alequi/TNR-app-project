@@ -2,6 +2,7 @@
 
 
 require_once __DIR__ . '/../app/helpers/auth.php';
+require_once __DIR__ . '/../app/actions/jaulas_action.php';
 login();
 isLoggedIn()
 ?>
@@ -168,19 +169,18 @@ isLoggedIn()
                             </div>
                             <div>
                                 <h5 class="fw-semibold mb-0">Jaulas prestadas</h5>
-                                <p class="text-muted small mb-0">2 Jaulas prestadas</p>
+                                <p class="text-muted small mb-0"><?php echo htmlspecialchars($stats_jaulas['jaulas_prestadas']); ?> Jaulas prestadas</p>
                             </div>
                         </div>
                         
                         <div class="mb-3">
+
+                        <?php foreach ($jaulas_por_tipo as $jaula): ?>
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="text-muted">Jaula verde</span>
-                                <span class="badge bg-success">1</span>
+                                <span class="text-muted"><?php echo htmlspecialchars($jaula['tipo_nombre']); ?></span>
+                                <span class="badge bg-success"><?php echo htmlspecialchars($jaula['cantidad']); ?></span>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted">Jaula gris</span>
-                                <span class="badge bg-secondary">1</span>
-                            </div>
+                        <?php endforeach; ?>
                         </div>
                         
                         <div class="mt-auto">
