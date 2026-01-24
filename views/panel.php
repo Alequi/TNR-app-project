@@ -49,7 +49,7 @@ isLoggedIn()
                     <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Reservas</a></li>
+                    <li class="nav-item"><a href="booking.php" class="nav-link">Reservas</a></li>
                     <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
                    
                 </ul>
