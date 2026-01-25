@@ -80,6 +80,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':gatos_count' => $numero_gatos,
                 ':id' => $cancelled_booking['id']
             ]);
+            
+            // Actualizar ocupados en shifts (sumar los nuevos gatos)
+            $stmt_update = $con->prepare("UPDATE shifts SET ocupados = ocupados + :gatos_count WHERE id = :shift_id");
+            $stmt_update->execute([
+                ':gatos_count' => $numero_gatos,
+                ':shift_id' => $shift_id
+            ]);
         } else {
             // Insertar nueva reserva
             $stmt_insert = $con->prepare("INSERT INTO bookings (user_id, shift_id, colony_id, gatos_count, estado, created_at) 
@@ -90,14 +97,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':colony_id' => $colony_id,
                 ':gatos_count' => $numero_gatos
             ]);
+            
+            // Actualizar ocupados en shifts
+            $stmt_update = $con->prepare("UPDATE shifts SET ocupados = ocupados + :gatos_count WHERE id = :shift_id");
+            $stmt_update->execute([
+                ':gatos_count' => $numero_gatos,
+                ':shift_id' => $shift_id
+            ]);
         }
-
-        // Actualizar ocupados en shifts
-        $stmt_update = $con->prepare("UPDATE shifts SET ocupados = ocupados + :gatos_count WHERE id = :shift_id");
-        $stmt_update->execute([
-            ':gatos_count' => $numero_gatos,
-            ':shift_id' => $shift_id
-        ]);
 
         $con->commit();
         echo json_encode(['success' => true, 'message' => 'Reserva realizada con éxito.']);
@@ -110,16 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Obtener estadísticas de reservas del usuario
-$sql_reservas = "SELECT COUNT(*) as total_reservas FROM bookings WHERE user_id = :user_id";
-$stmt_reservas = $con->prepare($sql_reservas);
-$stmt_reservas->execute([':user_id' => $user_id]);
-$stats_reservas = $stmt_reservas->fetch(PDO::FETCH_ASSOC);
-
-// Obtener reservas activas
-$sql_activas = "SELECT COUNT(*) as activas 
-                FROM bookings 
-                WHERE user_id = :user_id AND estado IN ('reservado', 'entregado_vet', 'listo_recoger')";
-$stmt_activas = $con->prepare($sql_activas);
-$stmt_activas->execute([':user_id' => $user_id]);
-$stats_activas = $stmt_activas->fetch(PDO::FETCH_ASSOC);
+else {
+    echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
+    exit;
+}

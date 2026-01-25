@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../config/conexion.php';
 require_once __DIR__ . '/../app/helpers/auth.php';
 require_once __DIR__ . '/../app/actions/user/user_action.php';
-require_once __DIR__ . '/../app/actions/bookings/new_booking_action.php';
 require_once __DIR__ . '/../app/actions/jaulas/jaulas_action.php';
 login();
 
