@@ -13,6 +13,9 @@ $clinics = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Obtener turnos disponibles según filtros
 $fecha = $_GET['fecha'] ?? '';
 $clinic_id = filter_input(INPUT_GET, 'clinic_id', FILTER_VALIDATE_INT);
+if ($clinic_id === false) {
+    $clinic_id = null;
+}
 
 $sql_shifts = "SELECT sh.id, sh.turno, sh.capacidad, sh.ocupados, 
                       (sh.capacidad - sh.ocupados) as disponibles,
