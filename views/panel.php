@@ -43,7 +43,7 @@ isLoggedIn()
             <!-- CONTENIDO COLAPSABLE -->
             <div class="collapse navbar-collapse " id="mainNavbar">
 
-            <?php if ($_SESSION['rol'] === 'voluntario'): ?>
+            <?php if ($_SESSION['rol'] === 'voluntario' || $_SESSION['rol'] === 'gestor'): ?>
                 <!--MENU PRINCIPAL VOLUNTARIO-->
 
                  <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
@@ -53,7 +53,7 @@ isLoggedIn()
                     <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="userBookings.php" class="nav-link">Mis reservas</a></li>
                     <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
-                   
+                    <li class="nav-item"><a href="userColony.php" class="nav-link">Mi colonia</a></li>
                 </ul>
             <?php else: ?>
 
@@ -219,9 +219,10 @@ isLoggedIn()
                         </div>
                         
                         <div class="mt-auto">
-                            <button class="btn btn-info w-100">
-                                Ver mis colonias <i class="bi bi-arrow-right-circle me-2"></i>
-                            </button>
+                            <a href="userColony.php" class="btn btn-info w-100">
+                                Más información <i class="bi bi-arrow-right-circle me-2"></i>
+                            </a>
+                            
                         </div>
                     </div>
                 </div>
