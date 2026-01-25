@@ -2,9 +2,9 @@
 
 
 require_once __DIR__ . '/../app/helpers/auth.php';
-require_once __DIR__ . '/../app/actions/jaulas_action.php';
-require_once __DIR__ . '/../app/actions/avaliable_shifts.php';
-require_once __DIR__ . '/../app/actions/user_action.php';
+require_once __DIR__ . '/../app/actions/jaulas/jaulas_action.php';
+require_once __DIR__ . '/../app/actions/bookings/available_shifts.php';
+require_once __DIR__ . '/../app/actions/user/user_action.php';
 isLoggedIn();
 
 $error = null;
@@ -79,10 +79,8 @@ if (isset($_SESSION['success_message'])) {
                     <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="" class="nav-link active">Reservas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Jaulas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Usuarios</a></li>                    <li class="nav-item"><a href="userColony.php" class="nav-link active">Mi colonia</a></li>
+                    <li class="nav-item"><a href="" class="nav-link">Usuarios</a></li>
                     <li class="nav-item"><a href="userColony.php" class="nav-link">Mi colonia</a></li>
-
-                    
                 </ul>
              <?php endif; ?>   
 
@@ -101,7 +99,7 @@ if (isset($_SESSION['success_message'])) {
                                     <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta</a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="/app/actions/logout_action.php">
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="/app/actions/auth/logout_action.php">
                                     <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión</a>
                             </li>
                         </ul>
@@ -112,7 +110,7 @@ if (isset($_SESSION['success_message'])) {
                         <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
                             <i class="bi bi-person-circle"></i> Perfil</a>
 
-                        <a href="/app/actions/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
+                        <a href="/app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
                              Cerrar sesión<i class="bi bi-box-arrow-right "></i></a>
 
                     </div>

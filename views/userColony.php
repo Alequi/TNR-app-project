@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../app/helpers/auth.php';
-require_once __DIR__ . '/../app/actions/colony_volunteers_action.php';
-require_once __DIR__ . '/../app/actions/user_action.php';
+require_once __DIR__ . '/../app/actions/user/colony_volunteers_action.php';
+require_once __DIR__ . '/../app/actions/user/user_action.php';
 isLoggedIn();
 ?>
 
@@ -11,7 +11,7 @@ isLoggedIn();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voluntarios de mi Colonia | CES Gatos Elche</title>
-    <link rel="icon" type="image/png" href="../../public/assets/brand/LOGO-CES-2.png" />
+    <link rel="icon" type="image/png" href="../public/assets/brand/LOGO-CES-2.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link href="../public/assets/dist/css/styles.css" rel="stylesheet" />
@@ -47,7 +47,7 @@ isLoggedIn();
                     <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
                     <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="userBookings.php" class="nav-link">Mis reservas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link ">Jaulas</a></li>
+                    <li class="nav-item"><a href="jaulas.php" class="nav-link ">Jaulas</a></li>
                     <li class="nav-item"><a href="userColony.php" class="nav-link active">Mi colonia</a></li>
                    
                 </ul>
@@ -81,7 +81,7 @@ isLoggedIn();
                                     <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta</a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="/app/actions/logout_action.php">
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="/app/actions/auth/logout_action.php">
                                     <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión</a>
                             </li>
                         </ul>
@@ -92,7 +92,7 @@ isLoggedIn();
                         <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
                             <i class="bi bi-person-circle"></i> Perfil</a>
 
-                        <a href="/app/actions/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
+                        <a href="/app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
                              Cerrar sesión<i class="bi bi-box-arrow-right "></i></a>
 
                     </div>

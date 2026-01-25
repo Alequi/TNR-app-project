@@ -12,7 +12,7 @@ async function newBooking(event) {
     const colonyId = document.getElementById('user_colony_id').value;
 
     try {
-        const response = await fetch('../app/actions/new_booking_action.php', {
+        const response = await fetch('../app/actions/bookings/new_booking_action.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

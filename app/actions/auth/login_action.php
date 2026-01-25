@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../../config/conexion.php';
 
 $con= conectar();
 
@@ -26,13 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['colony_id'] = $usuario['colony_id'];
 
-           header("location: ../../views/panel.php");
+           header("location: ../../../views/panel.php");
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
 }else{
-    header("Location: ../public/login.php");
+    header("Location: ../../../public/login.php");
     exit();
 }
 ?>

@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/../config/conexion.php';
 require_once __DIR__ . '/../app/helpers/auth.php';
-require_once __DIR__ . '/../app/actions/user_action.php';
-require_once __DIR__ . '/../app/actions/bookings_action.php';
-require_once __DIR__ . '/../app/actions/jaulas_action.php';
+require_once __DIR__ . '/../app/actions/user/user_action.php';
+require_once __DIR__ . '/../app/actions/bookings/new_booking_action.php';
+require_once __DIR__ . '/../app/actions/jaulas/jaulas_action.php';
 login();
 
 $con = conectar();
@@ -70,7 +70,7 @@ $user_id = $_SESSION['user_id'];
                             </li>
                             <li>
                                 <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger"
-                                    href="../app/actions/logout_action.php">
+                                    href="../app/actions/auth/logout_action.php">
                                     <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión
                                 </a>
                             </li>
@@ -279,7 +279,7 @@ $user_id = $_SESSION['user_id'];
                                             </a>
                                         </li>
                                         <li class="mb-2">
-                                            <a href="../app/actions/logout_action.php" class="text-decoration-none text-danger">
+                                            <a href="../app/actions/auth/logout_action.php" class="text-decoration-none text-danger">
                                                 <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
                                             </a>
                                         </li>
@@ -313,7 +313,7 @@ $user_id = $_SESSION['user_id'];
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editProfileForm" method="POST" action="../app/actions/update_profile_action.php">
+                    <form id="editProfileForm" method="POST" action="../app/actions/user/update_profile_action.php">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" 
@@ -355,7 +355,7 @@ $user_id = $_SESSION['user_id'];
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="changePasswordForm" method="POST" action="../app/actions/change_password_action.php">
+                    <form id="changePasswordForm" method="POST" action="../app/actions/auth/change_password_action.php">
                         <div class="mb-3">
                             <label for="current_password" class="form-label">Contraseña Actual</label>
                             <input type="password" class="form-control" id="current_password" name="current_password" required>

@@ -38,7 +38,7 @@ session_start();
             <h2 class="mb-2 text-center fw-bold">Entra a tu panel</h2>
             <p class="text-center text-body-secondary lead">Gestión de campañas CER</p>
 
-            <form method="POST" action="../app/actions/login_action.php">
+            <form method="POST" action="../app/actions/auth/login_action.php">
 
 
 
@@ -91,7 +91,7 @@ session_start();
 
   <!-- FOOTER -->
 
-  <script src="../public/assets/js/script.js"></script>
+  <script src="assets/js/script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

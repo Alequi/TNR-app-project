@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../../config/conexion.php';
-require_once __DIR__ . '/validaciones.php';
+require_once __DIR__ . '/../../../config/conexion.php';
+require_once __DIR__ . '/../../validaciones.php';
 
 $con = conectar();
 
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 
    $_SESSION['error_mail'] = "El correo electrónico no es válido.";
-        header("Location: ../../public/recuperar_pass.php");
+        header("Location: ../../../public/recuperar_pass.php");
         exit();
     }else{
 
@@ -41,16 +41,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             if($stmtActualizar->rowCount() > 0){
                 $_SESSION['mensajeOk'] = "Su nueva contraseña es: " . $nuevaClave . ". Por favor, cambie su contraseña después de iniciar sesión.";
-                header("Location: ../../public/pass_temporal.php");
+                header("Location: ../../../public/pass_temporal.php");
                 exit();
             }else{
                 $_SESSION['mensajeError'] = "Error al actualizar la contraseña. Por favor, intente nuevamente.";
-                header("Location: ../../public/pass_temporal.php");
+                header("Location: ../../../public/pass_temporal.php");
                 exit();
             }
         }else{
             $_SESSION['mensajeError'] = "El correo electrónico no está registrado.";
-            header("Location: ../../public/pass_temporal.php");
+            header("Location: ../../../public/pass_temporal.php");
             exit();
         }
     }

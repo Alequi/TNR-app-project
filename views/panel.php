@@ -2,9 +2,9 @@
 
 
 require_once __DIR__ . '/../app/helpers/auth.php';
-require_once __DIR__ . '/../app/actions/jaulas_action.php';
-require_once __DIR__ . '/../app/actions/user_action.php';
-require_once __DIR__ . '/../app/actions/user_bookings_action.php';
+require_once __DIR__ . '/../app/actions/jaulas/jaulas_action.php';
+require_once __DIR__ . '/../app/actions/user/user_action.php';
+require_once __DIR__ . '/../app/actions/bookings/user_bookings_action.php';
 login();
 isLoggedIn()
 ?>
@@ -16,7 +16,7 @@ isLoggedIn()
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | CES Gatos Elche</title>
-    <link rel="icon" type="image/png" href="../../public/assets/brand/LOGO-CES-2.png" />
+    <link rel="icon" type="image/png" href="../public/assets/brand/LOGO-CES-2.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link href="../public/assets/dist/css/styles.css" rel="stylesheet" />
@@ -85,7 +85,7 @@ isLoggedIn()
                                     <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta</a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="../app/actions/logout_action.php">
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="../app/actions/auth/logout_action.php">
                                     <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión</a>
                             </li>
                         </ul>
@@ -96,7 +96,7 @@ isLoggedIn()
                         <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
                             <i class="bi bi-person-circle"></i> Perfil</a>
 
-                        <a href="../app/actions/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
+                        <a href="../app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
                              Cerrar sesión<i class="bi bi-box-arrow-right "></i></a>
 
                     </div>
@@ -496,7 +496,7 @@ isLoggedIn()
             <div
                 class="col-md-4 d-flex align-items-center justify-content-center justify-content-md-start mb-3 mb-md-0">
                 <a href="/" class="mb-3 me-2 mb-md-0 text-light text-decoration-none lh-1">
-                    <img src="../../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="50" height="auto" />
+                    <img src="../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="50" height="auto" />
                 </a>
                 <span class="mb-3 mb-md-0">&copy; 2025 CES Gatos Elche</span>
             </div>

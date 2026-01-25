@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once __DIR__ . '/../../config/conexion.php';
-require_once __DIR__ . '/../helpers/auth.php';
+require_once __DIR__ . '/../../../config/conexion.php';
+require_once __DIR__ . '/../../helpers/auth.php';
 login();
 
 $con = conectar();
@@ -15,21 +15,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validar que los campos no estén vacíos
     if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
         $_SESSION['error'] = "Todos los campos son obligatorios.";
-        header("Location: ../../views/userProfile.php");
+        header("Location: ../../../views/userProfile.php");
         exit();
     }
 
     // Validar que las nuevas contraseñas coincidan
     if ($new_password !== $confirm_password) {
         $_SESSION['error'] = "Las nuevas contraseñas no coinciden.";
-        header("Location: ../../views/userProfile.php");
+        header("Location: ../../../views/userProfile.php");
         exit();
     }
 
     // Validar longitud mínima de la nueva contraseña
     if (strlen($new_password) < 6) {
         $_SESSION['error'] = "La nueva contraseña debe tener al menos 6 caracteres.";
-        header("Location: ../../views/userProfile.php");
+        header("Location: ../../../views/userProfile.php");
         exit();
     }
 
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Verificar que la contraseña actual sea correcta
         if (!password_verify($current_password, $user['pass'])) {
             $_SESSION['error'] = "La contraseña actual es incorrecta.";
-            header("Location: ../../views/userProfile.php");
+            header("Location: ../../../views/userProfile.php");
             exit();
         }
 
@@ -59,16 +59,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
 
         $_SESSION['success'] = "Contraseña cambiada correctamente.";
-        header("Location: ../../views/userProfile.php");
+        header("Location: ../../../views/userProfile.php");
         exit();
 
     } catch (PDOException $e) {
         $_SESSION['error'] = "Error al cambiar la contraseña: " . $e->getMessage();
-        header("Location: ../../views/userProfile.php");
+        header("Location: ../../../views/userProfile.php");
         exit();
     }
 } else {
-    header("Location: ../../views/userProfile.php");
+    header("Location: ../../../views/userProfile.php");
     exit();
 }
 ?>

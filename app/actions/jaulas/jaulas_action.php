@@ -3,7 +3,7 @@ if(session_status() === PHP_SESSION_NONE){
     session_start();
 }
 
-require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../../config/conexion.php';
 $con = conectar();
 
 $user_id = $_SESSION['user_id'];
@@ -86,16 +86,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['jaula_id'])) {
             $stmt_update_stock->execute([':jaula_id' => $jaula_id]);
 
             $_SESSION['success_message'] = "Jaula reservada con éxito.";
-            header("Location: ../../views/jaulas.php");
+            header("Location: ../../../views/jaulas.php");
             exit();
         } else {
             $_SESSION['error_message'] = "La jaula ya está reservada.";
-            header("Location: ../../views/jaulas.php");
+            header("Location: ../../../views/jaulas.php");
             exit();
         }
     } catch (Exception $e) {
         $_SESSION['error_message'] = "Error al reservar la jaula: " . $e->getMessage();
-        header("Location: ../../views/listadoJaulas.php");
+        header("Location: ../../../views/listadoJaulas.php");
         exit();
     }
 }
@@ -128,16 +128,16 @@ if (isset($_GET['action']) && $_GET['action'] === 'return' && isset($_GET['id'])
             $stmt_update_stock->execute([':cage_id' => $cage_id]);
 
             $_SESSION['success_message'] = "Jaula devuelta con éxito.";
-            header("Location: ../../views/jaulas.php");
+            header("Location: ../../../views/jaulas.php");
             exit();
         } catch (Exception $e) {
             $_SESSION['error_message'] = "Error al devolver la jaula: " . $e->getMessage();
-            header("Location: ../../views/jaulas.php");
+            header("Location: ../../../views/jaulas.php");
             exit();
         }
     } else {
         $_SESSION['error_message'] = "Préstamo no encontrado.";
-        header("Location: ../../views/jaulas.php");
+        header("Location: ../../../views/jaulas.php");
         exit();
     }
 }

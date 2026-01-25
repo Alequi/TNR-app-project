@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../../config/conexion.php';
-require_once __DIR__ . '/validaciones.php';
+require_once __DIR__ . '/../../../config/conexion.php';
+require_once __DIR__ . '/../../validaciones.php';
 
 $con= conectar();
 
@@ -22,7 +22,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if(!$validarMail){
        
         $_SESSION['error_mail'] = "El correo electrónico no es válido.";
-        header("Location: ../../public/registro.php");
+        header("Location: ../../../public/registro.php");
         exit();
     }
 
@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $stmt->execute();
 
         $_SESSION['registro_exitoso'] = "Registro completado con éxito. Ahora puedes iniciar sesión.";
-        header("Location: ../../public/login.php");
+        header("Location: ../../../public/login.php");
         exit();
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
@@ -46,7 +46,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         } else {
             $_SESSION['error_general'] = "Error al registrar el usuario. Por favor, inténtalo de nuevo.";
         }
-        header("Location: ../../public/registro.php");
+        header("Location: ../../../public/registro.php");
         exit();
     }
 

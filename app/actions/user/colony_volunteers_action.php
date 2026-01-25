@@ -4,7 +4,7 @@ if(session_status() === PHP_SESSION_NONE){
     session_start();
 }
 
-require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../../config/conexion.php';
 $con = conectar();
 
 $user_id = $_SESSION['user_id'];

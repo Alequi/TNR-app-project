@@ -15,7 +15,7 @@ async function cancelBooking(event) {
     }
 
     try {
-        const response = await fetch('../app/actions/cancel_booking_action.php', {
+        const response = await fetch('../app/actions/bookings/cancel_booking_action.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

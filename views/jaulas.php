@@ -2,7 +2,7 @@
 
 
 require_once __DIR__ . '/../app/helpers/auth.php';
-require_once __DIR__ . '/../app/actions/jaulas_action.php';
+require_once __DIR__ . '/../app/actions/jaulas/jaulas_action.php';
 isLoggedIn();
 
 $error = null;
@@ -97,7 +97,7 @@ if (isset($_SESSION['success_message'])) {
                                     <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta</a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="/app/actions/logout_action.php">
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="/app/actions/auth/logout_action.php">
                                     <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión</a>
                             </li>
                         </ul>
@@ -108,7 +108,7 @@ if (isset($_SESSION['success_message'])) {
                         <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
                             <i class="bi bi-person-circle"></i> Perfil</a>
 
-                        <a href="/app/actions/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
+                        <a href="/app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
                              Cerrar sesión<i class="bi bi-box-arrow-right "></i></a>
 
                     </div>
@@ -214,7 +214,7 @@ if (isset($_SESSION['success_message'])) {
                         <td><?= date('d/m/Y', strtotime($jaula['fecha_prestamo'])) ?></td>
                         <td><?= date('d/m/Y', strtotime($jaula['fecha_prevista_devolucion'])) ?></td>
                         <td class="text-center">
-                          <a href="/app/actions/jaulas_action.php?action=return&id=<?= htmlspecialchars($jaula['loan_id']) ?>" 
+                          <a href="../app/actions/jaulas/jaulas_action.php?action=return&id=<?= htmlspecialchars($jaula['loan_id']) ?>" 
                              class="btn btn-sm btn-outline-danger" 
                              onclick="return confirm('¿Estás seguro de que deseas devolver la jaula?');">
                             <i class="bi bi-box-arrow-left me-1"></i>Devolver
@@ -251,7 +251,7 @@ if (isset($_SESSION['success_message'])) {
             <div
                 class="col-md-4 d-flex align-items-center justify-content-center justify-content-md-start mb-3 mb-md-0">
                 <a href="/" class="mb-3 me-2 mb-md-0 text-light text-decoration-none lh-1">
-                    <img src="../../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="50" height="auto" />
+                    <img src="../public/assets/brand/LOGO-CES-2.png" alt="Logo" width="50" height="auto" />
                 </a>
                 <span class="mb-3 mb-md-0">&copy; 2025 CES Gatos Elche</span>
             </div>
@@ -285,7 +285,7 @@ if (isset($_SESSION['success_message'])) {
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../../public/assets/js/close-alerts.js"></script>
+        <script src="../public/assets/js/close-alerts.js"></script>
 
 </body>
 </html>

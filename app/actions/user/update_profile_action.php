@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once __DIR__ . '/../../config/conexion.php';
-require_once __DIR__ . '/../helpers/auth.php';
+require_once __DIR__ . '/../../../config/conexion.php';
+require_once __DIR__ . '/../../helpers/auth.php';
 login();
 
 $con = conectar();
@@ -16,14 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validar que los campos no estén vacíos
     if (empty($nombre) || empty($apellido) || empty($telefono) || empty($email)) {
         $_SESSION['error'] = "Todos los campos son obligatorios.";
-        header("Location: ../../views/userProfile.php");
+        header("Location: ../../../views/userProfile.php");
         exit();
     }
 
     // Validar formato de email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['error'] = "El formato del email no es válido.";
-        header("Location: ../../views/userProfile.php");
+        header("Location: ../../../views/userProfile.php");
         exit();
     }
 
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt_check->rowCount() > 0) {
             $_SESSION['error'] = "El email ya está en uso por otro usuario.";
-            header("Location: ../../views/userProfile.php");
+            header("Location: ../../../views/userProfile.php");
             exit();
         }
 
@@ -64,16 +64,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['email'] = $email;
 
         $_SESSION['success'] = "Perfil actualizado correctamente.";
-        header("Location: ../../views/userProfile.php");
+        header("Location: ../../../views/userProfile.php");
         exit();
 
     } catch (PDOException $e) {
         $_SESSION['error'] = "Error al actualizar el perfil: " . $e->getMessage();
-        header("Location: ../../views/userProfile.php");
+        header("Location: ../../../views/userProfile.php");
         exit();
     }
 } else {
-    header("Location: ../../views/userProfile.php");
+    header("Location: ../../../views/userProfile.php");
     exit();
 }
 ?>

@@ -45,7 +45,7 @@ session_start();
 
             <h2 class="mb-2 text-center fw-bold">Crear cuenta </h2>
 
-            <form method="post" action="../app/actions/register_action.php">
+            <form method="post" action="../app/actions/auth/register_action.php">
 
               <!-- Nombre -->
               <div class="mb-3">
@@ -108,7 +108,7 @@ session_start();
    <!-- FOOTER -->
 
     
-      <script src="../public/assets/js/script.js"></script>
+      <script src="assets/js/script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

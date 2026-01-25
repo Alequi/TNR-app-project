@@ -33,7 +33,7 @@ require_once __DIR__ . '/../config/conexion.php';
 
             <h2 class="mb-2 text-center fw-bold">Recuperar contraseña </h2>
 
-            <form method="post" action="../app/actions/recuperar_action.php">
+            <form method="post" action="../app/actions/auth/recuperar_action.php">
                 <p class="text-center mt-3 mb-0">Introduce el correo electrónico con el que te registraste. <br>
                 Si coinciden, generaremos una nueva contraseña temporal.</p>
 
@@ -68,7 +68,7 @@ require_once __DIR__ . '/../config/conexion.php';
    <!-- FOOTER -->
 
      
-       <script src="../public/assets/js/script.js"></script>
+       <script src="assets/js/script.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
