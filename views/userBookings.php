@@ -48,7 +48,7 @@ if (isset($_SESSION['success_message'])) {
             <!-- CONTENIDO COLAPSABLE -->
             <div class="collapse navbar-collapse" id="mainNavbar">
 
-            <?php if ($_SESSION['rol'] === 'voluntario'): ?>
+            <?php if ($_SESSION['rol'] === 'voluntario' || $_SESSION['rol'] === 'gestor'): ?>
                 <!--MENU PRINCIPAL VOLUNTARIO-->
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a href="panel.php" class="nav-link">Panel</a></li>
@@ -57,6 +57,7 @@ if (isset($_SESSION['success_message'])) {
                     <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="userBookings.php" class="nav-link active">Mis reservas</a></li>
                     <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
+                    <li class="nav-item"><a href="userColony.php" class="nav-link">Mi colonia</a></li>
                 </ul>
             <?php else: ?>
                 <!-- MENÚ PRINCIPAL -->
