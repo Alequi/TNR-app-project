@@ -17,3 +17,15 @@ $stmt_user->execute([':user_id' => $user_id]);
 $user = $stmt_user->fetch(PDO::FETCH_ASSOC);
 $user_colony = $user['colonia_nombre'] ? $user['colonia_nombre'] . ' (' . $user['colonia_code'] . ')' : 'No asignada';
 $user_colony_id = $user['colonia_id'];
+
+// Obtener cantidad de colonias asociadas al usuario
+$colonies_quantity = 0;
+if ($user_colony_id) {
+    $stmt_colonies = $con->prepare("SELECT COUNT(*) as qty FROM colonies WHERE id = :colony_id");
+    $stmt_colonies->execute([':colony_id' => $user_colony_id]);
+    $result = $stmt_colonies->fetch(PDO::FETCH_ASSOC);
+    $colonies_quantity = $result ? (int)$result['qty'] : 0;
+}else {
+    $colonies_quantity = 0;
+}
+

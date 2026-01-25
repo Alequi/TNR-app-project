@@ -3,6 +3,7 @@
 
 require_once __DIR__ . '/../app/helpers/auth.php';
 require_once __DIR__ . '/../app/actions/jaulas_action.php';
+require_once __DIR__ . '/../app/actions/user_action.php';
 login();
 isLoggedIn()
 ?>
@@ -201,17 +202,15 @@ isLoggedIn()
                             </div>
                             <div>
                                 <h5 class="fw-semibold mb-0">Colonias asignadas</h5>
-                                <p class="text-muted small mb-0">2 Colonias asignadas</p>
+                                <p class="text-muted small mb-0"><?php echo htmlspecialchars($colonies_quantity); ?>
+                                <?php echo $colonies_quantity === 1 ? ' Colonia asignada' : ' Colonias asignadas'; ?></p>
+                                
                             </div>
                         </div>
                         
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="text-muted">Colonia El Parque</span>
-                                <i class="bi bi-check-circle text-success"></i>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted">Colonia La Huerta</span>
+                                <span class="text-muted">Colonia <?php echo htmlspecialchars($user_colony); ?></span>
                                 <i class="bi bi-check-circle text-success"></i>
                             </div>
                         </div>
