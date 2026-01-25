@@ -28,7 +28,7 @@ if (isset($_SESSION['success_message'])) {
     <title>Dashboard | CES Gatos Elche</title>
     <link rel="icon" type="image/png" href="../public/assets/brand/LOGO-CES-2.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="../public/assets/dist/css/styles.css" rel="stylesheet" />
 
 </head>
@@ -56,12 +56,12 @@ if (isset($_SESSION['success_message'])) {
             <?php if ($_SESSION['rol'] === 'voluntario'): ?>
                 <!--MENU PRINCIPAL VOLUNTARIO-->
 
-                  <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a href="" class="nav-link ">Panel</a></li>
+                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a href="panel.php" class="nav-link ">Panel</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Reservas</a></li>
+                    <li class="nav-item"><a href="bookings.php" class="nav-link">Turnos</a></li>
+                    <li class="nav-item"><a href="userBookings.php" class="nav-link">Mis Reservas</a></li>
                     <li class="nav-item"><a href="" class="nav-link active">Jaulas</a></li>
                    
                 </ul>
@@ -166,12 +166,14 @@ if (isset($_SESSION['success_message'])) {
 
         <!-- JAULAS DISPONIBLES -->
         <div class="row">
-        <div class="col-12">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title fw-bold"><i class="bi bi-box text-primary"></i> Listado de Jaulas Disponibles</h5>
-                </div>
+          <div class="col-12">
+            <div class="card shadow-sm border-0">
+              <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0 fw-bold">
+                  <i class="bi bi-box me-2"></i>Jaulas Disponibles
+                </h5>
+              </div>
+              <div class="card-body">
                 <div class="mb-3">
                   <div class="input-group">
                     <span class="input-group-text bg-white border-end-0">
@@ -180,44 +182,58 @@ if (isset($_SESSION['success_message'])) {
                     <input type="text" id="searchInput" class="form-control border-start-0" style="max-width: 600px;" placeholder="Buscar jaula por número interno, tipo o clínica...">
                   </div>
                 </div>
+              </div>
+              <div class="card-body p-0">
                 <div class="table-responsive">
-                  <table class="table table-hover align-middle" id="table">
+                  <table class="table table-hover align-middle mb-0" id="table">
                     <thead class="table-light">
                       <tr>
-                        <th scope="col">Numero interno</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Clinica</th>
-                        <th scope="col">Acciones</th>
+                        <th><i class="bi bi-hash text-primary me-1"></i>Número Interno</th>
+                        <th><i class="bi bi-box-seam text-primary me-1"></i>Tipo</th>
+                        <th><i class="bi bi-hospital text-primary me-1"></i>Clínica</th>
+                        <th class="text-center">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <?php foreach ($available_jaulas as $jaula): ?>
-                      <tr style="display: table-row;">
-                        <td><?php echo htmlspecialchars($jaula['numero_interno']); ?></td>
-                        <td><?php echo htmlspecialchars($jaula['tipo_nombre']); ?></td>
-                        <td><?php echo htmlspecialchars($jaula['clinica_nombre']); ?></td>
-                        <td>
-                          <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalReserva" 
-                                  data-jaula-id="<?php echo $jaula['id']; ?>"
-                                  data-jaula-numero="<?php echo htmlspecialchars($jaula['numero_interno']); ?>"
-                                  data-jaula-tipo="<?php echo htmlspecialchars($jaula['tipo_nombre']); ?>"
-                                  data-jaula-clinica="<?php echo htmlspecialchars($jaula['clinica_nombre']); ?>">
-                            <i class="bi bi-plus-lg"></i> Pedir Jaula
-                          </button>
-                        </td>
+                      <?php if (empty($available_jaulas)): ?>
+                        <tr>
+                          <td colspan="4" class="text-center py-5">
+                            <div class="text-muted">
+                              <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                              <h5>No hay jaulas disponibles en este momento</h5>
+                              <p class="mb-0">Por favor, vuelve más tarde</p>
+                            </div>
+                          </td>
                         </tr>
+                      <?php else: ?>
+                        <?php foreach ($available_jaulas as $jaula): ?>
+                          <tr style="display: table-row;">
+                            <td class="fw-semibold"><?php echo htmlspecialchars($jaula['numero_interno']); ?></td>
+                            <td>
+                              <span class="badge bg-secondary text-white">
+                                <?php echo htmlspecialchars($jaula['tipo_nombre']); ?>
+                              </span>
+                            </td>
+                            <td><?php echo htmlspecialchars($jaula['clinica_nombre']); ?></td>
+                            <td class="text-center">
+                              <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalReserva" 
+                                      data-jaula-id="<?php echo $jaula['id']; ?>"
+                                      data-jaula-numero="<?php echo htmlspecialchars($jaula['numero_interno']); ?>"
+                                      data-jaula-tipo="<?php echo htmlspecialchars($jaula['tipo_nombre']); ?>"
+                                      data-jaula-clinica="<?php echo htmlspecialchars($jaula['clinica_nombre']); ?>">
+                                <i class="bi bi-plus-circle me-1"></i>Pedir Jaula
+                              </button>
+                            </td>
+                          </tr>
                         <?php endforeach; ?>
+                      <?php endif; ?>
                     </tbody>
-                    </table>
+                  </table>
                 </div>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
-        </div>
-
-
-
-
         <!-- END JAULAS DISPONIBLES -->
 
     </main>
