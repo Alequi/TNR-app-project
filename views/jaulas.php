@@ -29,7 +29,7 @@ if (isset($_SESSION['success_message'])) {
     <title>Dashboard | CES Gatos Elche</title>
     <link rel="icon" type="image/png" href="../public/assets/brand/LOGO-CES-2.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="../public/assets/dist/css/styles.css" rel="stylesheet" />
 
 </head>
@@ -61,8 +61,8 @@ if (isset($_SESSION['success_message'])) {
                     <li class="nav-item"><a href="panel.php" class="nav-link ">Panel</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Reservas</a></li>
+                    <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
+                    <li class="nav-item"><a href="userBookings.php" class="nav-link">Mis Reservas</a></li>
                     <li class="nav-item"><a href="" class="nav-link active">Jaulas</a></li>
                    
                 </ul>
@@ -75,7 +75,7 @@ if (isset($_SESSION['success_message'])) {
                     <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Colonias</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Reservas</a></li>
+                    <li class="nav-item"><a href="" class="nav-link">Mis Reservas</a></li>
                     <li class="nav-item"><a href="" class="nav-link active">Jaulas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Usuarios</a></li>
                 </ul>
@@ -135,9 +135,16 @@ if (isset($_SESSION['success_message'])) {
     <main class="container-xxl my-4 flex-grow-1 mt-3">
          <!-- Header -->
       <div class="row mb-4">
-        <div class="col-12">
-          <h1 class="display-6 fw-bold"> <i class="bi bi-box text-primary" style="font-size: 3rem;"></i> Estas son tus jaulas, <?php echo $_SESSION['nombre']; ?></h1>
-          <p class="text-muted">Sigue y gestiona tus prestamos de jaulas</p>
+        <div class="col-12 d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="display-6 fw-bold"> <i class="bi bi-box text-primary" style="font-size: 3rem;"></i> Estas son tus jaulas, <?php echo $_SESSION['nombre']; ?></h1>
+            <p class="text-muted">Sigue y gestiona tus prestamos de jaulas</p>
+          </div>
+          <div>
+            <a href="listadoJaulas.php" class="btn btn-primary btn-lg">
+              <i class="bi bi-plus-circle me-2"></i>Reservar Jaula
+            </a>
+          </div>
         </div>
       </div>
 
@@ -160,51 +167,68 @@ if (isset($_SESSION['success_message'])) {
         <!--END MENSAJES DE ERROR / ÉXITO-->
 
         <!--TABLA JAULAS-->
-        <div class="row">
-        <div class="col-12">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title fw-bold"><i class="bi bi-box text-primary"></i> Prestamos actuales</h5>
-                <a href="listadoJaulas.php" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Reservar Jaula</a>
-                
-
-
-
-              </div>
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                        <th scope="col">Numero interno</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Clinica</th>
-                        <th scope="col">Fecha préstamo</th>
-                        <th scope="col">Fecha devolución</th>
-                        <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (empty($user_jaulas)): ?>
-                            <tr>
-                                <td colspan="6" class="text-center display-6">No tienes jaulas prestadas actualmente.</td>
-                            </tr>
-                        <?php else: ?>
-                            <?php foreach ($user_jaulas as $jaula): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($jaula['numero_interno']); ?></td>
-                                    <td><?php echo htmlspecialchars($jaula['nombre']); ?></td>
-                                    <td><?php echo htmlspecialchars($jaula['clinica_nombre']); ?></td>
-                                    <td><?php echo date('d/m/Y', strtotime($jaula['fecha_prestamo'])); ?></td>
-                                    <td><?php echo date('d/m/Y', strtotime($jaula['fecha_prevista_devolucion'])); ?></td>
-                                    <td>
-                                        <a href="/app/actions/jaulas_action.php?action=return&id=<?php echo htmlspecialchars($jaula['loan_id']); ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas devolver la jaula?');">Devolver</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                    </table>
+        <div class="card shadow-sm border-0">
+          <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0 fw-bold">
+              <i class="bi bi-box me-2"></i>Préstamos Actuales
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th><i class="bi bi-hash text-primary me-1"></i>Número Interno</th>
+                    <th><i class="bi bi-box-seam text-primary me-1"></i>Tipo</th>
+                    <th><i class="bi bi-hospital text-primary me-1"></i>Clínica</th>
+                    <th><i class="bi bi-calendar-check text-primary me-1"></i>Fecha Préstamo</th>
+                    <th><i class="bi bi-calendar-x text-primary me-1"></i>Fecha Devolución</th>
+                    <th class="text-center">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php if (empty($user_jaulas)): ?>
+                    <tr>
+                      <td colspan="6" class="text-center py-5">
+                        <div class="text-muted">
+                          <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                          <h5>No tienes jaulas prestadas actualmente</h5>
+                          <p class="mb-3">Reserva una jaula para comenzar</p>
+                          <a href="listadoJaulas.php" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-1"></i>Reservar mi primera jaula
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  <?php else: ?>
+                    <?php foreach ($user_jaulas as $jaula): ?>
+                      <tr>
+                        <td class="fw-semibold"><?= htmlspecialchars($jaula['numero_interno']) ?></td>
+                        <td>
+                          <span class="badge bg-info text-dark">
+                            <?= htmlspecialchars($jaula['nombre']) ?>
+                          </span>
+                        </td>
+                        <td><?= htmlspecialchars($jaula['clinica_nombre']) ?></td>
+                        <td><?= date('d/m/Y', strtotime($jaula['fecha_prestamo'])) ?></td>
+                        <td><?= date('d/m/Y', strtotime($jaula['fecha_prevista_devolucion'])) ?></td>
+                        <td class="text-center">
+                          <a href="/app/actions/jaulas_action.php?action=return&id=<?= htmlspecialchars($jaula['loan_id']) ?>" 
+                             class="btn btn-sm btn-outline-danger" 
+                             onclick="return confirm('¿Estás seguro de que deseas devolver la jaula?');">
+                            <i class="bi bi-box-arrow-left me-1"></i>Devolver
+                          </a>
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
