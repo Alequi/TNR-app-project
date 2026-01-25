@@ -39,3 +39,28 @@ try {
     $user_bookings = [];
     error_log("Error al obtener reservas: " . $e->getMessage());
 }
+
+// Cantidad de reservas activas
+$active_bookings_count = 0;
+foreach ($user_bookings as $booking) {
+    if ($booking['estado'] === 'reservado') {
+        $active_bookings_count++;
+    }
+}
+
+//Turnos de mañana
+$active_morning_shifts = 0;
+foreach ($user_bookings as $booking) {
+    if ($booking['estado'] === 'reservado' && $booking['shift_turno'] === 'M') {
+        $active_morning_shifts++;
+    }
+}
+//Turnos de tarde
+$active_afternoon_shifts = 0;
+foreach ($user_bookings as $booking) {
+    if ($booking['estado'] === 'reservado' && $booking['shift_turno'] === 'T') {
+        $active_afternoon_shifts++;
+    }
+}
+
+

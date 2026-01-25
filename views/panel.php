@@ -4,6 +4,7 @@
 require_once __DIR__ . '/../app/helpers/auth.php';
 require_once __DIR__ . '/../app/actions/jaulas_action.php';
 require_once __DIR__ . '/../app/actions/user_action.php';
+require_once __DIR__ . '/../app/actions/user_bookings_action.php';
 login();
 isLoggedIn()
 ?>
@@ -137,25 +138,27 @@ isLoggedIn()
                             </div>
                             <div>
                                 <h5 class="fw-semibold mb-0">Próximas reservas</h5>
-                                <p class="text-muted small mb-0">3 Reservas activas</p>
+                                <p class="text-muted small mb-0"><?php echo $active_bookings_count; ?>
+                                <?php echo $active_bookings_count === 1 ? ' Reserva activa' : '
+                                Reservas activas'; ?></p>
                             </div>
                         </div>
                         
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="text-muted">Turnos mañana</span>
-                                <span class="badge bg-success">2</span>
+                                <span class="badge bg-success"><?php echo $active_morning_shifts; ?></span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-muted">Turnos tarde</span>
-                                <span class="badge bg-primary">1</span>
+                                <span class="badge bg-primary"><?php echo $active_afternoon_shifts; ?></span>
                             </div>
                         </div>
                         
                         <div class="mt-auto">
-                            <button class="btn btn-primary w-100">
+                            <a href="userBookings.php" class="btn btn-primary w-100">
                                 Ver mis turnos <i class="bi bi-arrow-right-circle me-2"></i>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
