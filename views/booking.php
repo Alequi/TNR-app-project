@@ -59,13 +59,13 @@ if (isset($_SESSION['success_message'])) {
             <?php if ($_SESSION['rol'] === 'voluntario'): ?>
                 <!--MENU PRINCIPAL VOLUNTARIO-->
 
-                  <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a href="panel.php" class="nav-link ">Panel</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="" class="nav-link active">Reservas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Jaulas</a></li>
+                    <li class="nav-item"><a href="booking.php" class="nav-link active">Turnos</a></li>
+                    <li class="nav-item"><a href="userBookings.php" class="nav-link">Mis reservas</a></li>
+                    <li class="nav-item"><a href="jaulas.php" class="nav-link ">Jaulas</a></li>
                    
                 </ul>
             <?php else: ?>
@@ -289,7 +289,7 @@ if (isset($_SESSION['success_message'])) {
             </h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form method="post" action="../app/actions/reserve_shift_action.php" id="reserveForm">
+          <form  id="reserveForm">
             <div class="modal-body">
               <input type="hidden" name="shift_id" id="shift_id" value="">
               
@@ -333,6 +333,7 @@ if (isset($_SESSION['success_message'])) {
                       <i class="bi bi-geo-alt-fill text-primary"></i>
                       <div>
                         <small class="text-muted d-block">Colonia</small>
+                         <input type="hidden" id="user_colony_id" value="<?= htmlspecialchars($user_colony_id) ?>">
                         <strong><?= htmlspecialchars($user_colony) ?></strong>
                       </div>
                     </div>
@@ -413,7 +414,8 @@ if (isset($_SESSION['success_message'])) {
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../../public/assets/js/close-alerts.js"></script>
-        <script src="../../public/assets/js/script.js"></script>
+        <script src="../public/assets/js/close-alerts.js"></script>
+        <script src="../public/assets/js/modalTurnos.js"></script>
+        <script src="../public/assets/js/booking.js"></script>
 </body>
 </html>
