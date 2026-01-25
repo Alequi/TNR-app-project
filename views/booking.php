@@ -4,6 +4,7 @@
 require_once __DIR__ . '/../app/helpers/auth.php';
 require_once __DIR__ . '/../app/actions/jaulas_action.php';
 require_once __DIR__ . '/../app/actions/avaliable_shifts.php';
+require_once __DIR__ . '/../app/actions/user_action.php';
 isLoggedIn();
 
 $error = null;
@@ -30,7 +31,7 @@ if (isset($_SESSION['success_message'])) {
     <title>Dashboard | CES Gatos Elche</title>
     <link rel="icon" type="image/png" href="../public/assets/brand/LOGO-CES-2.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="../public/assets/dist/css/styles.css" rel="stylesheet" />
 
 </head>
@@ -160,80 +161,211 @@ if (isset($_SESSION['success_message'])) {
       <?php endif; ?>
         <!--END MENSAJES DE ERROR / ÉXITO-->
 
-        <!--TABLA TURNOS-->
-<body class="container py-4">
+        <!--FILTROS Y TABLA TURNOS-->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-header bg-white border-bottom">
+            <h5 class="card-title mb-0 fw-bold text-primary">
+              <i class="bi bi-funnel me-2"></i>Filtros de búsqueda
+            </h5>
+          </div>
+          <div class="card-body">
+            <form method="get" class="row g-3">
+              <div class="col-md-5">
+                <label class="form-label fw-semibold d-flex align-items-center gap-2">
+                  <i class="bi bi-calendar-date text-primary"></i>
+                  Fecha <span class="text-danger">*</span>
+                </label>
+                <input type="date" name="fecha" class="form-control" value="<?= $_GET['fecha'] ?? '' ?>" required>
+              </div>
 
-  
-  <form method="get" class="row g-3 align-items-end mb-4">
-    <div class="col-md-3">
-      <label class="form-label">Fecha</label>
-      <input type="date" name="fecha" class="form-control" required>
-    </div>
+              <div class="col-md-5">
+                <label class="form-label fw-semibold d-flex align-items-center gap-2">
+                  <i class="bi bi-hospital text-primary"></i>
+                  Clínica
+                </label>
+                <select name="clinic_id" class="form-select">
+                  <option value="">Todas las clínicas</option>
+                  <?php foreach ($clinics as $cl): ?>
+                    <option value="<?= (int)$cl['id'] ?>" <?= (isset($_GET['clinic_id']) && $_GET['clinic_id'] == $cl['id']) ? 'selected' : '' ?>>
+                      <?= htmlspecialchars($cl['nombre']) ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
 
-    <div class="col-md-4">
-      <label class="form-label">Clínica</label>
-      <select name="clinic_id" class="form-select">
-        <option value="">Todas</option>
-        <?php foreach ($clinics as $cl): ?>
-          <option value="<?= (int)$cl['id'] ?>" >
-            <?= htmlspecialchars($cl['nombre']) ?>
-          </option>
-        <?php endforeach; ?>
-      </select>
-    </div>
+              <div class="col-md-2 d-flex align-items-end">
+                <button class="btn btn-primary w-100" type="submit">
+                  <i class="bi bi-search me-1"></i>Buscar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
 
-    <div class="col-md-2">
-      <button class="btn btn-primary w-100" type="submit">Consultar</button>
-    </div>
-  </form>
-
-  <div class="table-responsive">
-    <table class="table table-striped align-middle">
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>Clínica</th>
-          <th>Turno</th>
-          <th class="text-end">Capacidad</th>
-          <th class="text-end">Ocupados</th>
-          <th class="text-end">Libres</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php if (!$available_shifts): ?>
-          <tr><td colspan="7" class="text-center text-muted">No hay turnos para esa fecha.</td></tr>
-        <?php else: ?>
-          <?php foreach ($available_shifts as $t): ?>
-            <tr>
-              <td><?= htmlspecialchars($t['fecha']) ?></td>
-              <td><?= htmlspecialchars($t['clinica_nombre']) ?></td>
-              <td><?= $t['turno'] === 'M' ? 'Mañana' : 'Tarde' ?></td>
-              <td class="text-end"><?= (int)$t['capacidad'] ?></td>
-              <td class="text-end"><?= (int)$t['ocupados'] ?></td>
-              <td class="text-end fw-bold"><?= (int)$t['disponibles'] ?></td>
-              <td>
-                <?php if ((int)$t['disponibles'] > 0): ?>
-                  <a class="btn btn-sm btn-success"
-                     href="nueva_reserva.php?shift_id=<?= (int)$t['id'] ?>">
-                    Reservar
-                  </a>
-                <?php else: ?>
-                  <span class="badge bg-secondary">Completo</span>
-                <?php endif; ?>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        <?php endif; ?>
-      </tbody>
-    </table>
-  </div>
+        <!-- Tabla de resultados -->
+        <div class="card shadow-sm border-0">
+          <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0 fw-bold">
+              <i class="bi bi-list-check me-2"></i>Turnos disponibles
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th><i class="bi bi-calendar-event text-primary me-1"></i>Fecha</th>
+                    <th><i class="bi bi-hospital text-primary me-1"></i>Clínica</th>
+                    <th><i class="bi bi-clock text-primary me-1"></i>Turno</th>
+                    <th class="text-center"><i class="bi bi-people text-primary me-1"></i>Capacidad</th>
+                    <th class="text-center"><i class="bi bi-person-check text-primary me-1"></i>Ocupados</th>
+                    <th class="text-center"><i class="bi bi-person-plus text-primary me-1"></i>Libres</th>
+                    <th class="text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php if (!$available_shifts): ?>
+                    <tr>
+                      <td colspan="7" class="text-center py-5">
+                        <div class="text-muted">
+                          <i class="bi bi-info-circle fs-3 d-block mb-2"></i>
+                          <p class="mb-0">No hay turnos disponibles para los criterios seleccionados.</p>
+                          <small>Prueba con otra fecha o clínica.</small>
+                        </div>
+                      </td>
+                    </tr>
+                  <?php else: ?>
+                    <?php foreach ($available_shifts as $shifts): ?>
+                      <tr>
+                        <td class="fw-semibold"><?= htmlspecialchars($shifts['fecha']) ?></td>
+                        <td><?= htmlspecialchars($shifts['clinica_nombre']) ?></td>
+                        <td>
+                          <span class="badge text-dark bg-light">
+                            <?= $shifts['turno'] === 'M' ? '☀️ Mañana' : '🌙 Tarde' ?>
+                          </span>
+                        </td>
+                        <td class="text-center"><?= (int)$shifts['capacidad'] ?></td>
+                        <td class="text-center"><?= (int)$shifts['ocupados'] ?></td>
+                        <td class="text-center">
+                          <span class="badge bg-success fs-6"><?= (int)$shifts['disponibles'] ?></span>
+                        </td>
+                        <td class="text-center">
+                          <?php if ((int)$shifts['disponibles'] > 0): ?>
+                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#reserveModal"
+                                    data-shift-id="<?= $shifts['id'] ?>"
+                                    data-shift-fecha="<?= htmlspecialchars($shifts['fecha']) ?>"
+                                    data-shift-clinica="<?= htmlspecialchars($shifts['clinica_nombre']) ?>"
+                                    data-shift-turno="<?= $shifts['turno'] === 'M' ? 'Mañana' : 'Tarde' ?>">
+                              <i class="bi bi-calendar-plus me-1"></i>Reservar
+                            </button>
+                          <?php else: ?>
+                            <span class="badge bg-secondary">
+                              <i class="bi bi-x-circle me-1"></i>Completo
+                            </span>
+                          <?php endif; ?>
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
 
 
 
 
     </main>    <!--END MAIN CONTENT-->
+
+    <!--MODAL HACER RESERVA-->
+    <div class="modal fade" id="reserveModal" tabindex="-1" aria-labelledby="reserveModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title fw-bold" id="reserveModalLabel">
+              <i class="bi bi-calendar-check me-2"></i>Reservar Turno
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="post" action="../app/actions/reserve_shift_action.php" id="reserveForm">
+            <div class="modal-body">
+              <input type="hidden" name="shift_id" id="shift_id" value="">
+              
+              <!-- Información del turno -->
+              <div class="bg-light p-3 rounded mb-4">
+                <h6 class="fw-bold mb-3 text-primary">Detalles del turno</h6>
+                
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="bi bi-calendar text-primary"></i>
+                      <div>
+                        <small class="text-muted d-block">Fecha</small>
+                        <strong id="shift_fecha"></strong>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="bi bi-clock text-primary"></i>
+                      <div>
+                        <small class="text-muted d-block">Turno</small>
+                        <strong id="shift_turno"></strong>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="bi bi-hospital text-primary"></i>
+                      <div>
+                        <small class="text-muted d-block">Clínica</small>
+                        <strong id="shift_clinica"></strong>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="bi bi-geo-alt-fill text-primary"></i>
+                      <div>
+                        <small class="text-muted d-block">Colonia</small>
+                        <strong><?= htmlspecialchars($user_colony) ?></strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Campo de número de gatos -->
+              <div class="mb-3">
+                <label for="numero_gatos" class="form-label fw-bold d-flex align-items-center gap-2">
+                  <i class="bi bi-plus-circle text-primary"></i>
+                  Número de gatos <span class="text-danger">*</span>
+                </label>
+                <input type="number" class="form-control form-control-lg" id="numero_gatos" name="numero_gatos" min="1" max="10" placeholder="Ej: 2" required>
+                <div class="form-text">
+                  <i class="bi bi-info-circle"></i> Indica cuántos gatos llevarás a este turno (máximo 10)
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer border-top">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                <i class="bi bi-x-circle me-1"></i>Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary" id="bookingBtn">
+                <i class="bi bi-check-circle me-1"></i>Confirmar Reserva
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!--END MODAL HACER RESERVA-->
+
 
 
 
@@ -282,6 +414,6 @@ if (isset($_SESSION['success_message'])) {
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../../public/assets/js/close-alerts.js"></script>
-
+        <script src="../../public/assets/js/script.js"></script>
 </body>
 </html>
