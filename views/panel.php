@@ -43,8 +43,7 @@ isLoggedIn()
             <!-- CONTENIDO COLAPSABLE -->
             <div class="collapse navbar-collapse " id="mainNavbar">
 
-            <?php if ($_SESSION['rol'] === 'voluntario' || $_SESSION['rol'] === 'gestor'): ?>
-                <!--MENU PRINCIPAL VOLUNTARIO-->
+                <!-- ENLACES DEL MENÚ -->
 
                  <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a href="panel.php" class="nav-link active">Panel</a></li>
@@ -55,20 +54,9 @@ isLoggedIn()
                     <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="userColony.php" class="nav-link">Mi colonia</a></li>
                 </ul>
-            <?php else: ?>
+           
 
-                <!-- MENÚ PRINCIPAL -->
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a href="" class="nav-link active">Panel</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Colonias</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Reservas</a></li>
-                    <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Usuarios</a></li>
-                </ul>
-             <?php endif; ?>   
+              
 
                 <!-- BOTÓN PERFIL -->
                 <div class="d-flex align-items-center">
@@ -118,7 +106,6 @@ isLoggedIn()
 
     <!-- End Breadcrumb -->
 
-<?php if ($_SESSION['rol'] === 'voluntario'): ?>
 
     <!--panel de voluntario-->
     
@@ -322,169 +309,7 @@ isLoggedIn()
     
     <!-- end cards -->
 
-<?php else: ?>
-    <!--panel de administración-->
-    <!-- cards -->
 
-    <div class="container-xxl my-4 flex-grow-1 mt-3">
-        <div class="text-center">
-            <h3 class="mb-0 fw-bold">Panel de Administración</h3>
-            <p class="lead mb-4">Sigue y gestiona tus reservas de turnos y prestamos de jaulas</p>
-        </div>
-
-        <!--CARD 1 -->
-        <div class="row gy-4 mt-4">
-            <div class="col-md-5">
-                <div class="card mb-4 shadow-sm  h-100">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="fw-semibold mb-1">Jaulas prestadas</h5>
-                        <p class="card-text ">Administra las jaulas prestadas a los voluntarios.</p>
-                        <p class="fs-5 mb-2">8/25 Jaulas</p>
-
-                        <p class="mb-1">
-                            <span class="text-success fw-semibold">6</span>
-                            <span class="text-muted">Jaulas verdes</span>
-                        </p>
-                        <p class="mb-3">
-                            <span class="text-primary fw-semibold">2</span>
-                            <span class="text-muted">Jaulas grises</span>
-                        </p>
-
-                        <div class="justify-content-center d-flex mt-auto">
-                            <button class="btn btn-primary  w-50 mt-auto">Ver Jaulas</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!--CARD 2 -->
-
-            <div class="col-md-7">
-                <div class="card mb-4 shadow-sm  h-100">
-                    <div class="card-body d-flex flex-column ">
-                        <h5 class="fw-semibold mb-1">Ocupación Clinicas</h5>
-                        <p class="card-text">Administra la ocupación de las clínicas asociadas</p>
-                        <div class="row mt-3">
-
-                            <!-- CLÍNICA 1 -->
-                            <div class="col-md-6 mb-3">
-                                <p class="fw-semibold mb-1">Clínica Linneo</p>
-                                <p class="mb-1">
-                                    <span class="text-success fw-semibold">6/8</span>
-                                    <span class="text-muted">Turno mañana</span>
-                                </p>
-                                <p class="mb-0">
-                                    <span class="text-primary fw-semibold">7/8</span>
-                                    <span class="text-muted">Turno tarde</span>
-                                </p>
-                            </div>
-
-                            <!-- CLÍNICA 2 -->
-                            <div class="col-md-6 mb-3">
-                                <p class="fw-semibold mb-1">Clínica Elxveterinaria</p>
-                                <p class="mb-1">
-                                    <span class="text-danger fw-semibold">0/8</span>
-                                    <span class="text-muted">Turno mañana</span>
-                                </p>
-                                <p class="mb-0">
-                                    <span class="text-success fw-semibold">7/8</span>
-                                    <span class="text-muted">Turno tarde</span>
-                                </p>
-                            </div>
-
-                        </div>
-                        <div class="justify-content-center d-flex mt-auto">
-                            <button class="btn btn-primary  w-50 mt-auto">Ver clínicas</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- end cards -->
-
-    <!-- Tabla de informacion -->
-
-    <div class="table-responsive container-xxl mt-4 mb-5">
-        <h4 class="mb-3 fw-bold d-inline-flex align-items-center gap-2">
-            <i class="bi bi-calendar-event"></i>
-            Próximas Reservas de Turnos
-        </h4>
-        <table class="table table-hover align-middle">
-
-            <thead>
-                <tr>
-                    <th scope="col">Hora</th>
-                    <th scope="col">Clinica</th>
-                    <th scope="col">Turno</th>
-                    <th scope="col">Colonia</th>
-                    <th scope="col">Voluntario</th>
-                    <th scope="col">Gatos</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">09:00</th>
-                    <td>Clínica San Roque</td>
-                    <td><span class="badge bg-success">Mañana</span></td>
-                    <td>Colonia El Parque</td>
-                    <td>María López</td>
-                    <td>5</td>
-                    <td><button class="btn btn-sm btn-outline-success">Ver</button></td>
-
-
-
-                </tr>
-                <tr>
-                    <th scope="row">11:00</th>
-                    <td>Clínica Veterinaria Elche</td>
-                    <td><span class="badge bg-success">Mañana</span></td>
-                    <td>Colonia La Huerta</td>
-                    <td>Carlos Fernández</td>
-                    <td>3</td>
-                    <td><button class="btn btn-sm btn-outline-success">Ver</button></td>
-                </tr>
-                <tr>
-                    <th scope="row">14:00</th>
-                    <td>Clínica Animalia</td>
-                    <td><span class="badge bg-primary">Tarde</span></td>
-                    <td>Colonia Centro</td>
-                    <td>Ana Martínez</td>
-                    <td>4</td>
-                    <td class="align-middle"><button class="btn btn-sm btn-outline-success">Ver</button></td>
-                </tr>
-
-
-            </tbody>
-
-        </table>
-
-
-        <nav aria-label="table navigation ">
-            <ul class="pagination justify-content-center pagination-sm ">
-                <li class="page-item">
-                    <a class="page-link " href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-
-    </div>
-    <!-- end tabla de informacion -->
-<?php endif; ?>
 
     <!-- FOOTER -->
 
