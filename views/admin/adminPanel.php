@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../../config/conexion.php';
 require_once __DIR__ . '/../../app/helpers/auth.php';
+require_once __DIR__ . '/../../app/actions/jaulas/jaulas_general_action.php';
+require_once __DIR__ . '/../../app/actions/clinics/general_clinics_action.php';
 
 admin();
 ?>
@@ -14,7 +16,7 @@ admin();
     <title>Dashboard | CES Gatos Elche</title>
     <link rel="icon" type="image/png" href="../../public/assets/brand/LOGO-CES-2.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="../../public/assets/dist/css/styles.css" rel="stylesheet" />
 
 </head>
@@ -103,163 +105,227 @@ admin();
 
 
     <div class="container-xxl my-4 flex-grow-1 mt-3">
-        <div class="text-center">
-            <h3 class="mb-0 fw-bold">Panel de Administración</h3>
-            <p class="lead mb-4">Sigue y gestiona tus reservas de turnos y prestamos de jaulas</p>
+        <div class="text-center mb-4">
+            <h3 class="mb-2 fw-bold">Hola, <?php echo $_SESSION['nombre']; ?> 🐱</h3>
+            <p class="text-muted">Gestiona y mantente informado sobre el estado de la Campaña CER</p>
         </div>
 
-        <!--CARD 1 -->
-        <div class="row gy-4 mt-4">
+        <!--CARDS-->
+        <div class="row g-4 mt-2">
             <div class="col-md-5">
-                <div class="card mb-4 shadow-sm  h-100">
+                <div class="card shadow-sm h-100 border-0">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="fw-semibold mb-1">Jaulas prestadas</h5>
-                        <p class="card-text ">Administra las jaulas prestadas a los voluntarios.</p>
-                        <p class="fs-5 mb-2">8/25 Jaulas</p>
-
-                        <p class="mb-1">
-                            <span class="text-success fw-semibold">6</span>
-                            <span class="text-muted">Jaulas verdes</span>
-                        </p>
-                        <p class="mb-3">
-                            <span class="text-primary fw-semibold">2</span>
-                            <span class="text-muted">Jaulas grises</span>
-                        </p>
-
-                        <div class="justify-content-center d-flex mt-auto">
-                            <button class="btn btn-primary  w-50 mt-auto">Ver Jaulas</button>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-success bg-opacity-10 p-3 me-3">
+                                <i class="bi bi-box text-success fs-4"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-semibold mb-0">Jaulas prestadas</h5>
+                                <p class="text-muted small mb-0"><?php echo $stats['total_jaulas_prestadas']; ?>/<?php echo $total_jaulas['total_jaulas']; ?> Jaulas prestadas</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <?php foreach ($jaulas_por_tipo as $jaula_tipo): ?>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted"><?php echo htmlspecialchars($jaula_tipo['tipo_nombre']); ?></span>
+                                <span class="badge bg-success"><?php echo htmlspecialchars($jaula_tipo['cantidad']); ?></span>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        
+                        <div class="mt-auto">
+                            <a href="jaulas.php" class="btn btn-success w-100">
+                                Ver Jaulas <i class="bi bi-arrow-right-circle ms-2"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
 
-            <!--CARD 2 -->
-
+            <!--CARD 2-->
             <div class="col-md-7">
-                <div class="card mb-4 shadow-sm  h-100">
-                    <div class="card-body d-flex flex-column ">
-                        <h5 class="fw-semibold mb-1">Ocupación Clinicas</h5>
-                        <p class="card-text">Administra la ocupación de las clínicas asociadas</p>
-                        <div class="row mt-3">
-
-                            <!-- CLÍNICA 1 -->
-                            <div class="col-md-6 mb-3">
-                                <p class="fw-semibold mb-1">Clínica Linneo</p>
-                                <p class="mb-1">
-                                    <span class="text-success fw-semibold">6/8</span>
-                                    <span class="text-muted">Turno mañana</span>
-                                </p>
-                                <p class="mb-0">
-                                    <span class="text-primary fw-semibold">7/8</span>
-                                    <span class="text-muted">Turno tarde</span>
-                                </p>
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary bg-opacity-10 p-3 me-3">
+                                <i class="bi bi-hospital text-primary fs-4"></i>
                             </div>
-
-                            <!-- CLÍNICA 2 -->
-                            <div class="col-md-6 mb-3">
-                                <p class="fw-semibold mb-1">Clínica Elxveterinaria</p>
-                                <p class="mb-1">
-                                    <span class="text-danger fw-semibold">0/8</span>
-                                    <span class="text-muted">Turno mañana</span>
-                                </p>
-                                <p class="mb-0">
-                                    <span class="text-success fw-semibold">7/8</span>
-                                    <span class="text-muted">Turno tarde</span>
-                                </p>
+                            <div>
+                                <h5 class="fw-semibold mb-0">Ocupación Clínicas</h5>
+                                <p class="text-muted small mb-0">Estado actual de las clínicas</p>
                             </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <?php foreach ($clinics_stats as $clinic): ?>
+                            <!-- CLÍNICAS -->
+                            <div class="col-md-6 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-building text-primary me-2"></i>
+                                        <p class="fw-semibold mb-0"><?php echo htmlspecialchars($clinic['clinic_name']); ?></p>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="text-muted small">☀️ Turno mañana</span>
+                                        <?php if ($clinic['ocupados_ma'] / $clinic['capacidad_ma'] == 1): ?>
+                                            <span class="badge bg-danger"><?php echo htmlspecialchars($clinic['ocupados_ma']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ma']); ?></span>
+                                        <?php else: ?>
+                                            <span class="badge bg-success"><?php echo htmlspecialchars($clinic['ocupados_ma']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ma']); ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted small">🌙 Turno tarde</span>
+                                        <?php if ($clinic['ocupados_ta'] / $clinic['capacidad_ta'] == 1): ?>
+                                            <span class="badge bg-danger"><?php echo htmlspecialchars($clinic['ocupados_ta']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ta']); ?></span>
+                                        <?php else: ?>
+                                            <span class="badge bg-primary"><?php echo htmlspecialchars($clinic['ocupados_ta']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ta']); ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
 
+                        </div>                        
+                        <div class="mt-auto">
+                            <a href="#" class="btn btn-primary w-100">
+                                Ver Clínicas <i class="bi bi-arrow-right-circle ms-2"></i>
+                            </a>
                         </div>
-                        <div class="justify-content-center d-flex mt-auto">
-                            <button class="btn btn-primary  w-50 mt-auto">Ver clínicas</button>
-                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas rápidas -->
+        <div class="row mt-4">
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-calendar-check text-primary fs-1"></i>
+                        <h3 class="mt-2 mb-0">15</h3>
+                        <p class="text-muted mb-0">Reservas Hoy</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-people text-success fs-1"></i>
+                        <h3 class="mt-2 mb-0">48</h3>
+                        <p class="text-muted mb-0">Voluntarios</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-geo-alt text-info fs-1"></i>
+                        <h3 class="mt-2 mb-0">12</h3>
+                        <p class="text-muted mb-0">Colonias</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-cat text-warning fs-1"></i>
+                        <h3 class="mt-2 mb-0">126</h3>
+                        <p class="text-muted mb-0">Gatos este mes</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- end cards -->
-
-    <!-- Tabla de informacion -->
-
-    <div class="table-responsive container-xxl mt-4 mb-5">
-        <h4 class="mb-3 fw-bold d-inline-flex align-items-center gap-2">
-            <i class="bi bi-calendar-event"></i>
-            Próximas Reservas de Turnos
-        </h4>
-        <table class="table table-hover align-middle">
-
-            <thead>
-                <tr>
-                    <th scope="col">Hora</th>
-                    <th scope="col">Clinica</th>
-                    <th scope="col">Turno</th>
-                    <th scope="col">Colonia</th>
-                    <th scope="col">Voluntario</th>
-                    <th scope="col">Gatos</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">09:00</th>
-                    <td>Clínica San Roque</td>
-                    <td><span class="badge bg-success">Mañana</span></td>
-                    <td>Colonia El Parque</td>
-                    <td>María López</td>
-                    <td>5</td>
-                    <td><button class="btn btn-sm btn-outline-success">Ver</button></td>
-
-
-
-                </tr>
-                <tr>
-                    <th scope="row">11:00</th>
-                    <td>Clínica Veterinaria Elche</td>
-                    <td><span class="badge bg-success">Mañana</span></td>
-                    <td>Colonia La Huerta</td>
-                    <td>Carlos Fernández</td>
-                    <td>3</td>
-                    <td><button class="btn btn-sm btn-outline-success">Ver</button></td>
-                </tr>
-                <tr>
-                    <th scope="row">14:00</th>
-                    <td>Clínica Animalia</td>
-                    <td><span class="badge bg-primary">Tarde</span></td>
-                    <td>Colonia Centro</td>
-                    <td>Ana Martínez</td>
-                    <td>4</td>
-                    <td class="align-middle"><button class="btn btn-sm btn-outline-success">Ver</button></td>
-                </tr>
-
-
-            </tbody>
-
-        </table>
-
-
-        <nav aria-label="table navigation ">
-            <ul class="pagination justify-content-center pagination-sm ">
-                <li class="page-item">
-                    <a class="page-link " href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-
+    <!-- Tabla de reservas -->
+    <div class="container-xxl mt-4 mb-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0 fw-bold">
+                    <i class="bi bi-calendar-event me-2"></i>Próximas Reservas de Turnos
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th><i class="bi bi-clock text-primary me-1"></i>Hora</th>
+                                <th><i class="bi bi-hospital text-primary me-1"></i>Clínica</th>
+                                <th><i class="bi bi-sun text-primary me-1"></i>Turno</th>
+                                <th><i class="bi bi-geo-alt-fill text-primary me-1"></i>Colonia</th>
+                                <th><i class="bi bi-person text-primary me-1"></i>Voluntario</th>
+                                <th class="text-center"><i class="bi bi-cat text-primary me-1"></i>Gatos</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-semibold">09:00</td>
+                                <td>Clínica San Roque</td>
+                                <td><span class="badge text-dark bg-light">☀️ Mañana</span></td>
+                                <td>Colonia El Parque</td>
+                                <td>María López</td>
+                                <td class="text-center"><span class="badge bg-info text-dark fs-6">5</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">11:00</td>
+                                <td>Clínica Veterinaria Elche</td>
+                                <td><span class="badge text-dark bg-light">☀️ Mañana</span></td>
+                                <td>Colonia La Huerta</td>
+                                <td>Carlos Fernández</td>
+                                <td class="text-center"><span class="badge bg-info text-dark fs-6">3</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">14:00</td>
+                                <td>Clínica Animalia</td>
+                                <td><span class="badge text-dark bg-light">🌙 Tarde</span></td>
+                                <td>Colonia Centro</td>
+                                <td>Ana Martínez</td>
+                                <td class="text-center"><span class="badge bg-info text-dark fs-6">4</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <nav aria-label="table navigation">
+                    <ul class="pagination justify-content-center pagination-sm mb-0">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
-    <!-- end tabla de informacion -->
     <!-- FOOTER -->
 
     <footer class="bg-dark text-light py-4 mt-5">
