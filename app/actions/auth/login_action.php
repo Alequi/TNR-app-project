@@ -26,7 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['colony_id'] = $usuario['colony_id'];
 
-           header("location: ../../../views/panel.php");
+            if ($usuario['rol'] === 'admin') {
+                header("location: ../../../views/admin/adminPanel.php");
+            } else {
+                header("location: ../../../views/panel.php");
+            }
+
+            exit();
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
