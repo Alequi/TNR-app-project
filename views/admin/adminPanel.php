@@ -3,6 +3,9 @@ require_once __DIR__ . '/../../config/conexion.php';
 require_once __DIR__ . '/../../app/helpers/auth.php';
 require_once __DIR__ . '/../../app/actions/jaulas/jaulas_general_action.php';
 require_once __DIR__ . '/../../app/actions/clinics/general_clinics_action.php';
+require_once __DIR__ . '/../../app/actions/bookings/bookings_stats_action.php';
+require_once __DIR__ . '/../../app/actions/user/volunteers_stats_action.php';
+require_once __DIR__ . '/../../app/actions/user/colonies_stats_action.php';
 
 admin();
 ?>
@@ -204,7 +207,7 @@ admin();
                 <div class="card border-0 shadow-sm">
                     <div class="card-body text-center">
                         <i class="bi bi-calendar-check text-primary fs-1"></i>
-                        <h3 class="mt-2 mb-0">15</h3>
+                        <h3 class="mt-2 mb-0"><?php echo htmlspecialchars($total_reservas_activas); ?></h3>
                         <p class="text-muted mb-0">Reservas Hoy</p>
                     </div>
                 </div>
@@ -213,7 +216,7 @@ admin();
                 <div class="card border-0 shadow-sm">
                     <div class="card-body text-center">
                         <i class="bi bi-people text-success fs-1"></i>
-                        <h3 class="mt-2 mb-0">48</h3>
+                        <h3 class="mt-2 mb-0"><?php echo htmlspecialchars($total_voluntarios); ?></h3>
                         <p class="text-muted mb-0">Voluntarios</p>
                     </div>
                 </div>
@@ -222,7 +225,7 @@ admin();
                 <div class="card border-0 shadow-sm">
                     <div class="card-body text-center">
                         <i class="bi bi-geo-alt text-info fs-1"></i>
-                        <h3 class="mt-2 mb-0">12</h3>
+                        <h3 class="mt-2 mb-0"><?php echo htmlspecialchars($total_colonias); ?></h3>
                         <p class="text-muted mb-0">Colonias</p>
                     </div>
                 </div>
@@ -231,8 +234,8 @@ admin();
                 <div class="card border-0 shadow-sm">
                     <div class="card-body text-center">
                         <i class="bi bi-cat text-warning fs-1"></i>
-                        <h3 class="mt-2 mb-0">126</h3>
-                        <p class="text-muted mb-0">Gatos este mes</p>
+                        <h3 class="mt-2 mb-0"><?php echo htmlspecialchars($total_gatos_mes); ?></h3>
+                        <p class="text-muted mb-0">Gatos castrados este mes</p>
                     </div>
                 </div>
             </div>
@@ -244,7 +247,7 @@ admin();
         <div class="card shadow-sm border-0">
             <div class="card-header bg-primary text-white">
                 <h5 class="card-title mb-0 fw-bold">
-                    <i class="bi bi-calendar-event me-2"></i>Próximas Reservas de Turnos
+                    <i class="bi bi-calendar-event me-2"></i>Próximas Reservas de Turnos (7 días)
                 </h5>
             </div>
             <div class="card-body p-0">
@@ -252,7 +255,7 @@ admin();
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th><i class="bi bi-clock text-primary me-1"></i>Hora</th>
+                                <th><i class="bi bi-clock text-primary me-1"></i>Fecha</th>
                                 <th><i class="bi bi-hospital text-primary me-1"></i>Clínica</th>
                                 <th><i class="bi bi-sun text-primary me-1"></i>Turno</th>
                                 <th><i class="bi bi-geo-alt-fill text-primary me-1"></i>Colonia</th>
@@ -262,45 +265,29 @@ admin();
                             </tr>
                         </thead>
                         <tbody>
+                            <?php if (empty($reservas_proximos_dias)): ?>
+                                <tr></tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <p class="mb-0 text-muted">No hay reservas próximas en los próximos 7 días.</p>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                            <?php foreach ($reservas_proximos_dias as $reserva): ?>
                             <tr>
-                                <td class="fw-semibold">09:00</td>
-                                <td>Clínica San Roque</td>
-                                <td><span class="badge text-dark bg-light">☀️ Mañana</span></td>
-                                <td>Colonia El Parque</td>
-                                <td>María López</td>
-                                <td class="text-center"><span class="badge bg-info text-dark fs-6">5</span></td>
+                                <td class="fw-semibold"><?php echo htmlspecialchars($reserva['fecha']); ?></td>
+                                <td><?php echo htmlspecialchars($reserva['clinic_name']); ?></td>
+                                <td><span class="badge text-dark bg-light"><?php echo htmlspecialchars($reserva['turno']); ?></span></td>
+                                <td><?php echo htmlspecialchars($reserva['colony_name']); ?></td>
+                                <td><?php echo htmlspecialchars($reserva['volunteer_name']); ?></td>
+                                <td class="text-center"><span class="badge bg-info text-dark fs-6"><?php echo htmlspecialchars($reserva['gatos']); ?></span></td>
                                 <td class="text-center">
                                     <button class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-eye"></i>
                                     </button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="fw-semibold">11:00</td>
-                                <td>Clínica Veterinaria Elche</td>
-                                <td><span class="badge text-dark bg-light">☀️ Mañana</span></td>
-                                <td>Colonia La Huerta</td>
-                                <td>Carlos Fernández</td>
-                                <td class="text-center"><span class="badge bg-info text-dark fs-6">3</span></td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="fw-semibold">14:00</td>
-                                <td>Clínica Animalia</td>
-                                <td><span class="badge text-dark bg-light">🌙 Tarde</span></td>
-                                <td>Colonia Centro</td>
-                                <td>Ana Martínez</td>
-                                <td class="text-center"><span class="badge bg-info text-dark fs-6">4</span></td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            <?php endforeach; ?>
+                            
                         </tbody>
                     </table>
                 </div>
