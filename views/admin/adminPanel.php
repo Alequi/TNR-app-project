@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../app/actions/clinics/general_clinics_action.php';
 require_once __DIR__ . '/../../app/actions/bookings/bookings_stats_action.php';
 require_once __DIR__ . '/../../app/actions/user/volunteers_stats_action.php';
 require_once __DIR__ . '/../../app/actions/user/colonies_stats_action.php';
+require_once __DIR__ . '/../../app/actions/campaign_stats_action.php';
 
 admin();
 ?>
@@ -56,7 +57,7 @@ admin();
                     <li class="nav-item"><a href="" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Usuarios</a></li>
                 </ul>
-             
+
 
                 <!-- BOTÓN PERFIL -->
                 <div class="d-flex align-items-center">
@@ -85,7 +86,7 @@ admin();
                             <i class="bi bi-person-circle"></i> Perfil</a>
 
                         <a href="../../app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
-                             Cerrar sesión<i class="bi bi-box-arrow-right "></i></a>
+                            Cerrar sesión<i class="bi bi-box-arrow-right "></i></a>
 
                     </div>
                 </div>
@@ -95,14 +96,14 @@ admin();
 
     <!-- End navbar -->
     <!-- Breadcrumb -->
-<div class="container-xxl my-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a class="text-dark opacity-30" href="#">Inicio</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Panel</li>
-        </ol>
-    </nav>
-</div>
+    <div class="container-xxl my-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a class="text-dark opacity-30" href="#">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Panel</li>
+            </ol>
+        </nav>
+    </div>
 
     <!-- End Breadcrumb -->
 
@@ -112,6 +113,25 @@ admin();
             <h3 class="mb-2 fw-bold">Hola, <?php echo $_SESSION['nombre']; ?> 🐱</h3>
             <p class="text-muted">Gestiona y mantente informado sobre el estado de la Campaña CER</p>
         </div>
+
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary bg-opacity-10 p-3 me-3 rounded">
+                        <i class="bi bi-calendar-event text-primary fs-3"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">Campaña activa: <?php echo htmlspecialchars($nombre_campaign_active); ?></h5>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-calendar-range me-1"></i>
+                            <?php echo htmlspecialchars($fecha_inicio_campaign_active); ?> - <?php echo htmlspecialchars($fecha_fin_campaign_active); ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!--CARDS-->
         <div class="row g-4 mt-2">
@@ -127,16 +147,16 @@ admin();
                                 <p class="text-muted small mb-0"><?php echo $stats['total_jaulas_prestadas']; ?>/<?php echo $total_jaulas['total_jaulas']; ?> Jaulas prestadas</p>
                             </div>
                         </div>
-                        
+
                         <div class="mb-3">
                             <?php foreach ($jaulas_por_tipo as $jaula_tipo): ?>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="text-muted"><?php echo htmlspecialchars($jaula_tipo['tipo_nombre']); ?></span>
-                                <span class="badge bg-success"><?php echo htmlspecialchars($jaula_tipo['cantidad']); ?></span>
-                            </div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted"><?php echo htmlspecialchars($jaula_tipo['tipo_nombre']); ?></span>
+                                    <span class="badge bg-success"><?php echo htmlspecialchars($jaula_tipo['cantidad']); ?></span>
+                                </div>
                             <?php endforeach; ?>
                         </div>
-                        
+
                         <div class="mt-auto">
                             <a href="jaulas.php" class="btn btn-success w-100">
                                 Ver Jaulas <i class="bi bi-arrow-right-circle ms-2"></i>
@@ -160,37 +180,37 @@ admin();
                                 <p class="text-muted small mb-0">Estado actual de las clínicas</p>
                             </div>
                         </div>
-                        
+
                         <div class="row mb-3">
                             <?php foreach ($clinics_stats as $clinic): ?>
-                            <!-- CLÍNICAS -->
-                            <div class="col-md-6 mb-3">
-                                <div class="p-3 bg-light rounded">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="bi bi-building text-primary me-2"></i>
-                                        <p class="fw-semibold mb-0"><?php echo htmlspecialchars($clinic['clinic_name']); ?></p>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <span class="text-muted small">☀️ Turno mañana</span>
-                                        <?php if ($clinic['ocupados_ma'] / $clinic['capacidad_ma'] == 1): ?>
-                                            <span class="badge bg-danger"><?php echo htmlspecialchars($clinic['ocupados_ma']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ma']); ?></span>
-                                        <?php else: ?>
-                                            <span class="badge bg-success"><?php echo htmlspecialchars($clinic['ocupados_ma']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ma']); ?></span>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-muted small">🌙 Turno tarde</span>
-                                        <?php if ($clinic['ocupados_ta'] / $clinic['capacidad_ta'] == 1): ?>
-                                            <span class="badge bg-danger"><?php echo htmlspecialchars($clinic['ocupados_ta']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ta']); ?></span>
-                                        <?php else: ?>
-                                            <span class="badge bg-primary"><?php echo htmlspecialchars($clinic['ocupados_ta']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ta']); ?></span>
-                                        <?php endif; ?>
+                                <!-- CLÍNICAS -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="p-3 bg-light rounded">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-building text-primary me-2"></i>
+                                            <p class="fw-semibold mb-0"><?php echo htmlspecialchars($clinic['clinic_name']); ?></p>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="text-muted small">☀️ Turno mañana</span>
+                                            <?php if ($clinic['ocupados_ma'] / $clinic['capacidad_ma'] == 1): ?>
+                                                <span class="badge bg-danger"><?php echo htmlspecialchars($clinic['ocupados_ma']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ma']); ?></span>
+                                            <?php else: ?>
+                                                <span class="badge bg-success"><?php echo htmlspecialchars($clinic['ocupados_ma']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ma']); ?></span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-muted small">🌙 Turno tarde</span>
+                                            <?php if ($clinic['ocupados_ta'] / $clinic['capacidad_ta'] == 1): ?>
+                                                <span class="badge bg-danger"><?php echo htmlspecialchars($clinic['ocupados_ta']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ta']); ?></span>
+                                            <?php else: ?>
+                                                <span class="badge bg-primary"><?php echo htmlspecialchars($clinic['ocupados_ta']); ?>/<?php echo htmlspecialchars($clinic['capacidad_ta']); ?></span>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             <?php endforeach; ?>
 
-                        </div>                        
+                        </div>
                         <div class="mt-auto">
                             <a href="#" class="btn btn-primary w-100">
                                 Ver Clínicas <i class="bi bi-arrow-right-circle ms-2"></i>
@@ -267,27 +287,27 @@ admin();
                         <tbody>
                             <?php if (empty($reservas_proximos_dias)): ?>
                                 <tr></tr>
-                                    <td colspan="7" class="text-center py-4">
-                                        <p class="mb-0 text-muted">No hay reservas próximas en los próximos 7 días.</p>
-                                    </td>
+                                <td colspan="7" class="text-center py-4">
+                                    <p class="mb-0 text-muted">No hay reservas próximas en los próximos 7 días.</p>
+                                </td>
                                 </tr>
                             <?php endif; ?>
                             <?php foreach ($reservas_proximos_dias as $reserva): ?>
-                            <tr>
-                                <td class="fw-semibold"><?php echo htmlspecialchars($reserva['fecha']); ?></td>
-                                <td><?php echo htmlspecialchars($reserva['clinic_name']); ?></td>
-                                <td><span class="badge text-dark bg-light"><?php echo htmlspecialchars($reserva['turno']); ?></span></td>
-                                <td><?php echo htmlspecialchars($reserva['colony_name']); ?></td>
-                                <td><?php echo htmlspecialchars($reserva['volunteer_name']); ?></td>
-                                <td class="text-center"><span class="badge bg-info text-dark fs-6"><?php echo htmlspecialchars($reserva['gatos']); ?></span></td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="fw-semibold"><?php echo htmlspecialchars($reserva['fecha']); ?></td>
+                                    <td><?php echo htmlspecialchars($reserva['clinic_name']); ?></td>
+                                    <td><span class="badge text-dark bg-light"><?php echo htmlspecialchars($reserva['turno']); ?></span></td>
+                                    <td><?php echo htmlspecialchars($reserva['colony_name']); ?></td>
+                                    <td><?php echo htmlspecialchars($reserva['volunteer_name']); ?></td>
+                                    <td class="text-center"><span class="badge bg-info text-dark fs-6"><?php echo htmlspecialchars($reserva['gatos']); ?></span></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
-                            
+
                         </tbody>
                     </table>
                 </div>
