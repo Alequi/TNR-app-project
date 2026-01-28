@@ -48,12 +48,12 @@ admin();
 
                 <!-- MENÚ PRINCIPAL -->
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a href="" class="nav-link active">Panel</a></li>
+                    <li class="nav-item"><a href="adminPanel.php" class="nav-link active">Panel</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Colonias</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Reservas</a></li>
+                    <li class="nav-item"><a href="bookingAdmin.php" class="nav-link">Reservas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Usuarios</a></li>
                 </ul>
