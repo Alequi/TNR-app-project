@@ -239,7 +239,8 @@ if (isset($_SESSION['success_message'])) {
                                         <td class="text-center">
                                             <?php if ($booking['estado'] === 'reservado'): ?>
                                                 <button class="btn btn-sm btn-outline-danger cancelBookingBtn" 
-                                                        data-booking-id="<?= htmlspecialchars($booking['id']) ?>">
+                                                        data-booking-id="<?= htmlspecialchars($booking['id']) ?>"
+                                                        data-action-url="../app/actions/bookings/cancel_booking_action.php">
                                                     <i class="bi bi-x-circle"></i> Cancelar
                                                 </button>
                                             <?php else: ?>

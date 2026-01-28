@@ -9,13 +9,14 @@ async function cancelBooking(event) {
     event.preventDefault();
     const button = event.currentTarget;
     const bookingId = button.getAttribute('data-booking-id');
+    const actionUrl = button.getAttribute('data-action-url');
 
     if (!confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
         return;
     }
 
     try {
-        const response = await fetch('../app/actions/bookings/cancel_booking_action.php', {
+        const response = await fetch(actionUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -22,19 +22,31 @@ if ($booking_id === false) {
 }
 
 $user_id = $_SESSION['user_id'];
+$is_admin = isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin';
 
 try {
-
     $con->beginTransaction();
 
-    // Verificar que la reserva pertenece al usuario
-    $stmt_verify = $con->prepare("SELECT id FROM bookings WHERE id = :booking_id AND user_id = :user_id AND estado = 'reservado'");
-    $stmt_verify->execute([':booking_id' => $booking_id, ':user_id' => $user_id]);
-    
-    if ($stmt_verify->rowCount() === 0) {
-        $con->rollBack();
-        echo json_encode(['success' => false, 'message' => 'No se pudo cancelar la reserva. Puede que ya esté cancelada, no exista o no te pertenezca.']);
-        exit;
+    // Si NO es admin, verificar que la reserva le pertenece
+    if (!$is_admin) {
+        $stmt_verify = $con->prepare("SELECT id FROM bookings WHERE id = :booking_id AND user_id = :user_id AND estado = 'reservado'");
+        $stmt_verify->execute([':booking_id' => $booking_id, ':user_id' => $user_id]);
+        
+        if ($stmt_verify->rowCount() === 0) {
+            $con->rollBack();
+            echo json_encode(['success' => false, 'message' => 'No se pudo cancelar la reserva. Puede que ya esté cancelada, no exista o no te pertenezca.']);
+            exit;
+        }
+    } else {
+        // Si es admin, solo verificar que exista y esté en estado 'reservado'
+        $stmt_verify = $con->prepare("SELECT id FROM bookings WHERE id = :booking_id AND estado = 'reservado'");
+        $stmt_verify->execute([':booking_id' => $booking_id]);
+        
+        if ($stmt_verify->rowCount() === 0) {
+            $con->rollBack();
+            echo json_encode(['success' => false, 'message' => 'No se pudo cancelar la reserva. Puede que ya esté cancelada o no exista.']);
+            exit;
+        }
     }
 
     // Actualizar el estado de la reserva a 'cancelado'
