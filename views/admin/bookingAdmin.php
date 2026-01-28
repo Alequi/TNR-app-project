@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__. '/../../app/helpers/auth.php';
+require_once __DIR__ . '/../../app/helpers/auth.php';
 require_once __DIR__ . '/../../config/conexion.php';
 $con = conectar();
 admin();
@@ -53,7 +53,7 @@ if (isset($_SESSION['success_message'])) {
             <!-- CONTENIDO COLAPSABLE -->
             <div class="collapse navbar-collapse" id="mainNavbar">
 
-         
+
                 <!--MENU PRINCIPAL VOLUNTARIO-->
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a href="AdminPanel.php" class="nav-link">Panel</a></li>
@@ -64,7 +64,7 @@ if (isset($_SESSION['success_message'])) {
                     <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="userColony.php" class="nav-link">Mi colonia</a></li>
                 </ul>
-           
+
 
                 <!-- BOTÓN PERFIL -->
                 <div class="d-flex align-items-center">
@@ -113,7 +113,7 @@ if (isset($_SESSION['success_message'])) {
         </nav>
     </div>
     <!-- End Breadcrumb -->
-         <!--MAIN CONTENT-->
+    <!--MAIN CONTENT-->
     <main class="container-xxl my-4 flex-grow-1 mt-3">
         <!-- Header -->
         <div class="row mb-4">
@@ -209,7 +209,7 @@ if (isset($_SESSION['success_message'])) {
                                         </td>
                                         <td class="text-center">
                                             <?php
-                                            $badge_class = match($booking['estado']) {
+                                            $badge_class = match ($booking['estado']) {
                                                 'reservado' => 'bg-warning text-dark',
                                                 'entregado_vet' => 'bg-info text-dark',
                                                 'listo_recoger' => 'bg-success',
@@ -217,8 +217,8 @@ if (isset($_SESSION['success_message'])) {
                                                 'cancelado' => 'bg-danger',
                                                 default => 'bg-secondary'
                                             };
-                                            
-                                            $estado_text = match($booking['estado']) {
+
+                                            $estado_text = match ($booking['estado']) {
                                                 'reservado' => 'Reservado',
                                                 'entregado_vet' => 'En Clínica',
                                                 'listo_recoger' => 'Listo',
@@ -227,14 +227,20 @@ if (isset($_SESSION['success_message'])) {
                                                 default => $booking['estado']
                                             };
                                             ?>
-                                            <span class="badge <?= $badge_class ?>">
-                                                <?= $estado_text ?>
-                                            </span>
+                                            <select class="form-select form-select-sm badge <?= $badge_class ?> changeStatusBtn"
+                                                style="width: auto; display: inline-block; border: none; padding: 0.5rem 2rem 0.5rem 0.5rem;"
+                                                data-booking-id="<?= htmlspecialchars($booking['id']) ?>">
+                                                <option value="reservado" <?= $booking['estado'] === 'reservado' ? 'selected' : '' ?>>Reservado</option>
+                                                <option value="entregado_vet" <?= $booking['estado'] === 'entregado_vet' ? 'selected' : '' ?>>En Clínica</option>
+                                                <option value="listo_recoger" <?= $booking['estado'] === 'listo_recoger' ? 'selected' : '' ?>>Listo</option>
+                                                <option value="recogido" <?= $booking['estado'] === 'recogido' ? 'selected' : '' ?>>Completado</option>
+                                                <option value="cancelado" <?= $booking['estado'] === 'cancelado' ? 'selected' : '' ?>>Cancelado</option>
+                                            </select>
                                         </td>
                                         <td class="text-center">
                                             <?php if ($booking['estado'] === 'reservado'): ?>
-                                                <button class="btn btn-sm btn-outline-danger cancelBookingBtn" 
-                                                        data-booking-id="<?= htmlspecialchars($booking['id']) ?>">
+                                                <button class="btn btn-sm btn-outline-danger cancelBookingBtn"
+                                                    data-booking-id="<?= htmlspecialchars($booking['id']) ?>">
                                                     <i class="bi bi-x-circle"></i> Cancelar
                                                 </button>
                                             <?php else: ?>
@@ -254,44 +260,44 @@ if (isset($_SESSION['success_message'])) {
 
         <!-- Resumen estadístico -->
         <?php if (!empty($all_bookings)): ?>
-        <div class="row mt-4">
-            <div class="col-md-3 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body text-center">
-                        <i class="bi bi-calendar-check text-primary fs-1"></i>
-                        <h3 class="mt-2 mb-0"><?= $pending_count ?></h3>
-                        <p class="text-muted mb-0">Pendientes</p>
+            <div class="row mt-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="bi bi-calendar-check text-primary fs-1"></i>
+                            <h3 class="mt-2 mb-0"><?= $pending_count ?></h3>
+                            <p class="text-muted mb-0">Pendientes</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="bi bi-hospital text-info fs-1"></i>
+                            <h3 class="mt-2 mb-0"><?= $in_clinic_count ?></h3>
+                            <p class="text-muted mb-0">En Clínica</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="bi bi-check-circle text-success fs-1"></i>
+                            <h3 class="mt-2 mb-0"><?= $completed_count ?></h3>
+                            <p class="text-muted mb-0">Completadas</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="bi bi-cat text-warning fs-1"></i>
+                            <h3 class="mt-2 mb-0"><?= $total_gatos ?></h3>
+                            <p class="text-muted mb-0">Total Gatos</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body text-center">
-                        <i class="bi bi-hospital text-info fs-1"></i>
-                        <h3 class="mt-2 mb-0"><?= $in_clinic_count ?></h3>
-                        <p class="text-muted mb-0">En Clínica</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body text-center">
-                        <i class="bi bi-check-circle text-success fs-1"></i>
-                        <h3 class="mt-2 mb-0"><?= $completed_count ?></h3>
-                        <p class="text-muted mb-0">Completadas</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body text-center">
-                        <i class="bi bi-cat text-warning fs-1"></i>
-                        <h3 class="mt-2 mb-0"><?= $total_gatos ?></h3>
-                        <p class="text-muted mb-0">Total Gatos</p>
-                    </div>
-                </div>
-            </div>
-        </div>
         <?php endif; ?>
 
     </main>
@@ -332,6 +338,7 @@ if (isset($_SESSION['success_message'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../public/assets/js/close-alerts.js"></script>
     <script src="../../public/assets/js/cancelBooking.js"></script>
+    <script src="../../public/assets/js/updateBooking.js"></script>
 </body>
-</html>
 
+</html>
