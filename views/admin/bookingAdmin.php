@@ -62,7 +62,7 @@ if (isset($_SESSION['success_message'])) {
                     <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="userBookings.php" class="nav-link active">Reservas</a></li>
                     <li class="nav-item"><a href="jaulasAdmin.php" class="nav-link">Jaulas</a></li>
-                    <li class="nav-item"><a href="userColony.php" class="nav-link">Mi colonia</a></li>
+                    <li class="nav-item"><a href="usersAdmin.php" class="nav-link">Usuarios</a></li>
                 </ul>
 
 
