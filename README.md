@@ -153,14 +153,126 @@ The entire schema uses **foreign keys**, **cascading rules**, and **normalizatio
 
 ---
 
-## Project Status
-- ✔ Database design finalized  
-- ✔ Entity relationship model and FKs implemented  
-- ✔  Full screenflow and UX/UI structure completed  
-- ⬜ Phase 2: Building frontend views  
-- ⬜ Phase 3: Implementing PHP backend logic  
+##  Project Status
+
+### ✅ Completed Modules
+
+#### 1. **Authentication System**
+- ✔ User login with role-based redirection
+- ✔ User registration with email validation
+- ✔ Password recovery system
+- ✔ Session management with `auth.php` helper
+- ✔ Role verification (`admin()`, `login()`, `isLoggedIn()`)
+
+#### 2. **Admin Panel**
+- ✔ Dashboard with campaign statistics
+- ✔ Real-time clinic capacity and occupancy
+- ✔ Volunteer, colony, and booking counters
+- ✔ Protected admin-only routes
+
+#### 3. **User Management (Admin)**
+- ✔ Complete CRUD operations
+- ✔ User listing with aggregated data (active bookings, borrowed cages)
+- ✔ Create new users with role assignment
+- ✔ Edit users (optional password change, colony assignment)
+- ✔ Activate/deactivate users
+- ✔ Filter and search capabilities
+- ✔ AJAX-based operations with JSON responses
+
+#### 4. **Cage Management (Admin)**
+- ✔ Complete cage inventory system
+- ✔ CRUD operations for cages
+- ✔ Cage types and clinic assignments
+- ✔ Advanced filtering (type, clinic, availability)
+- ✔ Transactional integrity with `clinic_cages` table
+- ✔ Real-time availability tracking
+
+#### 5. **Booking Management**
+- ✔ View all reservations (admin)
+- ✔ Booking statistics (pending, in clinic, completed)
+- ✔ Update and cancel bookings
+- ✔ Integration with shifts and clinics
+
+#### 6. **Security Implementation**
+- ✔ All admin pages protected with `admin()` check
+- ✔ All admin actions protected against unauthorized access
+- ✔ Statistics endpoints secured
+- ✔ Session validation on all protected routes
+- ✔ SQL injection prevention with prepared statements
+- ✔ Password hashing with `PASSWORD_BCRYPT`
+- ✔ Email uniqueness validation
+
+### 🚧 In Progress / Pending
+
+#### Phase 1: Core Features (Remaining)
+- ⬜ Campaign CRUD (admin)
+- ⬜ Clinic CRUD (admin)
+- ⬜ Colony CRUD (admin)
+- ⬜ Shift/turn management (admin)
+
+#### Phase 2: Volunteer Features
+- ⬜ Volunteer dashboard
+- ⬜ Create new bookings (volunteer)
+- ⬜ View own bookings (volunteer)
+- ⬜ Cancel own bookings (volunteer)
+- ⬜ Cage loan requests (volunteer)
+- ⬜ View own cage loans (volunteer)
+- ⬜ Profile management (volunteer)
+
+#### Phase 3: Advanced Features
+- ⬜ Reverse pickup rule automation
+- ⬜ Cage loan incident tracking
+- ⬜ Email notifications
+- ⬜ Reporting and analytics
+- ⬜ Export functionality (PDF/Excel)
+
+---
+
+##  Technical Implementation Details
+
+### Architecture
+- **Pattern:** MVC-inspired structure
+- **Frontend:** Bootstrap 5.3.0 + Vanilla JavaScript (ES6+)
+- **Backend:** PHP 8.0+ with PDO
+- **AJAX:** Fetch API with JSON request/response
+- **Modals:** Bootstrap modals for forms
+- **State Management:** Server-side sessions
+
+### Code Quality Standards
+- ✔ Prepared statements for all database queries
+- ✔ Transaction support for multi-table operations
+- ✔ Proper error handling with try-catch blocks
+- ✔ JSON responses for AJAX endpoints
+- ✔ Session status checks before `session_start()`
+- ✔ Input validation and sanitization
+- ✔ Optional field handling (colony_id, password updates)
+
+### File Structure
+```
+TNR-app-project/
+├── app/
+│   ├── actions/          # Backend endpoints
+│   │   ├── auth/         # Authentication actions
+│   │   ├── bookings/     # Booking management
+│   │   ├── clinics/      # Clinic operations
+│   │   ├── jaulas/       # Cage management
+│   │   └── user/         # User operations
+│   └── helpers/
+│       └── auth.php      # Authentication helper
+├── config/
+│   └── conexion.php      # Database connection
+├── public/
+│   ├── assets/
+│   │   └── js/           # JavaScript modules
+│   └── partials/         # Reusable components
+└── views/
+    ├── admin/            # Admin pages
+    └── ...               # Other views
+```
 
 ---
 
 ## 📝 Author
 Developed by **Alejandro Quiera**, 2nd year DAW student, as part of the **Intermodular Project**.
+
+**Last Updated:** January 2026
