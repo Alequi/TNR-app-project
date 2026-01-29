@@ -1,5 +1,18 @@
 <?php
 session_start();
+if (isset($_SESSION['error_mail'])) {
+    $error_mail = $_SESSION['error_mail'];
+    unset($_SESSION['error_mail']);
+}
+if (isset($_SESSION['error_general'])) {
+    $error_general = $_SESSION['error_general'];
+    unset($_SESSION['error_general']);
+}
+
+if (isset($_SESSION['registro_exitoso'])) {
+    $registro_exitoso = $_SESSION['registro_exitoso'];
+    unset($_SESSION['registro_exitoso']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +45,28 @@ session_start();
       <div class="mx-auto" style="max-width: 460px;">
         <div class="card shadow-sm border-0 ">
           <div class="card-body p-4 ">
+
+            <!-- ALERTAS -->
+            <?php if (isset($error_mail)): ?>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($error_mail) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <?php endif; ?>
+            <?php if (isset($error_general)): ?>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($error_general) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <?php endif; ?>
+            <?php if (isset($registro_exitoso)): ?>
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($registro_exitoso) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <?php endif; ?>
+            <!-- ALERTAS -->
+            
 
 
             <!--FORMULARIO -->
