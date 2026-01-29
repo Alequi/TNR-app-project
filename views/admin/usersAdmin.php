@@ -178,6 +178,11 @@ if (isset($_SESSION['success_message'])) {
                                                 <span class="badge bg-danger">
                                                     <i class="bi bi-shield-fill-check me-1"></i>Admin
                                                 </span>
+                                            
+                                            <?php elseif ($user['rol'] === 'gestor'): ?>
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="bi bi-shield-fill-check me-1"></i>Gestor
+                                                </span>    
                                             <?php else: ?>
                                                 <span class="badge bg-info text-dark">Voluntario</span>
                                             <?php endif; ?>
@@ -218,7 +223,18 @@ if (isset($_SESSION['success_message'])) {
                                             <?php endif; ?>
                                         </td>
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                            <button class="btn btn-sm btn-outline-primary me-1 editUserBtn" 
+                                                    title="Editar"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#editUserModal"
+                                                    data-user-id="<?= $user['id'] ?>"
+                                                    data-user-nombre="<?= htmlspecialchars($user['nombre']) ?>"
+                                                    data-user-apellido="<?= htmlspecialchars($user['apellido']) ?>"
+                                                    data-user-email="<?= htmlspecialchars($user['email']) ?>"
+                                                    data-user-telefono="<?= htmlspecialchars($user['telefono']) ?>"
+                                                    data-user-rol="<?= $user['rol'] ?>"
+                                                    data-user-colony="<?= $user['colony_id'] ?? '' ?>"
+                                                    data-user-activo="<?= $user['activo'] ?>">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                         </td>
@@ -231,6 +247,150 @@ if (isset($_SESSION['success_message'])) {
             </div>
         </div>
     </main>
+
+    <!-- Modal Nuevo Usuario -->
+    <div class="modal fade" id="newUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-plus-circle me-2"></i>Nuevo Usuario
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="newUserForm">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre" class="form-label">Nombre *</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="apellido" class="form-label">Apellido *</label>
+                                <input type="text" class="form-control" id="apellido" name="apellido" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <small class="text-muted">Debe ser único en el sistema</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pass" class="form-label">Contraseña *</label>
+                            <input type="password" class="form-control" id="pass" name="pass" required minlength="4">
+                            <small class="text-muted">Mínimo 4 caracteres</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label">Teléfono *</label>
+                            <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rol" class="form-label">Rol *</label>
+                            <select class="form-select" id="rol" name="rol" required>
+                                <option value="">Selecciona un rol</option>
+                                <option value="voluntario">Voluntario</option>
+                                <option value ="gestor">Gestor</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="colonySelectContainer">
+                            <label for="colony_id" class="form-label">Colonia</label>
+                            <select class="form-select" id="colony_id" name="colony_id">
+                                <option value="">Sin colonia asignada</option>
+                                <?php foreach ($colonies as $colony): ?>
+                                    <option value="<?= $colony['id'] ?>">
+                                        <?= htmlspecialchars($colony['code']) ?> - <?= htmlspecialchars($colony['nombre']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-2"></i>Guardar Usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Usuario -->
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">
+                        <i class="bi bi-pencil-square me-2"></i>Editar Usuario
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editUserForm">
+                    <input type="hidden" id="edit_user_id" name="user_id">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit_nombre" class="form-label">Nombre *</label>
+                                <input type="text" class="form-control" id="edit_nombre" name="nombre" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit_apellido" class="form-label">Apellido *</label>
+                                <input type="text" class="form-control" id="edit_apellido" name="apellido" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_email" class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="edit_email" name="email" required>
+                            <small class="text-muted">Debe ser único en el sistema</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_pass" class="form-label">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="edit_pass" name="password" minlength="4">
+                            <small class="text-muted">Déjalo vacío para mantener la actual. Mínimo 4 caracteres si cambias.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_telefono" class="form-label">Teléfono *</label>
+                            <input type="tel" class="form-control" id="edit_telefono" name="telefono" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_rol" class="form-label">Rol *</label>
+                            <select class="form-select" id="edit_rol" name="rol" required>
+                                <option value="">Selecciona un rol</option>
+                                <option value="voluntario">Voluntario</option>
+                                <option value="gestor">Gestor</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_colony_id" class="form-label">Colonia</label>
+                            <select class="form-select" id="edit_colony_id" name="colony_id">
+                                <option value="">Sin colonia asignada</option>
+                                <?php foreach ($colonies as $colony): ?>
+                                    <option value="<?= $colony['id'] ?>">
+                                        <?= htmlspecialchars($colony['code']) ?> - <?= htmlspecialchars($colony['nombre']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_activo" class="form-label">Estado *</label>
+                            <select class="form-select" id="edit_activo" name="activo" required>
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-warning text-dark">
+                            <i class="bi bi-save me-2"></i>Actualizar Usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- FOOTER -->
     <footer class="bg-dark text-light py-4 mt-5">
@@ -248,6 +408,8 @@ if (isset($_SESSION['success_message'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../public/assets/js/close-alerts.js"></script>
+    <script src="../../public/assets/js/userManagement.js"></script>
+    <script src="../../public/assets/js/modalEditUser.js"></script>
 </body>
 
 </html>

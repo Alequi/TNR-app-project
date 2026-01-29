@@ -41,3 +41,12 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $_SESSION['error_message'] = 'Error al cargar los usuarios: ' . $e->getMessage();
     $users = [];
 }
+
+// Obtener todas las colonias para el select del modal
+try {
+    $stmt_colonies = $con->prepare("SELECT id, code, nombre FROM colonies ORDER BY code");
+    $stmt_colonies->execute();
+    $colonies = $stmt_colonies->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $colonies = [];
+}
