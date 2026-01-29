@@ -682,13 +682,11 @@ location.reload();  // Refresh to show $_SESSION message
 **Developed by:** Alejandro Quiera  
 **Role:** 2nd Year DAW Student (Desarrollo de Aplicaciones Web)  
 **Project Type:** Intermodular Project (Proyecto Intermodular)  
-**Institution:** [Your School Name]  
+**Institution:** IES Severo Ochoa  
 **Academic Year:** 2025-2026
 
 ### Contact
 - 📧 Email: a.quivera1991@gmail.com
-- 💼 GitHub: [Your GitHub Profile]
-- 🌐 Organization: CES Gatos Elche
 
 ---
 
@@ -696,18 +694,10 @@ location.reload();  // Refresh to show $_SESSION message
 
 This project is developed for educational purposes as part of the DAW curriculum. All rights reserved by CES Gatos Elche for production use.
 
----
-
-## 🙏 Acknowledgments
-
-- **CES Gatos Elche** - For providing real-world requirements and use cases
-- **Bootstrap Team** - For the excellent UI framework
-- **DAW Faculty** - For guidance and support throughout development
-- **Open Source Community** - For tools and inspiration
 
 ---
 
 **Last Updated:** January 29, 2026  
 **Version:** 1.0.0 (Beta)  
 **Database Version:** 1.0  
-**Project Status:** 🚧 In Active Development (65% Complete)
+**Project Status:** 🚧 In Active Development (80% Complete)
