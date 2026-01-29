@@ -61,7 +61,7 @@ if (isset($_SESSION['success_message'])) {
                     <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
                     <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="userBookings.php" class="nav-link active">Reservas</a></li>
-                    <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
+                    <li class="nav-item"><a href="jaulasAdmin.php" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="userColony.php" class="nav-link">Mi colonia</a></li>
                 </ul>
 
@@ -76,7 +76,7 @@ if (isset($_SESSION['success_message'])) {
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                             <li>
-                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="userProfile.php">
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="../userProfile.php">
                                     <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta
                                 </a>
                             </li>
@@ -292,9 +292,9 @@ if (isset($_SESSION['success_message'])) {
                 <div class="col-md-3 mb-3">
                     <div class="card border-0 shadow-sm">
                         <div class="card-body text-center">
-                            <i class="bi bi-cat text-warning fs-1"></i>
+                            <i class="bi bi-cat text-warning fs-1">🐈</i>
                             <h3 class="mt-2 mb-0"><?= $total_gatos ?></h3>
-                            <p class="text-muted mb-0">Total Gatos</p>
+                            <p class="text-muted mb-0"> Total Gatos</p>
                         </div>
                     </div>
                 </div>

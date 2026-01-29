@@ -54,7 +54,7 @@ admin();
                     <li class="nav-item"><a href="" class="nav-link">Colonias</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="bookingAdmin.php" class="nav-link">Reservas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Jaulas</a></li>
+                    <li class="nav-item"><a href="jaulasAdmin.php" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Usuarios</a></li>
                 </ul>
 
@@ -70,7 +70,7 @@ admin();
 
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                             <li>
-                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="userProfile.php">
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="../userProfile.php">
                                     <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta</a>
                             </li>
                             <li>
@@ -82,7 +82,7 @@ admin();
 
                     <!-- Perfil MÓVIL: aparece dentro del menú colapsado -->
                     <div class="d-lg-none ms-2">
-                        <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
+                        <a href="../userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
                             <i class="bi bi-person-circle"></i> Perfil</a>
 
                         <a href="../../app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
