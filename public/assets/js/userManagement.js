@@ -2,8 +2,50 @@ document.addEventListener('DOMContentLoaded', () => {
 const newUserForm = document.getElementById('newUserForm');
 const newUserModal = document.getElementById('newUserModal');
 const editUserForm = document.getElementById('editUserForm');
+const filterColony = document.getElementById('filterColony');
+const searchName = document.getElementById('searchName');
+const clearFiltersBtn = document.getElementById('clearFilters');
 
+//Filtrar tabla de usuarios
+function filterTable() {
+    const colonyValue = filterColony.value;
+    const nameValue = searchName.value.toLowerCase();
+    const rows = document.querySelectorAll('#usersTable tbody tr');
 
+    rows.forEach(row => {
+        const rowColony = row.getAttribute('data-colony');
+        const rowName = row.getAttribute('data-name');
+
+        // Si la fila no tiene atributos data (ej: mensaje "No hay usuarios"), ignorarla
+        if (rowName === null) {
+            return;
+        }
+
+        const colonyMatch = colonyValue === '' || rowColony === colonyValue;
+        const nameMatch = rowName.toLowerCase().includes(nameValue);
+
+        if (colonyMatch && nameMatch) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+//Event listeners para filtros
+if (filterColony) {
+    filterColony.addEventListener('change', filterTable);
+}
+if (searchName) {
+    searchName.addEventListener('input', filterTable);
+}
+if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener('click', () => {
+        filterColony.value = '';
+        searchName.value = '';
+        filterTable();
+    }
+);
+}
 
 
 //Enviar formulario de edición de usuario

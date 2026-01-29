@@ -22,6 +22,7 @@ $sql_users = "
         u.rol,
         u.telefono,
         u.activo,
+        u.colony_id,
         col.nombre AS colonia_nombre,
         col.code AS colonia_code,
         COUNT(DISTINCT CASE WHEN b.estado IN ('reservado', 'entregado_vet', 'listo_recoger') THEN b.id END) AS reservas_activas,
@@ -30,7 +31,7 @@ $sql_users = "
     LEFT JOIN colonies col ON u.colony_id = col.id
     LEFT JOIN bookings b ON u.id = b.user_id
     LEFT JOIN cage_loans cl ON u.id = cl.user_id
-    GROUP BY u.id, u.nombre, u.apellido, u.email, u.rol, u.telefono, u.activo, col.nombre, col.code
+    GROUP BY u.id, u.nombre, u.apellido, u.email, u.rol, u.telefono, u.activo, u.colony_id, col.nombre, col.code
     ORDER BY u.nombre
 ";
 $stmt = $con->prepare($sql_users);

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../app/helpers/auth.php';
 require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../app/actions/user/get_users_action.php';
 $con = conectar();
 admin();
 
@@ -131,6 +132,35 @@ if (isset($_SESSION['success_message'])) {
             </div>
         <?php endif; ?>
 
+        <!-- End mensajes -->
+        <!---- Filtros y búsqueda -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Filtrar por colonia</label>
+                        <select id="filterColony" class="form-select">
+                            <option value="">Todas las colonias</option>
+                            <?php foreach ($colonies as $colony): ?>
+                                <option value="<?= $colony['id'] ?>"><?= htmlspecialchars($colony['nombre']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Buscar por nombre</label>
+                        <input type="text" id="searchName" class="form-control" placeholder="Nombre del usuario">
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button id="clearFilters" class="btn btn-outline-secondary w-100">
+                            <i class="bi bi-x-circle me-2"></i>Limpiar filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---- End Filtros y búsqueda -->
+
+
         <!-- Tabla de usuarios -->
         <div class="card shadow-sm border-0">
             <div class="card-header bg-primary text-white">
@@ -168,7 +198,7 @@ if (isset($_SESSION['success_message'])) {
                                 </tr>
                             <?php else: ?>
                                 <?php foreach ($users as $user): ?>
-                                    <tr>
+                                    <tr data-name="<?= htmlspecialchars($user['nombre'] . ' ' . $user['apellido']) ?>" data-colony="<?= $user['colony_id'] ?? '' ?>">
                                         <td class="fw-bold">#<?= htmlspecialchars($user['id']) ?></td>
                                         <td><?= htmlspecialchars($user['nombre'] . ' ' . $user['apellido']) ?></td>
                                         <td><?= htmlspecialchars($user['email']) ?></td>
