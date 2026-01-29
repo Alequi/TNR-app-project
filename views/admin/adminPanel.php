@@ -158,7 +158,7 @@ admin();
                         </div>
 
                         <div class="mt-auto">
-                            <a href="jaulas.php" class="btn btn-success w-100">
+                            <a href="jaulasAdmin.php" class="btn btn-success w-100">
                                 Ver Jaulas <i class="bi bi-arrow-right-circle ms-2"></i>
                             </a>
                         </div>
@@ -212,8 +212,8 @@ admin();
 
                         </div>
                         <div class="mt-auto">
-                            <a href="#" class="btn btn-primary w-100">
-                                Ver Clínicas <i class="bi bi-arrow-right-circle ms-2"></i>
+                            <a href="reservasAdmin.php" class="btn btn-primary w-100">
+                                Ver reservas <i class="bi bi-arrow-right-circle ms-2"></i>
                             </a>
                         </div>
                     </div>
