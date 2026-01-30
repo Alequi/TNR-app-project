@@ -30,7 +30,7 @@ async function newBooking(event) {
         const result = await response.json();
 
         if (result.success) {
-            location.reload(); // Recargar para actualizar la tabla y mostrar mensaje de éxito
+            window.location.href = 'userBookings.php';
         } else {
             alert('Error: ' + result.message);
         }

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../app/helpers/auth.php';
 require_once __DIR__ . '/../app/actions/bookings/bookings_stats_action.php';
+require_once __DIR__ . '/../app/actions/bookings/user_bookings_action.php';
 isLoggedIn();
 
 $error = null;
@@ -76,7 +77,7 @@ if (isset($_SESSION['success_message'])) {
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="/app/actions/auth/logout_action.php">
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="../app/actions/auth/logout_action.php">
                                     <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión
                                 </a>
                             </li>
@@ -88,7 +89,7 @@ if (isset($_SESSION['success_message'])) {
                         <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
                             <i class="bi bi-person-circle"></i> Perfil
                         </a>
-                        <a href="/app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
+                        <a href="../app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
                             Cerrar sesión<i class="bi bi-box-arrow-right"></i>
                         </a>
                     </div>
