@@ -253,7 +253,7 @@ admin();
             <div class="col-md-3 mb-3">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body text-center">
-                        <i class="bi bi-cat text-warning fs-1"></i>
+                        <i class="bi bi-cat text-warning fs-1">🐈</i>
                         <h3 class="mt-2 mb-0"><?php echo htmlspecialchars($total_gatos_mes); ?></h3>
                         <p class="text-muted mb-0">Gatos castrados este mes</p>
                     </div>
@@ -281,7 +281,6 @@ admin();
                                 <th><i class="bi bi-geo-alt-fill text-primary me-1"></i>Colonia</th>
                                 <th><i class="bi bi-person text-primary me-1"></i>Voluntario</th>
                                 <th class="text-center"><i class="bi bi-cat text-primary me-1"></i>Gatos</th>
-                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -300,11 +299,6 @@ admin();
                                     <td><?php echo htmlspecialchars($reserva['colony_name']); ?></td>
                                     <td><?php echo htmlspecialchars($reserva['volunteer_name']); ?></td>
                                     <td class="text-center"><span class="badge bg-info text-dark fs-6"><?php echo htmlspecialchars($reserva['gatos']); ?></span></td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                    </td>
                                 </tr>
                             <?php endforeach; ?>
 
