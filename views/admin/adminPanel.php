@@ -52,7 +52,7 @@ admin();
                     <li class="nav-item"><a href="campaignsAdmin.php" class="nav-link">Campañas</a></li>
                     <li class="nav-item"><a href="clinicsAdmin.php" class="nav-link">Clínicas</a></li>
                     <li class="nav-item"><a href="coloniesAdmin.php" class="nav-link">Colonias</a></li>
-                    <li class="nav-item"><a href="turnsAdmin.php" class="nav-link">Turnos</a></li>
+                    <li class="nav-item"><a href="shiftsAdmin.php" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="bookingAdmin.php" class="nav-link">Reservas</a></li>
                     <li class="nav-item"><a href="jaulasAdmin.php" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="usersAdmin.php" class="nav-link">Usuarios</a></li>
