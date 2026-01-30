@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $con->beginTransaction();
 
         // Verificar disponibilidad del turno
-        $stmt_check = $con->prepare("SELECT capacidad, ocupados FROM shifts WHERE id = :shift_id");
+        $stmt_check = $con->prepare("SELECT capacidad, ocupados, fecha, turno FROM shifts WHERE id = :shift_id");
         $stmt_check->execute([':shift_id' => $shift_id]);
         $shift = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
@@ -53,6 +53,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['success' => false, 'message' => 'No hay suficientes plazas disponibles.']);
             exit;
         }
+
+        // Calcular fechas y turnos de drop y pick
+        $fecha_drop = $shift['fecha'];
+        $turno_drop = $shift['turno'];
+        
+        // Calcular fecha de recogida (día siguiente)
+        if ($turno_drop === 'M') {
+            // Si el turno de entrega es mañana, la recogida será en la tarde del mismo día
+            $fecha_pick = $fecha_drop;
+            $turno_pick = 'T';
+        } else {
+            // Si el turno de entrega es tarde, la recogida será en la mañana del día siguiente
+            $fecha_pick = date('Y-m-d', strtotime($fecha_drop . ' +1 day'));
+            $turno_pick = 'M';
+        }
+        
 
         // Verificar si ya existe una reserva activa para este usuario en este turno
         $stmt_duplicate = $con->prepare("SELECT id FROM bookings WHERE user_id = :user_id AND shift_id = :shift_id AND estado = 'reservado'");
@@ -75,9 +91,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($cancelled_booking) {
             // Reactivar la reserva existente
-            $stmt_reactivate = $con->prepare("UPDATE bookings SET estado = 'reservado', gatos_count = :gatos_count, created_at = NOW() WHERE id = :id");
+            $stmt_reactivate = $con->prepare("UPDATE bookings SET estado = 'reservado', gatos_count = :gatos_count, fecha_drop = :fecha_drop, turno_drop = :turno_drop, fecha_pick = :fecha_pick, turno_pick = :turno_pick, created_at = NOW() WHERE id = :id");
             $stmt_reactivate->execute([
                 ':gatos_count' => $numero_gatos,
+                ':fecha_drop' => $fecha_drop,
+                ':turno_drop' => $turno_drop,
+                ':fecha_pick' => $fecha_pick,
+                ':turno_pick' => $turno_pick,
                 ':id' => $cancelled_booking['id']
             ]);
             
@@ -89,13 +109,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         } else {
             // Insertar nueva reserva
-            $stmt_insert = $con->prepare("INSERT INTO bookings (user_id, shift_id, colony_id, gatos_count, estado, created_at) 
-                                           VALUES (:user_id, :shift_id, :colony_id, :gatos_count, 'reservado', NOW())");
+            $stmt_insert = $con->prepare("INSERT INTO bookings (user_id, shift_id, colony_id, gatos_count, fecha_drop, turno_drop, fecha_pick, turno_pick, estado, created_at) 
+                                           VALUES (:user_id, :shift_id, :colony_id, :gatos_count, :fecha_drop, :turno_drop, :fecha_pick, :turno_pick, 'reservado', NOW())");
             $stmt_insert->execute([
                 ':user_id' => $user_id,
                 ':shift_id' => $shift_id,
                 ':colony_id' => $colony_id,
-                ':gatos_count' => $numero_gatos
+                ':gatos_count' => $numero_gatos,
+                ':fecha_drop' => $fecha_drop,
+                ':turno_drop' => $turno_drop,
+                ':fecha_pick' => $fecha_pick,
+                ':turno_pick' => $turno_pick
             ]);
             
             // Actualizar ocupados en shifts
@@ -112,7 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (Exception $e) {
         $con->rollBack();
-        echo json_encode(['success' => false, 'message' => 'Error al procesar la reserva: ' . $e->getMessage()]);
+        error_log('Error en new_booking_action.php: ' . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Error al procesar la reserva. Por favor, inténtalo de nuevo.']);
         exit;
     }
 }
