@@ -48,7 +48,7 @@ if (isset($_SESSION['success_message'])) {
                     <li class="nav-item"><a href="AdminPanel.php" class="nav-link">Panel</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
+                    <li class="nav-item"><a href="shiftsAdmin.php" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="bookingAdmin.php" class="nav-link">Reservas</a></li>
                     <li class="nav-item"><a href="jaulasAdmin.php" class="nav-link active">Jaulas</a></li>
                     <li class="nav-item"><a href="usersAdmin.php" class="nav-link">Usuarios</a></li>
