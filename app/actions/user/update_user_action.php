@@ -57,7 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try{
+        // Iniciar transacción para mantener consistencia
+        $con->beginTransaction();
 
+        // Actualizar datos del usuario
         if ($password_hash) {
             $stmt = $con->prepare("UPDATE users SET nombre = :nombre, apellido = :apellido, email = :email, telefono = :telefono, rol = :rol, colony_id = :colony_id, activo = :activo, pass = :pass WHERE id = :user_id");
             $stmt->execute([
@@ -84,10 +87,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':user_id' => $user_id
             ]);
         }
+
+        // Gestión de la relación gestor-colonia
+        if ($rol === 'gestor' && $colony_id) {
+            // Limpiar gestor_id de todas las colonias que tenía este usuario
+            $stmt_clear = $con->prepare("UPDATE colonies SET gestor_id = NULL WHERE gestor_id = :user_id");
+            $stmt_clear->execute([':user_id' => $user_id]);
+
+            // Asignar este usuario como gestor de la nueva colonia
+            $stmt_assign = $con->prepare("UPDATE colonies SET gestor_id = :user_id WHERE id = :colony_id");
+            $stmt_assign->execute([':user_id' => $user_id, ':colony_id' => $colony_id]);
+        } else {
+            // Si el rol NO es gestor o no hay colonia asignada, limpiar cualquier asignación previa
+            $stmt_clear = $con->prepare("UPDATE colonies SET gestor_id = NULL WHERE gestor_id = :user_id");
+            $stmt_clear->execute([':user_id' => $user_id]);
+        }
+
+        
+        $con->commit();
         $_SESSION['success_message'] = 'Usuario actualizado exitosamente.';
         echo json_encode(['success' => true, 'message' => 'Usuario actualizado exitosamente.']);
     } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => 'Error al actualizar el usuario: ' . $e->getMessage()]);
+        $con->rollBack();
+        error_log('Error al actualizar usuario: ' . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Error al actualizar el usuario. Por favor, inténtalo de nuevo.']);
         exit;
     }
 }
