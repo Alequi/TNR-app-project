@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../app/helpers/auth.php';
 require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../app/actions/shifts/shifts_action.php';
 
 admin();
 $con = conectar();
@@ -15,50 +16,6 @@ if (isset($_SESSION['error_message'])) {
 if (isset($_SESSION['success_message'])) {
     $success = $_SESSION['success_message'];
     unset($_SESSION['success_message']);
-}
-
-// Obtener clínicas
-try {
-    $stmt_clinics = $con->prepare("SELECT id, nombre, capacidad_ma, capacidad_ta FROM clinics ORDER BY nombre");
-    $stmt_clinics->execute();
-    $clinics = $stmt_clinics->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $clinics = [];
-}
-
-// Obtener campañas activas
-try {
-    $stmt_campaigns = $con->prepare("SELECT id, nombre FROM campaigns WHERE activa = 1 ORDER BY fecha_inicio DESC");
-    $stmt_campaigns->execute();
-    $campaigns = $stmt_campaigns->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $campaigns = [];
-}
-
-// Obtener turnos
-try {
-    $sql_shifts = "
-        SELECT 
-            s.id,
-            s.fecha,
-            s.turno,
-            s.capacidad,
-            s.ocupados,
-            c.nombre AS clinic_nombre,
-            c.id AS clinic_id,
-            camp.nombre AS campaign_nombre,
-            camp.id AS campaign_id
-        FROM shifts s
-        INNER JOIN clinics c ON s.clinic_id = c.id
-        INNER JOIN campaigns camp ON s.campaign_id = camp.id
-        ORDER BY s.fecha DESC, c.nombre, s.turno
-    ";
-    $stmt = $con->prepare($sql_shifts);
-    $stmt->execute();
-    $shifts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $_SESSION['error_message'] = 'Error al cargar los turnos: ' . $e->getMessage();
-    $shifts = [];
 }
 ?>
 
@@ -89,26 +46,39 @@ try {
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a href="AdminPanel.php" class="nav-link">Panel</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Jaulas</a></li>
+                    <li class="nav-item"><a href="campaignsAdmin.php" class="nav-link">Campañas</a></li>
+                    <li class="nav-item"><a href="clinicsAdmin.php" class="nav-link">Clínicas</a></li>
+                    <li class="nav-item"><a href="animalsAdmin.php" class="nav-link">Colonias</a></li>
+                    <li class="nav-item"><a href="shiftsAdmin.php" class="nav-link">Turnos</a></li>
+                    <li class="nav-item"><a href="bookingAdmin.php" class="nav-link">Reservas</a></li>
+                    <li class="nav-item"><a href="jaulasAdmin.php" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="usersAdmin.php" class="nav-link">Usuarios</a></li>
                 </ul>
                 <div class="d-flex align-items-center">
-                    <div class="dropdown">
-                        <button class="btn btn-link text-dark text-decoration-none dropdown-toggle d-flex align-items-center" 
-                                data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle fs-4 me-2"></i>
-                            <span class="fw-bold"><?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Usuario'); ?></span>
+                    <div class="dropdown d-none d-lg-block">
+                        <button class="btn btn-primary d-flex gap-2" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle fs-6"></i>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="../userProfile.php">Mi perfil</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="../../app/actions/auth/logout_action.php">
-                                Cerrar sesión<i class="bi bi-box-arrow-right"></i>
-                            </a></li>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                            <li>
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="../userProfile.php">
+                                    <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="../../app/actions/auth/logout_action.php">
+                                    <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión
+                                </a>
+                            </li>
                         </ul>
+                    </div>
+                    <div class="d-lg-none ms-2">
+                        <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-person-circle"></i> Perfil
+                        </a>
+                        <a href="../../app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
+                            Cerrar sesión<i class="bi bi-box-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -217,7 +187,6 @@ try {
                                 <th><i class="bi bi-megaphone text-primary me-1"></i>Campaña</th>
                                 <th class="text-center"><i class="bi bi-people text-primary me-1"></i>Capacidad</th>
                                 <th class="text-center"><i class="bi bi-check-circle text-primary me-1"></i>Ocupados</th>
-                                <th class="text-center"><i class="bi bi-percent text-primary me-1"></i>Ocupación</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -234,10 +203,7 @@ try {
                                 </tr>
                             <?php else: ?>
                                 <?php foreach ($shifts as $shift): ?>
-                                    <?php
-                                    $ocupacion = $shift['capacidad'] > 0 ? round(($shift['ocupados'] / $shift['capacidad']) * 100) : 0;
-                                    $badgeClass = $ocupacion >= 100 ? 'bg-danger' : ($ocupacion >= 75 ? 'bg-warning text-dark' : 'bg-success');
-                                    ?>
+                                
                                     <tr data-clinic="<?= $shift['clinic_id'] ?>" 
                                         data-turno="<?= $shift['turno'] ?>" 
                                         data-fecha="<?= $shift['fecha'] ?>">
@@ -258,19 +224,9 @@ try {
                                         <td><span class="badge bg-secondary"><?= htmlspecialchars($shift['campaign_nombre']) ?></span></td>
                                         <td class="text-center fw-bold"><?= $shift['capacidad'] ?></td>
                                         <td class="text-center"><?= $shift['ocupados'] ?></td>
+
                                         <td class="text-center">
-                                            <span class="badge <?= $badgeClass ?>">
-                                                <?= $ocupacion ?>%
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            <button class="btn btn-sm btn-outline-primary me-1 edit-shift-btn" 
-                                                    data-shift-id="<?= $shift['id'] ?>"
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#editShiftModal"
-                                                    title="Editar turno">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
+                                        
                                             <button class="btn btn-sm btn-outline-danger delete-shift-btn" 
                                                     data-shift-id="<?= $shift['id'] ?>"
                                                     title="Eliminar turno"
@@ -335,7 +291,7 @@ try {
                             <label for="newFecha" class="form-label fw-bold">
                                 Fecha <span class="text-danger">*</span>
                             </label>
-                            <input type="date" class="form-control" id="newFecha" name="fecha" required>
+                            <input type="date" class="form-control" id="newFecha" name="fecha"   min="<?= date('Y-m-d') ?>" required>
                         </div>
 
                         <div class="mb-3">
@@ -351,11 +307,13 @@ try {
 
                         <div class="mb-3">
                             <label for="newCapacidad" class="form-label fw-bold">
-                                Capacidad <span class="text-danger">*</span>
+                                Capacidad
                             </label>
-                            <input type="number" class="form-control" id="newCapacidad" name="capacidad" 
-                                   min="1" required>
-                            <div class="form-text">Se autocompletará con la capacidad de la clínica seleccionada</div>
+                            <input type="number" class="form-control bg-light" id="newCapacidad" name="capacidad" 
+                                   readonly required tabindex="-1" 
+                                   placeholder=" La capacidad se asigna automaticamente"
+                                   style="pointer-events: none; -moz: textfield;">
+                            <div class="form-text">La capacidad se asigna automáticamente según la clínica y turno seleccionados</div>
                         </div>
 
                         <div class="alert alert-info">
@@ -377,107 +335,14 @@ try {
     </div>
     <!-- End Modal Nuevo Turno -->
 
-    <!-- Modal Editar Turno -->
-    <div class="modal fade" id="editShiftModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-warning text-dark">
-                    <h5 class="modal-title">
-                        <i class="bi bi-pencil me-2"></i>Editar Turno
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editShiftForm">
-                        <input type="hidden" id="editShiftId" name="shift_id">
-                        
-                        <div class="mb-3">
-                            <label for="editClinic" class="form-label fw-bold">
-                                Clínica <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-select" id="editClinic" name="clinic_id" required>
-                                <option value="">Selecciona una clínica</option>
-                                <?php foreach ($clinics as $clinic): ?>
-                                    <option value="<?= $clinic['id'] ?>" 
-                                            data-cap-ma="<?= $clinic['capacidad_ma'] ?>" 
-                                            data-cap-ta="<?= $clinic['capacidad_ta'] ?>">
-                                        <?= htmlspecialchars($clinic['nombre']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editCampaign" class="form-label fw-bold">
-                                Campaña <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-select" id="editCampaign" name="campaign_id" required>
-                                <option value="">Selecciona una campaña</option>
-                                <?php foreach ($campaigns as $campaign): ?>
-                                    <option value="<?= $campaign['id'] ?>">
-                                        <?= htmlspecialchars($campaign['nombre']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editFecha" class="form-label fw-bold">
-                                Fecha <span class="text-danger">*</span>
-                            </label>
-                            <input type="date" class="form-control" id="editFecha" name="fecha" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editTurno" class="form-label fw-bold">
-                                Turno <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-select" id="editTurno" name="turno" required>
-                                <option value="">Selecciona un turno</option>
-                                <option value="M">Mañana</option>
-                                <option value="T">Tarde</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editCapacidad" class="form-label fw-bold">
-                                Capacidad <span class="text-danger">*</span>
-                            </label>
-                            <input type="number" class="form-control" id="editCapacidad" name="capacidad" 
-                                   min="1" required>
-                            <div class="form-text">No puede ser menor que el número de ocupados actuales</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Ocupados actuales</label>
-                            <input type="text" class="form-control" id="editOcupados" disabled>
-                        </div>
-
-                        <div class="alert alert-warning">
-                            <i class="bi bi-exclamation-triangle me-2"></i>
-                            Ten cuidado al editar turnos que ya tienen reservas
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle me-1"></i>Cancelar
-                    </button>
-                    <button type="submit" form="editShiftForm" class="btn btn-warning">
-                        <i class="bi bi-check-circle me-1"></i>Guardar Cambios
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal Editar Turno -->
-
+   
     <!-- Footer -->
     <?php require_once __DIR__ . '/../../public/partials/footer.php'; ?>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../public/assets/js/shiftsManagement.js"></script>
+    <script src="../../public/assets/js/close-alerts.js"></script>
 </body>
 
 </html>
