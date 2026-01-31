@@ -19,12 +19,13 @@ try {
                     c.nombre,
                     c.zona, 
                     c.gestor_id,
+                    c.activa,
                     gestor.nombre AS gestor_nombre,
                     COUNT(DISTINCT voluntarios.id) AS num_voluntarios
                     FROM colonies c
                     LEFT JOIN users gestor ON c.gestor_id = gestor.id
                     LEFT JOIN users voluntarios ON c.id = voluntarios.colony_id
-                    GROUP BY c.id, c.code, c.nombre, c.zona, c.gestor_id, gestor.nombre
+                    GROUP BY c.id, c.code, c.nombre, c.zona, c.gestor_id, c.activa, gestor.nombre
                     ORDER BY c.nombre";
     $stmt = $con->prepare($sql_colony);
     $stmt->execute();
@@ -37,11 +38,11 @@ try {
 
 
 // Obtener gestores para el dropdown de coloniesAdmin.php
-$stmt_gestores = $con->prepare("SELECT id, nombre, apellido FROM users WHERE rol IN ('gestor', 'admin') ORDER BY nombre");
+$stmt_gestores = $con->prepare("SELECT id, nombre, apellido FROM users WHERE rol IN ('gestor', 'admin') AND activo = 1 ORDER BY nombre");
 $stmt_gestores->execute();
 $gestores = $stmt_gestores->fetchAll(PDO::FETCH_ASSOC);
 
-//Obtener voluntarios  para asignar colonia
-$stmt_voluntarios = $con->prepare("SELECT id, nombre, apellido FROM users  ORDER BY nombre");
+//Obtener voluntarios para asignar colonia
+$stmt_voluntarios = $con->prepare("SELECT id, nombre, apellido FROM users WHERE activo = 1 ORDER BY nombre");
 $stmt_voluntarios->execute();
 $voluntarios = $stmt_voluntarios->fetchAll(PDO::FETCH_ASSOC);

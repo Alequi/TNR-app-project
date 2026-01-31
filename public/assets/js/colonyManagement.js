@@ -117,4 +117,72 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    // Desactivar colonia (baja lógica)
+    const deactivateButtons = document.querySelectorAll('.deactivate-colony-btn');
+    
+    deactivateButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const colonyId = this.getAttribute('data-colony-id');
+            const colonyName = this.getAttribute('data-colony-name');
+            
+            if (!confirm(`¿Estás seguro de que deseas desactivar la colonia "${colonyName}"?\n\nLos voluntarios serán desasignados automáticamente.`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('../../app/actions/colonies/deactivate_colony_action.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: colonyId })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error al desactivar la colonia: ' + error.message);
+            }
+        });
+    });
+
+    // Activar colonia
+    const activateButtons = document.querySelectorAll('.activate-colony-btn');
+    
+    activateButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const colonyId = this.getAttribute('data-colony-id');
+            const colonyName = this.getAttribute('data-colony-name');
+            
+            if (!confirm(`¿Estás seguro de que deseas activar la colonia "${colonyName}"?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('../../app/actions/colonies/activate_colony_action.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: colonyId })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error al activar la colonia: ' + error.message);
+            }
+        });
+    });
+
 })

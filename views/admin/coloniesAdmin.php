@@ -162,6 +162,7 @@ if (isset($_SESSION['success_message'])) {
                                 <th><i class="bi bi-upc text-primary me-1"></i>Código</th>
                                 <th><i class="bi bi-geo-alt text-primary me-1"></i>Nombre</th>
                                 <th><i class="bi bi-map text-primary me-1"></i>Zona</th>
+                                <th><i class="bi bi-info-circle text-primary me-1"></i>Estado actual</th>
                                 <th><i class="bi bi-person-badge text-primary me-1"></i>Gestor</th>
                                 <th><i class="bi bi-people text-primary me-1"></i>Voluntarios</th>
                                 <th class="text-center">Acciones</th>
@@ -170,7 +171,7 @@ if (isset($_SESSION['success_message'])) {
                         <tbody>
                             <?php if (empty($colonies)): ?>
                                 <tr>
-                                    <td colspan="6" class="text-center py-5">
+                                    <td colspan="8" class="text-center py-5">
                                         <div class="text-muted">
                                             <i class="bi bi-inbox fs-1 d-block mb-3"></i>
                                             <h5>No hay colonias registradas</h5>
@@ -188,6 +189,17 @@ if (isset($_SESSION['success_message'])) {
                                         </td>
                                         <td><?= htmlspecialchars($colony['nombre']) ?></td>
                                         <td><?= htmlspecialchars($colony['zona']) ?></td>
+                                        <td class="text-center">
+                                            <?php if ($colony['activa']): ?>
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-check-circle me-1"></i>Activa
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="badge bg-secondary">
+                                                    <i class="bi bi-x-circle me-1"></i>Inactiva
+                                                </span>
+                                            <?php endif; ?>
+                                        </td>
                                         <td>
                                             <?php if ($colony['gestor_id']): ?>
                                                 <div class="d-flex align-items-center gap-2">
@@ -222,11 +234,21 @@ if (isset($_SESSION['success_message'])) {
                                                     title="Editar colonia">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger delete-colony-btn" 
+                                            <?php if ($colony['activa']): ?>
+                                            <button class="btn btn-sm btn-outline-danger deactivate-colony-btn" 
                                                     data-colony-id="<?= $colony['id'] ?>"
-                                                    title="Eliminar colonia">
-                                                <i class="bi bi-trash"></i>
+                                                    data-colony-name="<?= htmlspecialchars($colony['nombre']) ?>"
+                                                    title="Desactivar colonia">
+                                                <i class="bi bi-archive"></i>
                                             </button>
+                                            <?php else: ?>
+                                            <button class="btn btn-sm btn-outline-success activate-colony-btn" 
+                                                    data-colony-id="<?= $colony['id'] ?>"
+                                                    data-colony-name="<?= htmlspecialchars($colony['nombre']) ?>"
+                                                    title="Activar colonia">
+                                                <i class="bi bi-check-circle"></i>
+                                            </button>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
