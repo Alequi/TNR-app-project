@@ -5,6 +5,8 @@ require_once __DIR__ . '/../app/helpers/auth.php';
 require_once __DIR__ . '/../app/actions/jaulas/jaulas_action.php';
 require_once __DIR__ . '/../app/actions/user/user_action.php';
 require_once __DIR__ . '/../app/actions/bookings/user_bookings_action.php';
+require_once __DIR__ . '/../app/actions/campaign_stats_action.php';
+
 login();
 isLoggedIn()
 ?>
@@ -47,8 +49,7 @@ isLoggedIn()
 
                  <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a href="panel.php" class="nav-link active">Panel</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
+                    <li class="nav-item"><a href="clinics.php" class="nav-link">Clínicas</a></li>
                     <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="userBookings.php" class="nav-link">Mis reservas</a></li>
                     <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
@@ -111,8 +112,25 @@ isLoggedIn()
     
 <div class="container-xxl my-3 flex-grow-1">
         <div class="text-center mb-4">
-            <h3 class="mb-2 fw-bold">Este es tu resumen, <?php echo $_SESSION['nombre']; ?></h3>
+            <h3 class="mb-2 fw-bold">Este es tu resumen, <?php echo $_SESSION['nombre']; ?>🐱</h3>
             <p class="text-muted">Sigue y gestiona tus reservas de turnos y prestamos de jaulas</p>
+        </div>
+
+         <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary bg-opacity-10 p-3 me-3 rounded">
+                        <i class="bi bi-calendar-event text-primary fs-3"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">Campaña activa: <?php echo htmlspecialchars($nombre_campaign_active); ?></h5>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-calendar-range me-1"></i>
+                            <?php echo htmlspecialchars($fecha_inicio_campaign_active); ?> - <?php echo htmlspecialchars($fecha_fin_campaign_active); ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- cards -->
         <div class="row g-4">

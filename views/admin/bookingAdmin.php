@@ -253,6 +253,37 @@ if (isset($_SESSION['success_message'])) {
                 </div>
             </div>
         </div>
+    <!-- ============ PAGINACIÓN  ============ -->
+        <?php if ($total_pages > 1): ?>
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    
+                    <!-- Botón Anterior -->
+                    <?php if ($current_page > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $current_page - 1 ?>">Anterior</a>
+                        </li>
+                    <?php endif; ?>
+
+                    <!-- Números de página -->
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <li class="page-item <?= $i === $current_page ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Botón Siguiente -->
+                    <?php if ($current_page < $total_pages): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $current_page + 1 ?>">Siguiente</a>
+                        </li>
+                    <?php endif; ?>
+
+                </ul>
+            </nav>
+        <?php endif; ?>
+        <!-- ============ END PAGINACIÓN ============ -->
+
 
         <!-- Resumen estadístico -->
         <?php if (!empty($all_bookings)): ?>

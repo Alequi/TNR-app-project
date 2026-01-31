@@ -45,26 +45,18 @@ $user_id = $_SESSION['user_id'];
             <div class="collapse navbar-collapse" id="mainNavbar">
 
                 <!-- MENÚ PRINCIPAL VOLUNTARIO / GESTOR  -->
-                <?php if ($_SESSION['rol'] === 'voluntario' || $_SESSION['rol'] === 'gestor'): ?>
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a href="panel.php" class="nav-link">Panel</a></li>
-                    <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
-                    <li class="nav-item"><a href="userProfile.php" class="nav-link active">Mi Perfil</a></li>
+                
+                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a href="panel.php" class="nav-link ">Panel</a></li>
+                    <li class="nav-item"><a href="clinics.php" class="nav-link">Clínicas</a></li>
+                    <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
+                    <li class="nav-item"><a href="userBookings.php" class="nav-link">Mis reservas</a></li>
+                    <li class="nav-item"><a href="jaulas.php" class="nav-link ">Jaulas</a></li>
+                    <li class="nav-item"><a href="userColony.php" class="nav-link active">Mi colonia</a></li>
+                   
                 </ul>
 
-                <!-- MENÚ PRINCIPAL ADMIN -->
-                <?php elseif ($_SESSION['rol'] === 'admin'): ?>
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a href="admin/AdminPanel.php" class="nav-link">Panel</a></li>
-                    <li class="nav-item"><a href="admin/campaignsAdmin.php" class="nav-link">Campañas</a></li>
-                    <li class="nav-item"><a href="admin/clinicsAdmin.php" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="admin/animalsAdmin.php" class="nav-link">Colonias</a></li>
-                    <li class="nav-item"><a href="admin/shiftsAdmin.php" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="admin/bookingAdmin.php" class="nav-link">Reservas</a></li>
-                    <li class="nav-item"><a href="admin/jaulasAdmin.php" class="nav-link">Jaulas</a></li>
-                    <li class="nav-item"><a href="admin/usersAdmin.php" class="nav-link">Usuarios</a></li>
-                </ul>
-                <?php endif; ?>
+             
 
                 
 
@@ -100,7 +92,7 @@ $user_id = $_SESSION['user_id'];
                             <i class="bi bi-person-circle"></i> Perfil
                         </a>
 
-                        <a href="../app/actions/logout_action.php"
+                        <a href="../app/actions/auth/logout_action.php"
                             class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
                             Cerrar sesión<i class="bi bi-box-arrow-right"></i>
                         </a>
@@ -277,7 +269,7 @@ $user_id = $_SESSION['user_id'];
                                             </a>
                                         </li>
                                         <li class="mb-2">
-                                            <a href="panel.php" class="text-decoration-none">
+                                            <a href="jaulas.php" class="text-decoration-none">
                                                 <i class="bi bi-box me-2"></i>Gestión de Jaulas
                                             </a>
                                         </li>

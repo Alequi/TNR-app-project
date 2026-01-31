@@ -306,25 +306,36 @@ admin();
                     </table>
                 </div>
             </div>
-            <div class="card-footer bg-white">
-                <nav aria-label="table navigation">
-                    <ul class="pagination justify-content-center pagination-sm mb-0">
+                <!-- ============ PAGINACIÓN  ============ -->
+        <?php if ($total_pages > 1): ?>
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    
+                    <!-- Botón Anterior -->
+                    <?php if ($current_page > 1): ?>
                         <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
+                            <a class="page-link" href="?page=<?= $current_page - 1 ?>">Anterior</a>
                         </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <?php endif; ?>
+
+                    <!-- Números de página -->
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <li class="page-item <?= $i === $current_page ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Botón Siguiente -->
+                    <?php if ($current_page < $total_pages): ?>
                         <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
+                            <a class="page-link" href="?page=<?= $current_page + 1 ?>">Siguiente</a>
                         </li>
-                    </ul>
-                </nav>
-            </div>
+                    <?php endif; ?>
+
+                </ul>
+            </nav>
+        <?php endif; ?>
+        <!-- ============ END PAGINACIÓN ============ -->
         </div>
     </div>
     <!-- FOOTER -->

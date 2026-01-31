@@ -10,6 +10,25 @@ admin();
 
 $con = conectar();
 
+//Paginacion
+$records_per_page = 15;
+$current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+
+if ($current_page < 1) {
+    $current_page = 1;
+}
+
+$offset = ($current_page - 1) * $records_per_page;
+
+//Total de usuarios
+$sql_count = "SELECT COUNT(*) FROM users";
+$stmt_count = $con->prepare($sql_count);
+$stmt_count->execute();
+$total_records = $stmt_count->fetchColumn();
+$total_pages = ceil($total_records / $records_per_page);
+
+
+
 //Obtener todos los usuarios con sus reservas activas y prestamos activos
 try {
 
@@ -33,8 +52,11 @@ $sql_users = "
     LEFT JOIN cage_loans cl ON u.id = cl.user_id
     GROUP BY u.id, u.nombre, u.apellido, u.email, u.rol, u.telefono, u.activo, u.colony_id, col.nombre, col.code
     ORDER BY u.nombre
+    LIMIT :limit OFFSET :offset
 ";
 $stmt = $con->prepare($sql_users);
+$stmt->bindValue(':limit', $records_per_page, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
