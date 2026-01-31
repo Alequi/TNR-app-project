@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once __DIR__ . '/../helpers/auth.php';
-admin();
+
 
 require_once __DIR__ . '/../../config/conexion.php';
 $con = conectar();
