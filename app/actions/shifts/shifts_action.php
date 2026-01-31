@@ -12,7 +12,7 @@ $con = conectar();
 
 //Obtener clinicas
 
-$stmt_clinics = $con->prepare("SELECT id, nombre, capacidad_ma, capacidad_ta FROM clinics ORDER BY nombre");
+$stmt_clinics = $con->prepare("SELECT id, nombre, capacidad_ma, capacidad_ta FROM clinics WHERE activa = 1 ORDER BY nombre");
     $stmt_clinics->execute();
     $clinics = $stmt_clinics->fetchAll(PDO::FETCH_ASSOC);
 
