@@ -17,6 +17,7 @@ $sql_stats = "SELECT
     COALESCE(SUM(CASE WHEN s.turno = 'T' THEN s.ocupados ELSE 0 END), 0) AS ocupados_ta
 FROM clinics c
 LEFT JOIN shifts s ON c.id = s.clinic_id AND s.fecha = CURDATE()
+WHERE c.activa = 1
 GROUP BY c.id, c.nombre, c.capacidad_ma, c.capacidad_ta
 ORDER BY c.nombre";
 $stmt_stats = $con->prepare($sql_stats);
