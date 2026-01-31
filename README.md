@@ -1,4 +1,4 @@
-# � **CES Gatos Elche - TNR Management System**
+# 🐾 **CES Gatos Elche - TNR Management System**
 
 ## 📋 Project Overview
 
@@ -7,17 +7,18 @@
 ### Core Features
 The system centralizes and automates critical operational workflows:
 
-- 📅 **Campaign Management** - Annual neutering campaigns with date tracking
-- 🏥 **Clinic Coordination** - Multi-clinic booking system with capacity control
-- 🗺️ **Colony Management** - Feline colony registration and volunteer assignment
-- 👥 **User Administration** - Volunteer coordination and role-based access
-- 📦 **Cage Inventory** - Real-time tracking of cage/trap loans and returns
-- 📊 **Statistics Dashboard** - Live monitoring of operations and resources
+- 📅 **Campaign Management** - Create, edit, and finalize neutering campaigns with strict date controls
+- 🏥 **Clinic Administration** - Multi-clinic coordination with AM/PM capacity management
+- 🗺️ **Colony Management** - Feline colony registration, volunteer assignment, and status tracking
+- 🕒 **Shift Management** - Daily time slot creation with real-time availability tracking
+- 📦 **Cage Inventory** - Complete cage lifecycle management (registration, loans, returns)
+- 👥 **User Administration** - Volunteer coordination with role-based access control
+- 📊 **Statistics Dashboard** - Real-time KPIs and operational metrics
+- 🔒 **Security** - Session-based authentication with admin/volunteer role separation
 
 ### User Roles
 - **👤 Volunteers** - Colony managers with booking and cage loan capabilities
-- **🔑 Administrators** - Full system access with advanced management tools
-- **🏥 Clinic Staff** - (Future) Appointment and treatment tracking
+- **🔑 Administrators** - Full system access including campaigns, clinics, colonies, shifts, users, and cages
 
 ---
 
@@ -202,7 +203,45 @@ The system centralizes and automates critical operational workflows:
 ### Backend
 - **Language:** PHP 8.0.30
 - **Database:** MariaDB 10.4.32
-- **PDO:** Prepauser_action.php                # User details
+- **PDO:** Prepared statements for security
+- **Sessions:** Server-side session management
+- **Architecture:** MVC-inspired separation
+
+### Development Environment
+- **Stack:** XAMPP/WAMP
+- **Server:** Apache
+- **Database:** phpMyAdmin
+- **Version Control:** Git + GitHub
+- **Editor:** VS Code (recommended)
+
+### Security
+- 🔒 **Password Hashing:** `PASSWORD_BCRYPT`
+- 🛡️ **SQL Injection Protection:** PDO prepared statements
+- 🚪 **Session Validation:** Role-based access control
+- ✅ **Input Sanitization:** `filter_var()` and validation
+- 🔐 **CSRF Protection:** (Planned)
+
+---
+
+## 📂 Project Structure
+
+```
+TNR-app-project/
+│
+├── 📁 app/                          # Backend logic
+│   ├── 📁 actions/                  # API endpoints (JSON responses)
+│   │   ├── 📁 auth/                 # Authentication
+│   │   │   ├── login_action.php
+│   │   │   ├── register_action.php
+│   │   │   ├── logout_action.php
+│   │   │   ├── recuperar_action.php
+│   │   │   └── change_password_action.php
+│   │   ├── 📁 user/                 # User management
+│   │   │   ├── get_users_action.php           # List all users
+│   │   │   ├── create_user_action.php         # Create user (admin)
+│   │   │   ├── update_user_action.php         # Edit user (admin)
+│   │   │   ├── update_profile_action.php      # Self-edit profile
+│   │   │   ├── user_action.php                # User details
 │   │   │   ├── volunteers_stats_action.php    # Volunteer stats
 │   │   │   ├── colonies_stats_action.php      # Colony stats
 │   │   │   └── colony_volunteers_action.php   # Colony volunteer list
@@ -271,36 +310,6 @@ The system centralizes and automates critical operational workflows:
 │   │   │   └── script.js                # General utilities
 │   │   ├── 📁 brand/                     # Logo files
 │   │   ├── 📁 dist/css/                  # Custom styles
----
-
-## 🎯 Key Business Rules
-
-### Campaign Management
-- ✅ **Single Active Campaign:** Only one campaign can have `activa = 1` at any time
-- ✅ **No Reactivation:** Once finalized (`activa = 0`), campaigns cannot be reactivated
-- ✅ **Finalization Protection:** Cannot finalize campaign if active bookings exist in future shifts
-- ✅ **Date Validation:** `fecha_fin` must be >= `fecha_inicio` (client and server-side)
-
-### Cage Management
-- ✅ **Unique Internal Numbers:** `numero_interno` must be unique per clinic
-- ✅ **Immutable Foreign Keys:** Cannot modify `clinic_id` or `cage_type_id` after creation
-- ✅ **Loan Protection:** Cannot edit cages while they have active loans (`estado = 'prestado'`)
-- ✅ **Editable Fields:** Only `numero_interno` and `activo` status can be modified
-
-### Shift Management
-- ✅ **Unique Slots:** One shift per clinic/campaign/date/turno combination
-- ✅ **Capacity Inheritance:** Shifts inherit capacity from parent clinic
-- ✅ **Delete Protection:** Cannot delete shifts with existing bookings
-
-### Booking Rules
-- ✅ **Reverse Pickup:** AM drop → PM pickup same day | PM drop → AM pickup next day
-- ✅ **Capacity Validation:** Cannot exceed shift capacity
-- ✅ **Status Workflow:** reservado → entregado_vet → listo_recoger → recogido
-
----
-
-## 🚀 Installation & Setup
-
 │   │   └── 📁 img/                       # Images
 │   ├── 📁 partials/                      # Reusable components
 │   │   ├── header.php
@@ -326,44 +335,6 @@ The system centralizes and automates critical operational workflows:
 │   ├── userBookings.php             # User's bookings
 │   ├── jaulas.php                   # Cage loans (volunteer)
 │   ├── listadoJaulas.php            # Cage list view
-│   └── 📁 helpers/                  # Utility functions
-│       └── auth.php                 # Auth helpers (admin(), login())
-│
-├── 📁 config/                       # Configuration
-│   └── conexion.php                 # Database connection (PDO)
-│
-├── 📁 public/                       # Public assets
-│   ├── 📁 assets/
-│   │   ├── 📁 js/                   # JavaScript modules
-│   │   │   ├── userManagement.js   # User CRUD (fetch)
-│   │   │   ├── modalEditUser.js    # Edit modal population
-│   │   │   ├── cageManagement.js   # Cage CRUD + filtering
-│   │   │   ├── booking.js          # Booking creation
-│   │   │   ├── cancelBooking.js    # Cancel bookings
-│   │   │   ├── updateBooking.js    # Edit bookings
-│   │   │   ├── filter.js           # Table filtering
-│   │   │   └── validation.js       # Form validation
-│   │   ├── 📁 brand/                # Logo files
-│   │   └── 📁 dist/css/             # Custom styles
-│   ├── 📁 img/                      # Images
-│   ├── 📁 partials/                 # Reusable components
-│   │   ├── header.php
-│   │   └── footer.php
-│   ├── login.php                    # Login page
-│   ├── registro.php                 # Registration page
-│   ├── recuperar_pass.php           # Password recovery
-│   └── about.html                   # About page
-│
-├── 📁 views/                        # Application views
-│   ├── 📁 admin/                    # Admin-only pages
-│   │   ├── adminPanel.php           # Admin dashboard
-│   │   ├── usersAdmin.php           # User management
-│   │   ├── jaulasAdmin.php          # Cage management
-│   │   └── bookingAdmin.php         # All bookings
-│   ├── panel.php                    # Volunteer dashboard
-│   ├── booking.php                  # Create booking
-│   ├── userBookings.php             # User's bookings
-│   ├── jaulas.php                   # Cage loans (volunteer)
 │   ├── userProfile.php              # Profile edit
 │   └── userColony.php               # Colony details
 │
@@ -371,6 +342,32 @@ The system centralizes and automates critical operational workflows:
 ├── 📄 reservas_db.sql               # Database schema + sample data
 └── 📄 README.md                     # This file
 ```
+
+---
+
+## 🎯 Key Business Rules
+
+### Campaign Management
+- ✅ **Single Active Campaign:** Only one campaign can have `activa = 1` at any time
+- ✅ **No Reactivation:** Once finalized (`activa = 0`), campaigns cannot be reactivated
+- ✅ **Finalization Protection:** Cannot finalize campaign if active bookings exist in future shifts
+- ✅ **Date Validation:** `fecha_fin` must be >= `fecha_inicio` (client and server-side)
+
+### Cage Management
+- ✅ **Unique Internal Numbers:** `numero_interno` must be unique per clinic
+- ✅ **Immutable Foreign Keys:** Cannot modify `clinic_id` or `cage_type_id` after creation
+- ✅ **Loan Protection:** Cannot edit cages while they have active loans (`estado = 'prestado'`)
+- ✅ **Editable Fields:** Only `numero_interno` and `activo` status can be modified
+
+### Shift Management
+- ✅ **Unique Slots:** One shift per clinic/campaign/date/turno combination
+- ✅ **Capacity Inheritance:** Shifts inherit capacity from parent clinic
+- ✅ **Delete Protection:** Cannot delete shifts with existing bookings
+
+### Booking Rules
+- ✅ **Reverse Pickup:** AM drop → PM pickup same day | PM drop → AM pickup next day
+- ✅ **Capacity Validation:** Cannot exceed shift capacity
+- ✅ **Status Workflow:** reservado → entregado_vet → listo_recoger → recogido
 
 ---
 
@@ -429,394 +426,11 @@ http://localhost/TNR-app-project/
 - Email: `vol1@ces.test`
 - Password: `0000`
 
-### Step 6: Test Installation
-1. Login with admin credentials
-2. Check admin dashboard loads
-3. Navigate to Users section
-4. Verify database connection works
-
----
-
-## 📊 Current Implementation Status
-
-### ✅ Fully Implemented Modules
-
-#### 1. Authentication System (100%)
-- ✅ User login with role-based redirection
-- ✅ User registration with email validation
-- ✅ Password recovery (email pending)
-- ✅ Session management with security helpers
-- ✅ Role verification: `admin()`, `login()`, `isLoggedIn()`
-- ✅ Logout functionality
-
-**Files:**
-- `app/actions/auth/login_action.php`
-- `app/actions/auth/register_action.php`
-- `app/actions/auth/logout_action.php`
-- `app/helpers/auth.php`
-
-#### 2. Admin Dashboard (100%)
-- ✅ Campaign statistics (active campaign display)
-- ✅ Real-time clinic capacity and occupancy
-- ✅ Volunteer count and colony statistics
-- ✅ Booking counters (today's reservations)
-- ✅ Monthly neutering stats
-- ✅ Protected admin-only routes
-- ✅ Upcoming reservations table (7 days)
-
-**Files:**
-- `views/admin/adminPanel.php`
-- `app/actions/campaign_stats_action.php`
-- `app/actions/clinics/general_clinics_action.php`
-- `app/actions/jaulas/jaulas_general_action.php`
-
-#### 3. User Management (100%)
-- ✅ User listing with LEFT JOIN aggregations
-  - Active bookings count
-  - Borrowed cages count
-- ✅ Create new users (admin)
-  - Role assignment: admin/gestor/voluntario
-  - Optional colony assignment
-  - Email uniqueness validation
-  - Password minimum 4 characters
-- ✅ Edit users (admin)
-  - Optional password change
-  - Update all fields
-  - Activate/deactivate accounts
-- ✅ AJAX-based CRUD with JSON responses
-- ✅ Bootstrap modals for forms
-- ✅ Real-time form validation
-
-**Files:**
-- `views/admin/usersAdmin.php`
-- `app/actions/user/get_users_action.php`
-- `app/actions/user/create_user_action.php`
-- `app/actions/user/update_user_action.php`
-- `public/assets/js/userManagement.js`
-- `public/assets/js/modalEditUser.js`
-
-#### 4. Cage Management (100%)
-- ✅ Complete cage inventory system
-- ✅ CRUD operations for cages
-  - Create cage with clinic assignment
-  - Cage type selection
-  - Internal numbering
-- ✅ Advanced filtering
-  - By cage type
-  - By clinic
-  - By availability status
-- ✅ Transactional integrity
-  - Updates `clinic_cages` table
-  - Prevents duplicate cage numbers per clinic
-- ✅ Real-time availability tracking
-- ✅ Bootstrap modals for forms
-
-**Files:**
-- `views/admin/jaulasAdmin.php`
-- `app/actions/jaulas/get_cages_action.php`
-- `app/actions/jaulas/create_cage_action.php`
-- `public/assets/js/cageManagement.js`
-
-#### 5. Booking Management (80%)
-- ✅ View all reservations (admin)
-- ✅ Booking statistics
-  - Pending count
-  - In clinic count
-  - Completed count
-  - Total cats processed
-- ✅ Update bookings (admin)
-- ✅ Cancel bookings
-- ✅ Integration with shifts and clinics
-- ⬜ Create new booking (volunteer) - In progress
-- ⬜ Reverse pickup rule automation - Pending
-
-**Files:**
-- `views/admin/bookingAdmin.php`
-- `app/actions/bookings/bookings_stats_action.php`
-- `app/actions/bookings/update_booking_action.php`
-- `app/actions/bookings/cancel_booking_action.php`
-- `public/assets/js/updateBooking.js`
-- `public/assets/js/cancelBooking.js`
-
-#### 6. Security Implementation (100%)
-- ✅ All admin pages protected with `admin()` check
-  - `adminPanel.php`
-  - `usersAdmin.php`
-  - `jaulasAdmin.php`
-  - `bookingAdmin.php`
-- ✅ All admin actions protected
-  - User CRUD endpoints
-  - Cage CRUD endpoints
-  - Booking management endpoints
-  - Statistics endpoints
-- ✅ Session validation on all protected routes
-- ✅ SQL injection prevention (prepared statements)
-- ✅ Password hashing with `PASSWORD_BCRYPT`
-- ✅ Email uniqueness validation
-- ✅ Input sanitization with `filter_var()`
-- ✅ Session status checks before `session_start()`
-
-**Security Features:**
-```php
-// Session check before starting
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Role verification
-function admin() {
-    login();  // Ensure authenticated
-    if ($_SESSION['rol'] !== 'admin') {
-        header("Location: ../../public/login.php");
-        exit();
-    }
-}
-
-// Prepared statements
-$stmt = $con->prepare("SELECT * FROM users WHERE email = :email");
-$stmt->execute([':email' => $email]);
-
-// Password hashing
-$password_hash = password_hash($password, PASSWORD_BCRYPT);
-```
-
-### 🚧 Partially Implemented
-
-#### 7. Volunteer Features (30%)
-- ✅ Volunteer views created
-  - `panel.php` - Dashboard
-  - `booking.php` - Create booking
-  - `userBookings.php` - View bookings
-  - `jaulas.php` - Cage loans
-  - `userProfile.php` - Profile edit
-- ⬜ Backend actions for volunteers
-- ⬜ Booking creation workflow
-- ⬜ Profile update functionality
-- ⬜ Cage loan request system
-
-**Pending Files:**
-- `app/actions/bookings/new_booking_action.php` (exists but needs testing)
-- `app/actions/user/update_profile_action.php` (exists but needs implementation)
-
-### ⬜ Not Started
-
-#### 8. Campaign Management (0%)
-- ⬜ Campaign CRUD interface
-- ⬜ Activate/deactivate campaigns
-- ⬜ Date range validation
-- ⬜ Link campaigns with clinics
-
-#### 9. Clinic Management (0%)
-- ⬜ Clinic CRUD interface
-- ⬜ Capacity configuration
-- ⬜ Contact information management
-
-#### 10. Colony Management (0%)
-- ⬜ Colony CRUD interface
-- ⬜ Assign colony managers
-- ⬜ Volunteer-colony relationships
-
-#### 11. Shift Management (0%)
-- ⬜ Generate daily shifts
-- ⬜ Capacity control per shift
-- ⬜ Bulk shift creation
-
-#### 12. Advanced Features (0%)
-- ⬜ Reverse pickup rule automation
-- ⬜ Cage loan incident tracking
-- ⬜ Email notifications (SMTP)
-- ⬜ PDF/Excel export
-- ⬜ Reporting dashboards
-- ⬜ Mobile responsive optimization
-
----
-
-## 🔌 API Endpoints
-
-### Authentication
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/app/actions/auth/login_action.php` | POST | None | User login |
-| `/app/actions/auth/register_action.php` | POST | None | User registration |
-| `/app/actions/auth/logout_action.php` | GET | Session | Logout |
-
-### User Management (Admin Only)
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/app/actions/user/get_users_action.php` | GET | Admin | List all users + stats |
-| `/app/actions/user/create_user_action.php` | POST | Admin | Create user |
-| `/app/actions/user/update_user_action.php` | POST | Admin | Update user |
-
-**Request/Response Example:**
-```json
-// POST /app/actions/user/create_user_action.php
-{
-  "nombre": "Juan",
-  "apellido": "Pérez",
-  "email": "juan@example.com",
-  "password": "SecurePass123",
-  "telefono": "666777888",
-  "rol": "voluntario",
-  "colony_id": "5"  // Optional
-}
-
-// Response
-{
-  "success": true,
-  "message": "Usuario creado exitosamente."
-}
-```
-
-### Cage Management (Admin Only)
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/app/actions/jaulas/get_cages_action.php` | GET | Admin | List all cages |
-| `/app/actions/jaulas/create_cage_action.php` | POST | Admin | Create cage |
-
-### Bookings
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/app/actions/bookings/bookings_stats_action.php` | GET | Admin | All bookings |
-| `/app/actions/bookings/update_booking_action.php` | POST | Admin | Update booking |
-| `/app/actions/bookings/cancel_booking_action.php` | POST | User | Cancel booking |
-
----
-
-## 💡 Code Quality & Best Practices
-
-### PHP Standards
-```php
-// ✅ Always check session status
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// ✅ Use prepared statements
-$stmt = $con->prepare("INSERT INTO users (email) VALUES (:email)");
-$stmt->execute([':email' => $email]);
-
-// ✅ Validate all inputs
-$email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
-
-// ✅ Handle optional fields
-$colony_id = isset($data['colony_id']) && $data['colony_id'] !== '' 
-    ? filter_var($data['colony_id'], FILTER_VALIDATE_INT) 
-    : null;
-
-// ✅ Use transactions for multi-table operations
-$con->beginTransaction();
-try {
-    // Multiple queries
-    $con->commit();
-} catch (PDOException $e) {
-    $con->rollBack();
-    throw $e;
-}
-
-// ✅ JSON responses for AJAX
-header('Content-Type: application/json');
-echo json_encode(['success' => true, 'message' => 'OK']);
-exit;
-```
-
-### JavaScript Standards
-```javascript
-// ✅ Use Fetch API with async/await
-const response = await fetch('endpoint.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-});
-const result = await response.json();
-
-// ✅ Handle errors gracefully
-try {
-    // API call
-} catch (error) {
-    alert('Error: ' + error.message);
-    console.error('Error:', error);
-}
-
-// ✅ Close Bootstrap modals properly
-const modalInstance = bootstrap.Modal.getInstance(modal);
-modalInstance.hide();
-location.reload();  // Refresh to show $_SESSION message
-```
-
----
-
-## 🐛 Known Issues & Limitations
-
-### Current Limitations
-1. **Email Notifications** - Not implemented (password recovery shows message only)
-2. **CSRF Protection** - Not implemented
-3. **Mobile Optimization** - Partial responsive design
-4. **File Uploads** - No file upload for user avatars or cage photos
-5. **Audit Logs** - No activity tracking
-6. **API Rate Limiting** - Not implemented
-7. **Input Validation** - Client-side only (needs server-side enhancement)
-
-### Browser Compatibility
-- ✅ Chrome 90+
-- ✅ Firefox 88+
-- ✅ Edge 90+
-- ⚠️ Safari (partial testing)
-- ❌ IE11 (not supported)
-
----
-
-## 🗺️ Roadmap
-
-### Phase 1: Core Completion (Q1 2026)
-- [ ] Campaign CRUD
-- [ ] Clinic CRUD  
-- [ ] Colony CRUD
-- [ ] Shift generation system
-- [ ] Volunteer booking workflow
-- [ ] Profile management (volunteer)
-
-### Phase 2: Advanced Features (Q2 2026)
-- [ ] Reverse pickup automation
-- [ ] Cage loan workflow for volunteers
-- [ ] Email notification system (SMTP)
-- [ ] PDF export (bookings, cage loans)
-- [ ] Advanced filtering and search
-
-### Phase 3: Optimization (Q3 2026)
-- [ ] Mobile app (PWA)
-- [ ] API documentation (Swagger)
-- [ ] Performance optimization
-- [ ] Comprehensive testing suite
-- [ ] Security audit
-
----
-
-## 👨‍💻 Development Guidelines
-
-### Adding New Features
-1. Create database migrations if needed
-2. Implement backend action in `app/actions/`
-3. Add auth protection (`admin()` or `login()`)
-4. Create/update view in `views/`
-5. Add JavaScript in `public/assets/js/`
-6. Test thoroughly with real data
-7. Update this README
-
-### Code Review Checklist
-- [ ] Prepared statements for all queries
-- [ ] Input validation and sanitization
-- [ ] Error handling with try-catch
-- [ ] Session authentication
-- [ ] JSON responses for AJAX
-- [ ] No SQL injection vulnerabilities
-- [ ] No XSS vulnerabilities
-- [ ] Responsive design tested
-
 ---
 
 ## 📝 Author & Contact
 
-**Developed by:** Alejandro Quiera  
+**Developed by:** Alejandro Quivera  
 **Role:** 2nd Year DAW Student (Desarrollo de Aplicaciones Web)  
 **Project Type:** Intermodular Project (Proyecto Intermodular)  
 **Institution:** IES Severo Ochoa  
@@ -831,10 +445,8 @@ location.reload();  // Refresh to show $_SESSION message
 
 This project is developed for educational purposes as part of the DAW curriculum. All rights reserved by CES Gatos Elche for production use.
 
-
 ---
 
-**Last Updated:** January 29, 2026  
+**Last Updated:** January 31, 2026  
 **Version:** 1.0.0 (Beta)  
-**Database Version:** 1.0  
-**Project Status:** 🚧 In Active Development (80% Complete)
+**Database Version:** 1.0
