@@ -56,15 +56,15 @@ if (isset($_SESSION['success_message'])) {
 
                 <!--MENU PRINCIPAL VOLUNTARIO-->
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a href="AdminPanel.php" class="nav-link">Panel</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="userBookings.php" class="nav-link active">Reservas</a></li>
+                    <li class="nav-item"><a href="adminPanel.php" class="nav-link ">Panel</a></li>
+                    <li class="nav-item"><a href="campaignsAdmin.php" class="nav-link">Campañas</a></li>
+                    <li class="nav-item"><a href="clinicsAdmin.php" class="nav-link">Clínicas</a></li>
+                    <li class="nav-item"><a href="coloniesAdmin.php" class="nav-link">Colonias</a></li>
+                    <li class="nav-item"><a href="shiftsAdmin.php" class="nav-link">Turnos</a></li>
+                    <li class="nav-item"><a href="bookingAdmin.php" class="nav-link active">Reservas</a></li>
                     <li class="nav-item"><a href="jaulasAdmin.php" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="usersAdmin.php" class="nav-link">Usuarios</a></li>
-                </ul>
-
+               </ul>
 
                 <!-- BOTÓN PERFIL -->
                 <div class="d-flex align-items-center">
@@ -123,11 +123,6 @@ if (isset($_SESSION['success_message'])) {
                         <i class="bi bi-calendar-check text-primary" style="font-size: 3rem;"></i> Reservas
                     </h1>
                     <p class="text-muted">Historial de reservas de turnos</p>
-                </div>
-                <div>
-                    <a href="booking.php" class="btn btn-primary btn-lg">
-                        <i class="bi bi-plus-circle me-2"></i>Nueva Reserva
-                    </a>
                 </div>
             </div>
         </div>

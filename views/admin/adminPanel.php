@@ -58,7 +58,7 @@ admin();
                     <li class="nav-item"><a href="usersAdmin.php" class="nav-link">Usuarios</a></li>
                 </ul>
 
-
+                
                 <!-- BOTÓN PERFIL -->
                 <div class="d-flex align-items-center">
 
@@ -212,7 +212,7 @@ admin();
 
                         </div>
                         <div class="mt-auto">
-                            <a href="reservasAdmin.php" class="btn btn-primary w-100">
+                            <a href="bookingAdmin.php" class="btn btn-primary w-100">
                                 Ver reservas <i class="bi bi-arrow-right-circle ms-2"></i>
                             </a>
                         </div>
