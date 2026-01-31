@@ -255,7 +255,15 @@ if (isset($_SESSION['success_message'])) {
                                             <?php endif; ?>
                                         </td>
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                            <button class="btn btn-sm btn-outline-primary me-1 edit-cage-btn" 
+                                                    title="Editar"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editCageModal"
+                                                    data-cage-id="<?= $cage['id'] ?>"
+                                                    data-cage-clinic-name="<?= htmlspecialchars($cage['clinica_nombre']) ?>"
+                                                    data-cage-type-name="<?= htmlspecialchars($cage['tipo_nombre']) ?>"
+                                                    data-cage-number="<?= htmlspecialchars($cage['numero_interno']) ?>"
+                                                    data-cage-active="<?= $cage['activo'] ?>">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                            
@@ -318,6 +326,64 @@ if (isset($_SESSION['success_message'])) {
         </div>
     </div>
 
+    <!-- Modal Editar Jaula -->
+    <div class="modal fade" id="editCageModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">
+                        <i class="bi bi-pencil-square me-2"></i>Editar Jaula
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editCageForm">
+                    <input type="hidden" id="editCageId" name="cage_id">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Clínica</label>
+                            <input type="text" class="form-control" id="editClinicName" disabled>
+                            <small class="text-muted">No se puede modificar la clínica de una jaula existente</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tipo de Jaula</label>
+                            <input type="text" class="form-control" id="editCageTypeName" disabled>
+                            <small class="text-muted">No se puede modificar el tipo de una jaula existente</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editNumeroInterno" class="form-label fw-bold">Número Interno <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editNumeroInterno" name="numero_interno" 
+                                   placeholder="Ej: J-001" required>
+                            <small class="text-muted">Identificador único de la jaula en la clínica</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Estado</label>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="editCageActive" name="activo" checked>
+                                <label class="form-check-label" for="editCageActive">
+                                    Jaula activa (disponible para usar)
+                                </label>
+                            </div>
+                            <small class="text-muted">Las jaulas inactivas no estarán disponibles para préstamos</small>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Solo puedes modificar el número interno y el estado de la jaula.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-check-circle me-1"></i>Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer class="bg-dark text-light py-4 mt-5">
         <div class="container d-flex flex-column flex-md-row flex-wrap 
@@ -333,7 +399,6 @@ if (isset($_SESSION['success_message'])) {
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../public/assets/js/close-alerts.js"></script>
     <script src="../../public/assets/js/cageManagement.js"></script>
 </body>
 
