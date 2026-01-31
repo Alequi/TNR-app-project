@@ -5,8 +5,8 @@ if(session_status() === PHP_SESSION_NONE) {
 
 require_once __DIR__ . '/../../helpers/auth.php';
 require_once __DIR__ . '/../../../config/conexion.php';
+login();
 
-admin();
 
 $con = conectar();
 
