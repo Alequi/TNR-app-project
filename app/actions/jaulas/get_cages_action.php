@@ -44,7 +44,7 @@ try {
     $cage_types = $stmt_types->fetchAll(PDO::FETCH_ASSOC);
 
     // Obtener clínicas para el formulario
-    $stmt_clinics = $con->prepare("SELECT id, nombre FROM clinics ORDER BY nombre");
+    $stmt_clinics = $con->prepare("SELECT id, nombre FROM clinics WHERE activa = 1 ORDER BY nombre");
     $stmt_clinics->execute();
     $clinics = $stmt_clinics->fetchAll(PDO::FETCH_ASSOC);
 
