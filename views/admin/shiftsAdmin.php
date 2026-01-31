@@ -45,40 +45,45 @@ if (isset($_SESSION['success_message'])) {
             </button>
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a href="AdminPanel.php" class="nav-link">Panel</a></li>
+               <li class="nav-item"><a href="adminPanel.php" class="nav-link ">Panel</a></li>
                     <li class="nav-item"><a href="campaignsAdmin.php" class="nav-link">Campañas</a></li>
                     <li class="nav-item"><a href="clinicsAdmin.php" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="animalsAdmin.php" class="nav-link">Colonias</a></li>
-                    <li class="nav-item"><a href="shiftsAdmin.php" class="nav-link">Turnos</a></li>
+                    <li class="nav-item"><a href="coloniesAdmin.php" class="nav-link">Colonias</a></li>
+                    <li class="nav-item"><a href="shiftsAdmin.php" class="nav-link active">Turnos</a></li>
                     <li class="nav-item"><a href="bookingAdmin.php" class="nav-link">Reservas</a></li>
                     <li class="nav-item"><a href="jaulasAdmin.php" class="nav-link">Jaulas</a></li>
                     <li class="nav-item"><a href="usersAdmin.php" class="nav-link">Usuarios</a></li>
                 </ul>
+                
+                <!-- BOTÓN PERFIL -->
                 <div class="d-flex align-items-center">
+
+                    <!-- Perfil ESCRITORIO -->
                     <div class="dropdown d-none d-lg-block">
-                        <button class="btn btn-primary d-flex gap-2" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle fs-6"></i>
-                        </button>
+                        <button class="btn btn-primary d-flex  gap-2" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-person-circle fs-6"></i></button>
+
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                             <li>
                                 <a class="dropdown-item d-inline-flex align-items-center gap-2" href="../userProfile.php">
-                                    <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta
-                                </a>
+                                    <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta</a>
                             </li>
                             <li>
                                 <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="../../app/actions/auth/logout_action.php">
-                                    <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión
-                                </a>
+                                    <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión</a>
                             </li>
                         </ul>
                     </div>
+
+                    <!-- Perfil MÓVIL: aparece dentro del menú colapsado -->
                     <div class="d-lg-none ms-2">
-                        <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
-                            <i class="bi bi-person-circle"></i> Perfil
-                        </a>
+                        <a href="../userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-person-circle"></i> Perfil</a>
+
                         <a href="../../app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
-                            Cerrar sesión<i class="bi bi-box-arrow-right"></i>
-                        </a>
+                            Cerrar sesión<i class="bi bi-box-arrow-right "></i></a>
+
                     </div>
                 </div>
             </div>
