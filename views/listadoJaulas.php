@@ -53,32 +53,19 @@ if (isset($_SESSION['success_message'])) {
             <!-- CONTENIDO COLAPSABLE -->
             <div class="collapse navbar-collapse " id="mainNavbar">
 
-            <?php if ($_SESSION['rol'] === 'voluntario' || $_SESSION['rol'] === 'gestor'): ?>
+            
                 <!--MENU PRINCIPAL VOLUNTARIO-->
 
                  <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a href="panel.php" class="nav-link ">Panel</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
+                    <li class="nav-item"><a href="clinics.php" class="nav-link">Clínicas</a></li>
                     <li class="nav-item"><a href="bookings.php" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="userBookings.php" class="nav-link">Mis Reservas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link active">Jaulas</a></li>
+                    <li class="nav-item"><a href="listadoJaulas.php" class="nav-link active">Jaulas</a></li>
                     <li class="nav-item"><a href="userColony.php" class="nav-link">Mi colonia</a></li> 
                 </ul>
-            <?php else: ?>
+            
 
-                <!-- MENÚ PRINCIPAL -->
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a href="" class="nav-link ">Panel</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Colonias</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Reservas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link active">Jaulas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Usuarios</a></li>
-                </ul>
-             <?php endif; ?>   
 
                 <!-- BOTÓN PERFIL -->
                 <div class="d-flex align-items-center">
@@ -95,7 +82,7 @@ if (isset($_SESSION['success_message'])) {
                                     <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta</a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="/app/actions/auth/logout_action.php">
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="../app/actions/auth/logout_action.php">
                                     <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión</a>
                             </li>
                         </ul>
@@ -106,7 +93,7 @@ if (isset($_SESSION['success_message'])) {
                         <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
                             <i class="bi bi-person-circle"></i> Perfil</a>
 
-                        <a href="/app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
+                        <a href="../app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
                              Cerrar sesión<i class="bi bi-box-arrow-right "></i></a>
 
                     </div>
@@ -236,6 +223,37 @@ if (isset($_SESSION['success_message'])) {
         </div>
         <!-- END JAULAS DISPONIBLES -->
 
+            <!-- ============ PAGINACIÓN  ============ -->
+        <?php if ($total_pages > 1): ?>
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    
+                    <!-- Botón Anterior -->
+                    <?php if ($current_page > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $current_page - 1 ?>">Anterior</a>
+                        </li>
+                    <?php endif; ?>
+
+                    <!-- Números de página -->
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <li class="page-item <?= $i === $current_page ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Botón Siguiente -->
+                    <?php if ($current_page < $total_pages): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $current_page + 1 ?>">Siguiente</a>
+                        </li>
+                    <?php endif; ?>
+
+                </ul>
+            </nav>
+        <?php endif; ?>
+        <!-- ============ END PAGINACIÓN ============ -->
+
     </main>
 
     <!-- End MAIN CONTENT -->
@@ -285,50 +303,74 @@ if (isset($_SESSION['success_message'])) {
 
     <!-- Modal Reservar Jaula -->
     <div class="modal fade" id="modalReserva" tabindex="-1" aria-labelledby="modalReservaLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalReservaLabel">Reservar Jaula</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <form action="../app/actions/jaulas/jaulas_action.php" method="POST">
-            <div class="modal-body">
-              <input type="hidden" name="jaula_id" id="jaula_id">
-              
-              <div class="mb-3">
-                <label class="form-label fw-bold">Número Interno:</label>
-                <p id="jaula_numero" class="text-muted"></p>
-              </div>
-              
-              <div class="mb-3">
-                <label class="form-label fw-bold">Tipo:</label>
-                <p id="jaula_tipo" class="text-muted"></p>
-              </div>
-              
-              <div class="mb-3">
-                <label class="form-label fw-bold">Clínica:</label>
-                <p id="jaula_clinica" class="text-muted"></p>
-              </div>
-              
-              <hr>
-              
-              <div class="mb-3">
-                <label for="fecha_prestamo" class="form-label fw-bold">Fecha de Préstamo <span class="text-danger">*</span></label>
-                <input type="date" class="form-control" id="fecha_prestamo" name="fecha_prestamo" required>
-              </div>
-              
-              <div class="mb-3">
-                <label for="fecha_devolucion" class="form-label fw-bold">Fecha de Devolución <span class="text-danger">*</span></label>
-                <input type="date" class="form-control" id="fecha_devolucion" name="fecha_devolucion" required>
-              </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-calendar-check me-2"></i>Reservar Jaula
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reservaJaulaForm" action="../app/actions/jaulas/jaulas_action.php" method="POST">
+                        <input type="hidden" name="jaula_id" id="jaula_id">
+                        
+                        <!-- Información de la Jaula -->
+                        <div class="card bg-light mb-3">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-3 text-primary fw-bold">
+                                    <i class="bi bi-box me-1"></i>Detalles de la Jaula
+                                </h6>
+                                <div class="row g-2">
+                                    <div class="col-md-12">
+                                        <label class="form-label fw-bold text-muted small">Número Interno</label>
+                                        <p id="jaula_numero" class="mb-0 fw-semibold"></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold text-muted small">Tipo</label>
+                                        <p id="jaula_tipo" class="mb-0"></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold text-muted small">Clínica</label>
+                                        <p id="jaula_clinica" class="mb-0"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fechas de Préstamo -->
+                        <div class="mb-3">
+                            <label for="fecha_prestamo" class="form-label fw-bold">
+                                <i class="bi bi-calendar-event me-1"></i>Fecha de Préstamo <span class="text-danger">*</span>
+                            </label>
+                            <input type="date" class="form-control" id="fecha_prestamo" name="fecha_prestamo" 
+                                   min="<?= date('Y-m-d') ?>" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fecha_devolucion" class="form-label fw-bold">
+                                <i class="bi bi-calendar-x me-1"></i>Fecha de Devolución <span class="text-danger">*</span>
+                            </label>
+                            <input type="date" class="form-control" id="fecha_devolucion" name="fecha_devolucion" 
+                                   min="<?= date('Y-m-d') ?>" required>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Los campos marcados con <span class="text-danger">*</span> son obligatorios
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </button>
+                    <button type="submit" form="reservaJaulaForm" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-1"></i>Confirmar Reserva
+                    </button>
+                </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
-            </div>
-          </form>
         </div>
-      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
