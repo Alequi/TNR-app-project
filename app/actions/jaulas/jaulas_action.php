@@ -40,14 +40,38 @@ $stmt_user_jaulas = $con->prepare($sql_user_jaulas);
 $stmt_user_jaulas->execute([':user_id' => $user_id]);
 $user_jaulas = $stmt_user_jaulas->fetchAll(PDO::FETCH_ASSOC);
 
+//PAGINACION JAULAS DISPONIBLES
+$records_per_page = 15;
+$current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+
+if ($current_page < 1) {
+    $current_page = 1;
+}
+
+$offset = ($current_page - 1) * $records_per_page;
+
+//Total de jaulas disponibles
+$sql_total_jaulas = "SELECT COUNT(*) AS total_jaulas FROM cages c
+                     LEFT JOIN cage_loans cl ON c.id = cl.cage_id AND cl.estado = 'prestado'
+                     WHERE c.activo = 1 AND cl.id IS NULL";
+$stmt_total_jaulas = $con->prepare($sql_total_jaulas);
+$stmt_total_jaulas->execute();
+$total_jaulas_result = $stmt_total_jaulas->fetch(PDO::FETCH_ASSOC);
+$total_jaulas = $total_jaulas_result['total_jaulas'];
+$total_pages = ceil($total_jaulas / $records_per_page);
+
+
 //JAULAS DISPONIBLES PARA RESERVAR
 $sql_available_jaulas = "SELECT c.id, c.numero_interno, ct.nombre as tipo_nombre, cli.nombre as clinica_nombre
                          FROM cages c
                          JOIN cage_types ct ON c.cage_type_id = ct.id
                          JOIN clinics cli ON c.clinic_id = cli.id
                          LEFT JOIN cage_loans cl ON c.id = cl.cage_id AND cl.estado = 'prestado'
-                         WHERE c.activo = 1 AND cl.id IS NULL";
+                         WHERE c.activo = 1 AND cl.id IS NULL
+                        LIMIT :limit OFFSET :offset";
 $stmt_available_jaulas = $con->prepare($sql_available_jaulas);
+$stmt_available_jaulas->bindValue(':limit', $records_per_page, PDO::PARAM_INT);
+$stmt_available_jaulas->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt_available_jaulas->execute();
 $available_jaulas = $stmt_available_jaulas->fetchAll(PDO::FETCH_ASSOC);
 

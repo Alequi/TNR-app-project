@@ -10,6 +10,26 @@ admin();
 
 $con = conectar();
 
+
+//Paginación
+$records_per_page = 15;
+$current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+
+if ($current_page < 1) {
+    $current_page = 1;
+}
+
+$offset = ($current_page - 1) * $records_per_page;
+
+// Obtener el total de jaulas
+$sql_count = "SELECT COUNT(*) FROM cages";
+$stmt_count = $con->prepare($sql_count);
+$stmt_count->execute();
+$total_records = $stmt_count->fetchColumn();
+
+$total_pages = ceil($total_records / $records_per_page);
+
+
 try {
     // Obtener todas las jaulas con información de tipo, clínica y préstamos activos
     $stmt = $con->prepare("
@@ -34,7 +54,11 @@ try {
         LEFT JOIN users u ON cgl.user_id = u.id
         LEFT JOIN colonies col ON cgl.colony_id = col.id
         ORDER BY cl.nombre, ct.nombre, c.numero_interno
+        LIMIT :limit OFFSET :offset
+        
     ");
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $records_per_page, PDO::PARAM_INT);
     $stmt->execute();
     $cages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
