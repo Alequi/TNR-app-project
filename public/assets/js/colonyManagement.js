@@ -4,17 +4,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const clearFiltersBtn = document.getElementById("clearFilters");
     const table = document.getElementById("coloniesTable");
     const editColonyForm = document.getElementById("editColonyForm");
+    const filterActive = document.getElementById("filterActive");
+    const filterInactive = document.getElementById("filterInactive");
+    const filterAll = document.getElementById("filterAll");
 
     // Filtrar tabla de colonias
 
     function filterTable() {
         const zonaValue = filterZona.value.toLowerCase();
         const nameValue = searchName.value.toLowerCase();
+        const activeValue = filterActive.checked;
+        const inactiveValue = filterInactive.checked;
+        const filterAllValue = filterAll.checked;
         const rows = table.querySelectorAll("tbody tr");
 
         rows.forEach((row) => {
             const zona = (row.getAttribute("data-zona") || "").toLowerCase();
             const nombre = (row.getAttribute("data-name") || "").toLowerCase();
+            const rowActive = row.getAttribute("data-active") === "1";
+
+            const activeMatch =
+                (activeValue && rowActive) ||
+                (inactiveValue && !rowActive) ||
+                (filterAllValue);
+                
 
             // Ignorar fila de "no hay datos"
             if (row.querySelector("td[colspan]")) {
@@ -24,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const zonaMatch = zona.includes(zonaValue);
             const nameMatch = nombre.includes(nameValue);
 
-            if (zonaMatch && nameMatch) {
+            if (zonaMatch && nameMatch && activeMatch) {
                 row.style.display = "";
             } else {
                 row.style.display = "none";
@@ -35,10 +48,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Event listeners
     filterZona.addEventListener("input", filterTable);
     searchName.addEventListener("input", filterTable);
+    filterActive.addEventListener("change", filterTable);
+    filterInactive.addEventListener("change", filterTable);
+    filterAll.addEventListener("change", filterTable);
 
     clearFiltersBtn.addEventListener("click", () => {
         filterZona.value = "";
         searchName.value = "";
+        filterActive.checked = false;
+        filterInactive.checked = false;
+        filterAll.checked = true;
         filterTable();
     });
 
@@ -184,5 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    
 
 })
