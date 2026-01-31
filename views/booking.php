@@ -56,33 +56,17 @@ if (isset($_SESSION['success_message'])) {
             <!-- CONTENIDO COLAPSABLE -->
             <div class="collapse navbar-collapse " id="mainNavbar">
 
-            <?php if ($_SESSION['rol'] === 'voluntario' || $_SESSION['rol'] === 'gestor'): ?>
-                <!--MENU PRINCIPAL VOLUNTARIO-->
+                  <!-- MENÚ PRINCIPAL -->
 
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a href="panel.php" class="nav-link ">Panel</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
                     <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
                     <li class="nav-item"><a href="booking.php" class="nav-link active">Turnos</a></li>
                     <li class="nav-item"><a href="userBookings.php" class="nav-link">Mis reservas</a></li>
                     <li class="nav-item"><a href="jaulas.php" class="nav-link ">Jaulas</a></li>
                     <li class="nav-item"><a href="userColony.php" class="nav-link">Mi colonia</a></li>                  
                 </ul>
-            <?php else: ?>
-
-                <!-- MENÚ PRINCIPAL -->
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a href="" class="nav-link ">Panel</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Colonias</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Turnos</a></li>
-                    <li class="nav-item"><a href="" class="nav-link active">Reservas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Jaulas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Usuarios</a></li>
-                    <li class="nav-item"><a href="userColony.php" class="nav-link">Mi colonia</a></li>
-                </ul>
-             <?php endif; ?>   
+              
 
                 <!-- BOTÓN PERFIL -->
                 <div class="d-flex align-items-center">
@@ -99,7 +83,7 @@ if (isset($_SESSION['success_message'])) {
                                     <i class="bi bi-gear fs-5 text-secondary"></i> Ajustes de cuenta</a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="/app/actions/auth/logout_action.php">
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2 text-danger" href="../app/actions/auth/logout_action.php">
                                     <i class="bi bi-box-arrow-right fs-5"></i> Cerrar sesión</a>
                             </li>
                         </ul>
@@ -110,7 +94,7 @@ if (isset($_SESSION['success_message'])) {
                         <a href="userProfile.php" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-2">
                             <i class="bi bi-person-circle"></i> Perfil</a>
 
-                        <a href="/app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
+                        <a href="../app/actions/auth/logout_action.php" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-2">
                              Cerrar sesión<i class="bi bi-box-arrow-right "></i></a>
 
                     </div>

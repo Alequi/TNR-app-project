@@ -23,6 +23,24 @@ $stmt_gatos_mes->execute();
 $gatos_mes_stats = $stmt_gatos_mes->fetch(PDO::FETCH_ASSOC);
 $total_gatos_mes = $gatos_mes_stats['total_gatos_mes'];
 
+//Paginacion para historial de reservas
+$records_per_page = 10;
+$current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+
+if ($current_page < 1) {
+    $current_page = 1;
+}
+
+$offset = ($current_page - 1) * $records_per_page;
+
+//Total de reservas
+$sql_total_reservas = "SELECT COUNT(*) AS total_reservas FROM bookings";
+$stmt_total_reservas = $con->prepare($sql_total_reservas);
+$stmt_total_reservas->execute();
+$total_reservas_result = $stmt_total_reservas->fetch(PDO::FETCH_ASSOC);
+$total_reservas = $total_reservas_result['total_reservas'];
+$total_pages = ceil($total_reservas / $records_per_page);
+
 //Todos los datos de reservas próximos 7 días
 $sql_reservas_proximos_dias = "SELECT 
     b.id,
@@ -41,8 +59,11 @@ $sql_reservas_proximos_dias = "SELECT
     JOIN colonies co ON b.colony_id = co.id
     WHERE b.fecha_drop BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
     AND b.estado = 'reservado'
-    ORDER BY b.fecha_drop ASC";
+    ORDER BY b.fecha_drop ASC
+    LIMIT :limit OFFSET :offset";
 $stmt_reservas_proximos_dias = $con->prepare($sql_reservas_proximos_dias);
+$stmt_reservas_proximos_dias->bindValue(':limit', $records_per_page, PDO::PARAM_INT);
+$stmt_reservas_proximos_dias->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt_reservas_proximos_dias->execute();
 $reservas_proximos_dias = $stmt_reservas_proximos_dias->fetchAll(PDO::FETCH_ASSOC);
     
@@ -62,8 +83,11 @@ $sql_all_bookings = "SELECT
     JOIN clinics c ON s.clinic_id = c.id
     JOIN users u ON b.user_id = u.id
     JOIN colonies co ON b.colony_id = co.id
-    ORDER BY b.created_at DESC";
+    ORDER BY b.created_at DESC
+    LIMIT :limit OFFSET :offset";
 $stmt_all_bookings = $con->prepare($sql_all_bookings);
+$stmt_all_bookings->bindValue(':limit', $records_per_page, PDO::PARAM_INT);
+$stmt_all_bookings->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt_all_bookings->execute();
 $all_bookings = $stmt_all_bookings->fetchAll(PDO::FETCH_ASSOC);
 

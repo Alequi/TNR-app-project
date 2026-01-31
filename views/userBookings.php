@@ -53,8 +53,7 @@ if (isset($_SESSION['success_message'])) {
                 <!--MENU PRINCIPAL VOLUNTARIO-->
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a href="panel.php" class="nav-link">Panel</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Campañas</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">Clínicas</a></li>
+                    <li class="nav-item"><a href="clinics.php" class="nav-link">Clínicas</a></li>
                     <li class="nav-item"><a href="booking.php" class="nav-link">Turnos</a></li>
                     <li class="nav-item"><a href="userBookings.php" class="nav-link active">Mis reservas</a></li>
                     <li class="nav-item"><a href="jaulas.php" class="nav-link">Jaulas</a></li>
