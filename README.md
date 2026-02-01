@@ -131,7 +131,7 @@ The system centralizes and automates critical operational workflows:
 ### Key Field Details
 
 **`users` table:**
-- `rol` ENUM: `'admin'`, `'voluntario'`
+- `rol` ENUM: `'admin'`, `'voluntario'` , `'gestor'`
 - `activo` TINYINT(1): Account status (1 = active, 0 = inactive)
 - `colony_id` FK: Optional colony assignment
 - `pass` VARCHAR(255): Bcrypt hashed password
@@ -149,6 +149,7 @@ The system centralizes and automates critical operational workflows:
 - `capacidad_ta` INT: Afternoon (tarde) capacity
 - `telefono` VARCHAR(30): Contact phone
 - `direccion` VARCHAR(200): Physical address
+- `activa` TINYINT(1): Active status (1 = active, 0 = inactive)
 
 **`shifts` table:**
 - `clinic_id` FK → `clinics`
