@@ -300,14 +300,59 @@ TNR-app-project/
 ├── app/
 │   ├── actions/              # Backend logic (AJAX handlers)
 │   │   ├── auth/            # Authentication (login, register, logout)
+│   │   │   ├── login_action.php
+│   │   │   ├── register_action.php
+│   │   │   ├── logout_action.php
+│   │   │   ├── recuperar_action.php
+│   │   │   └── change_password_action.php
 │   │   ├── bookings/        # Booking CRUD + PDF generation
+│   │   │   ├── new_booking_action.php
+│   │   │   ├── update_booking_action.php
+│   │   │   ├── cancel_booking_action.php
+│   │   │   ├── user_bookings_action.php
+│   │   │   ├── available_shifts.php
+│   │   │   ├── bookings_stats_action.php
+│   │   │   └── generate_pdf_action.php        # ✨ PDF export
 │   │   ├── campaigns/       # Campaign management
+│   │   │   ├── create_campaign_action.php
+│   │   │   ├── update_campaigns_action.php
+│   │   │   ├── end_campaign_action.php
+│   │   │   └── get_campaigns_action.php
 │   │   ├── clinics/         # Clinic administration
+│   │   │   ├── create_clinic_action.php
+│   │   │   ├── update_clinic_action.php
+│   │   │   ├── activate_clinic_action.php
+│   │   │   ├── deactivate_clinic_action.php
+│   │   │   ├── get_clinics_action.php
+│   │   │   └── general_clinics_action.php
 │   │   ├── colonies/        # Colony management
+│   │   │   ├── get_colony_action.php
+│   │   │   ├── update_colony_action.php
+│   │   │   ├── activate_colony_action.php
+│   │   │   └── deactivate_colony_action.php
 │   │   ├── jaulas/          # Cage inventory & loans
+│   │   │   ├── create_cage_action.php
+│   │   │   ├── update_cage_action.php
+│   │   │   ├── get_cages_action.php
+│   │   │   ├── jaulas_action.php
+│   │   │   └── jaulas_general_action.php
 │   │   ├── shifts/          # Shift creation & management
+│   │   │   ├── create_shift_action.php
+│   │   │   ├── delete_shift_action.php
+│   │   │   └── shifts_action.php
 │   │   ├── user/            # User administration & stats
-│   │   └── weather/         # Weather API integration
+│   │   │   ├── create_user_action.php
+│   │   │   ├── update_user_action.php
+│   │   │   ├── get_users_action.php
+│   │   │   ├── user_action.php
+│   │   │   ├── update_profile_action.php
+│   │   │   ├── colonies_stats_action.php
+│   │   │   ├── colony_volunteers_action.php
+│   │   │   └── volunteers_stats_action.php
+│   │   ├── weather/         # Weather API integration ✨
+│   │   │   └── weather.php  # OpenWeatherMap API
+│   │   ├── campaign_stats_action.php
+│   │   └── validaciones.php
 │   └── helpers/
 │       └── auth.php         # Authentication helpers
 ├── config/
@@ -315,19 +360,43 @@ TNR-app-project/
 ├── public/
 │   ├── assets/
 │   │   ├── brand/           # Logos & branding
+│   │   │   └── LOGO-CES-2.png
 │   │   ├── js/              # Frontend JavaScript
+│   │   │   ├── booking.js           # Reservation flow
+│   │   │   ├── cageManagement.js    # Cage CRUD
+│   │   │   ├── campaignsManagement.js
+│   │   │   ├── cancelBooking.js
+│   │   │   ├── clinicManagement.js
+│   │   │   ├── close-alerts.js
+│   │   │   ├── colonyManagement.js
+│   │   │   ├── color-modes.js
+│   │   │   ├── filter.js
+│   │   │   ├── modalEditUser.js
+│   │   │   ├── modalJaulas.js
+│   │   │   ├── modalTurnos.js
+│   │   │   ├── script.js
+│   │   │   ├── shiftsManagement.js
+│   │   │   ├── updateBooking.js
+│   │   │   ├── userManagement.js
+│   │   │   └── validation.js
 │   │   └── dist/css/        # Custom stylesheets
+│   │       └── styles.css
 │   ├── img/                 # Images
 │   ├── partials/            # Reusable HTML components
+│   │   ├── header.php
+│   │   └── footer.php
 │   ├── login.php            # Login page
 │   ├── registro.php         # Registration page
+│   ├── recuperar_pass.php   # Password recovery
+│   ├── pass_temporal.php    # Temporary password
 │   └── about.html           # Project information
 ├── views/
-│   ├── panel.php            # Volunteer dashboard
+│   ├── panel.php            # Volunteer dashboard (+ weather widget ✨)
 │   ├── booking.php          # Create reservation
-│   ├── userBookings.php     # My reservations (+ PDF export)
+│   ├── userBookings.php     # My reservations (+ PDF export ✨)
 │   ├── clinics.php          # Clinic directory
 │   ├── jaulas.php           # Cage loans
+│   ├── listadoJaulas.php    # Cage inventory list
 │   ├── userColony.php       # My colony details
 │   ├── userProfile.php      # User settings
 │   └── admin/               # Admin-only views
@@ -340,8 +409,26 @@ TNR-app-project/
 │       ├── bookingAdmin.php
 │       └── usersAdmin.php
 ├── vendor/                   # Composer dependencies
+│   ├── autoload.php
+│   ├── composer/            # Composer internals
+│   ├── guzzlehttp/          # HTTP client library
+│   │   ├── guzzle/          # Main Guzzle package
+│   │   ├── promises/        # Promises implementation
+│   │   └── psr7/            # PSR-7 HTTP message implementation
+│   ├── psr/                 # PSR standards
+│   │   ├── http-client/
+│   │   ├── http-factory/
+│   │   └── http-message/
+│   ├── ralouphie/
+│   │   └── getallheaders/
+│   ├── symfony/
+│   │   └── deprecation-contracts/
+│   └── tecnickcom/          # PDF generation
+│       └── tcpdf/           # TCPDF library
 ├── composer.json
+├── composer.lock
 ├── index.html               # Landing page
+├── cesReservas.sql          # Database schema
 └── README.md
 ```
 
