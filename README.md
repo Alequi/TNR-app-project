@@ -505,9 +505,6 @@ TNR-app-project/
 - **Password Hashing**: Bcrypt with salt
 - **SQL Injection Prevention**: Prepared statements (PDO)
 - **XSS Protection**: `htmlspecialchars()` on all user inputs
-- **CSRF Protection**: Session validation
-- **Access Control**: Route-level authentication checks
-- **Session Security**: HTTP-only cookies, secure flags
 - **Input Sanitization**: Server-side validation on all forms
 
 ---
@@ -556,7 +553,6 @@ cage_loans → users, cages, colonies, clinics
 - 🗺️ **Map Integration**
   - Colony locations on interactive map
   - Route optimization for trap pickup
-  - Clinic proximity search
 
 - 📷 **Photo Management**
   - Upload cat photos per booking
@@ -572,11 +568,6 @@ cage_loans → users, cages, colonies, clinics
   - Volunteer leaderboards
   - Achievement badges
   - Colony milestones
-
-- 🌐 **Multi-language Support**
-  - English translation
-  - Valencian (Valencià)
-  - Internationalization (i18n)
 
 - 🔄 **API REST**
   - Public API for third-party integrations
@@ -610,19 +601,10 @@ Este proyecto ha sido desarrollado para **CES Gatos Elche** como herramienta de 
 
 ## 👥 Credits
 
-**Desarrollado por:** [Tu Nombre]  
+**Desarrollado por:** Alejandro Chacin Quivera
 **Organización:** CES Gatos Elche  
 **Año:** 2025-2026  
 **Versión:** 1.0.0
-
----
-
-## 📞 Support & Contact
-
-Para soporte técnico o consultas:
-- **Email:** info@cesgatoselche.org
-- **Teléfono:** 966 123 456
-- **Web:** https://cesgatoselche.org
 
 ---
 
