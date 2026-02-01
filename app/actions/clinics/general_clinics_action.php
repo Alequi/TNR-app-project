@@ -13,10 +13,10 @@ $sql_stats = "SELECT
     c.nombre AS clinic_name,
     c.capacidad_ma,
     c.capacidad_ta,
-    COALESCE(SUM(CASE WHEN s.turno = 'M' THEN s.ocupados ELSE 0 END), 0) AS ocupados_ma,
-    COALESCE(SUM(CASE WHEN s.turno = 'T' THEN s.ocupados ELSE 0 END), 0) AS ocupados_ta
+    COALESCE(SUM(CASE WHEN s.turno = 'M' AND s.fecha = CURDATE() THEN s.ocupados ELSE 0 END), 0) AS ocupados_ma,
+    COALESCE(SUM(CASE WHEN s.turno = 'T' AND s.fecha = CURDATE() THEN s.ocupados ELSE 0 END), 0) AS ocupados_ta
 FROM clinics c
-LEFT JOIN shifts s ON c.id = s.clinic_id AND s.fecha = CURDATE()
+LEFT JOIN shifts s ON c.id = s.clinic_id
 WHERE c.activa = 1
 GROUP BY c.id, c.nombre, c.capacidad_ma, c.capacidad_ta
 ORDER BY c.nombre";
