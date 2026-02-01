@@ -120,9 +120,18 @@ if (isset($_SESSION['success_message'])) {
                     </h1>
                     <p class="text-muted">Historial de tus reservas de turnos</p>
                 </div>
-                <div>
-                    <a href="booking.php" class="btn btn-primary btn-lg">
-                        <i class="bi bi-plus-circle me-2"></i>Nueva Reserva
+                <div class="d-flex gap-2 flex-wrap">
+                    <?php if (!empty($user_bookings)): ?>
+                    <a href="../app/actions/bookings/generate_pdf_action.php" class="btn btn-danger btn-lg d-inline-flex align-items-center" title="Descargar PDF">
+                        <i class="bi bi-file-earmark-pdf-fill me-2"></i>
+                        <span class="d-none d-md-inline">Descargar PDF</span>
+                        <span class="d-md-none">PDF</span>
+                    </a>
+                    <?php endif; ?>
+                    <a href="booking.php" class="btn btn-primary btn-lg d-inline-flex align-items-center">
+                        <i class="bi bi-plus-circle me-2"></i>
+                        <span class="d-none d-md-inline">Nueva Reserva</span>
+                        <span class="d-md-none">Nueva</span>
                     </a>
                 </div>
             </div>

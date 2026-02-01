@@ -6,6 +6,7 @@ require_once __DIR__ . '/../app/actions/jaulas/jaulas_action.php';
 require_once __DIR__ . '/../app/actions/user/user_action.php';
 require_once __DIR__ . '/../app/actions/bookings/user_bookings_action.php';
 require_once __DIR__ . '/../app/actions/campaign_stats_action.php';
+require_once __DIR__ . '/../app/actions/weather/weather.php';
 
 login();
 isLoggedIn()
@@ -20,7 +21,7 @@ isLoggedIn()
     <title>Dashboard | CES Gatos Elche</title>
     <link rel="icon" type="image/png" href="../public/assets/brand/LOGO-CES-2.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="../public/assets/dist/css/styles.css" rel="stylesheet" />
 
 </head>
@@ -241,7 +242,7 @@ isLoggedIn()
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-4">
-                            <div class="bg-info bg-opacity-10 p-3 me-3 ">
+                            <div class="bg-info bg-opacity-10 p-3 me-3">
                                 <i class="bi bi-lightbulb-fill text-info fs-4"></i>
                             </div>
                             <div>
@@ -255,9 +256,7 @@ isLoggedIn()
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start p-3 bg-light rounded">
                                     <div class="me-3">
-                                        <div>
-                                            <i class="bi bi-calendar-plus text-primary fs-5"></i>
-                                        </div>
+                                        <i class="bi bi-calendar-plus text-primary fs-5"></i>
                                     </div>
                                     <div>
                                         <h6 class="fw-semibold mb-1">Reserva con antelación</h6>
@@ -270,9 +269,7 @@ isLoggedIn()
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start p-3 bg-light rounded">
                                     <div class="me-3">
-                                        <div>
-                                            <i class="bi bi-box-seam text-success fs-5"></i>
-                                        </div>
+                                        <i class="bi bi-box-seam text-success fs-5"></i>
                                     </div>
                                     <div>
                                         <h6 class="fw-semibold mb-1">Devuelve las jaulas a tiempo</h6>
@@ -285,9 +282,7 @@ isLoggedIn()
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start p-3 bg-light rounded">
                                     <div class="me-3">
-                                        <div>
-                                            <i class="bi bi-bell text-warning fs-5"></i>
-                                        </div>
+                                        <i class="bi bi-bell text-warning fs-5"></i>
                                     </div>
                                     <div>
                                         <h6 class="fw-semibold mb-1">Activa las notificaciones</h6>
@@ -298,15 +293,65 @@ isLoggedIn()
 
                             <!-- TIP 4 -->
                             <div class="col-md-6">
-                                <div class="d-flex align-items-start p-3 bg-light ">
+                                <div class="d-flex align-items-start p-3 bg-light rounded">
                                     <div class="me-3">
-                                        <div>
-                                            <i class="bi bi-phone text-danger fs-5"></i>
-                                        </div>
+                                        <i class="bi bi-phone text-danger fs-5"></i>
                                     </div>
                                     <div>
                                         <h6 class="fw-semibold mb-1">Contacto de emergencia</h6>
-                                        <p class="text-muted small mb-0">Ante cualquier imprevisto, contacta con la clínica al <strong>966 123 456</strong></p>
+                                        <p class="text-muted small mb-0">Ante cualquier imprevisto, contacta con la asociación al <strong>966 123 456</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TIP 5 - Clima -->
+                            <div class="col-12">
+                                <div class="d-flex align-items-start p-3 bg-light rounded">
+                                    <div class="me-3">
+                                        <i class="bi bi-cloud-sun text-info fs-5"></i>
+                                    </div>
+                                    <div class="w-100">
+                                        <h6 class="fw-semibold mb-3">Consulta el tiempo antes de intentar una captura</h6>
+                                        
+                                        <?php if (isset($weather)): ?>
+                                        <div class="row align-items-center">
+                                            <!-- Clima actual -->
+                                            <div class="col-md-4 text-center mb-3 mb-md-0">
+                                                <div class="p-3 bg-white rounded shadow-sm">
+                                                    <p class="text-muted small mb-2">Ahora en <?php echo htmlspecialchars($weather['city']); ?></p>
+                                                    <img src="http://openweathermap.org/img/wn/<?php echo htmlspecialchars($weather['icon']); ?>@2x.png" 
+                                                         alt="Clima" width="60" height="60">
+                                                    <h3 class="fw-bold mb-1"><?php echo round($weather['temperature']); ?>°C</h3>
+                                                    <p class="text-muted small mb-0 text-capitalize"><?php echo htmlspecialchars($weather['description']); ?></p>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Previsión del día -->
+                                            <div class="col-md-8">
+                                                <p class="text-muted small mb-2">Previsión para hoy</p>
+                                                <div class="d-flex gap-2 overflow-auto">
+                                                    <?php 
+                                                    $count = 0;
+                                                    foreach ($forecast as $item): 
+                                                        if ($count >= 6) break; // Mostrar solo 6 intervalos
+                                                        $count++;
+                                                    ?>
+                                                    <div class="text-center p-2 bg-white rounded shadow-sm" style="min-width: 80px;">
+                                                        <p class="small mb-1 fw-semibold"><?php echo htmlspecialchars($item['time']); ?></p>
+                                                        <img src="http://openweathermap.org/img/wn/<?php echo htmlspecialchars($item['icon']); ?>.png" 
+                                                             alt="Clima" width="40" height="40">
+                                                        <p class="mb-0 fw-bold"><?php echo $item['temperature']; ?>°C</p>
+                                                    </div>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php else: ?>
+                                        <div class="text-center text-muted py-3">
+                                            <i class="bi bi-exclamation-circle fs-3 mb-2"></i>
+                                            <p class="mb-0">No se pudo obtener la información del clima</p>
+                                        </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
