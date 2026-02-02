@@ -32,6 +32,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $activo = ($data['activo'] == '1' || $data['activo'] === 1 || $data['activo'] === true) ? 1 : 0;
     $password = isset($data['password']) ? trim($data['password']) : '';
 
+    // Evitar que un usuario cambie su propio rol
+    if ($user_id == $_SESSION['user_id']) {
+        // Obtener el rol actual del usuario
+        $stmt_rol = $con->prepare("SELECT rol FROM users WHERE id = :user_id");
+        $stmt_rol->execute([':user_id' => $user_id]);
+        $current_rol = $stmt_rol->fetchColumn();
+        
+        if ($current_rol !== $rol) {
+            echo json_encode(['success' => false, 'message' => 'No puedes cambiar tu propio rol.']);
+            exit;
+        }
+    }
+
     // Validar email
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(['success' => false, 'message' => 'Correo electrónico no válido.']);

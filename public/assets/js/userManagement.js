@@ -52,8 +52,20 @@ if (clearFiltersBtn) {
 if(editUserForm) {
     editUserForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        // Evitar que el usuario cambie su propio rol
+        const editUserModal = document.getElementById('editUserModal');
+        const currentUserId = editUserModal.getAttribute('data-current-user-id');
+        const userId = document.getElementById('edit_user_id').value;
+        const rolSelect = document.getElementById('edit_rol');
+        
+        if (currentUserId === userId && !rolSelect.disabled) {
+            alert('No puedes cambiar tu propio rol.');
+            return;
+        }
+        
         const formData = {
-            user_id: document.getElementById('edit_user_id').value,
+            user_id: userId,
             nombre: document.getElementById('edit_nombre').value,
             apellido: document.getElementById('edit_apellido').value,
             email: document.getElementById('edit_email').value,

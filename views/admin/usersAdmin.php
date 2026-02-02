@@ -384,7 +384,7 @@ if (isset($_SESSION['success_message'])) {
     </div>
 
     <!-- Modal Editar Usuario -->
-    <div class="modal fade" id="editUserModal" tabindex="-1">
+    <div class="modal fade" id="editUserModal" tabindex="-1" data-current-user-id="<?= $_SESSION['user_id'] ?>">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-warning text-dark">
@@ -428,6 +428,7 @@ if (isset($_SESSION['success_message'])) {
                                 <option value="gestor">Gestor</option>
                                 <option value="admin">Administrador</option>
                             </select>
+                            <small id="edit_rol_help" class="form-text"></small>
                         </div>
                         <div class="mb-3">
                             <label for="edit_colony_id" class="form-label">Colonia</label>

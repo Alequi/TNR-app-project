@@ -28,6 +28,27 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Limpiar el campo de contraseña
             document.getElementById('edit_pass').value = '';
+
+            // Evitar que el admin cambie su propio rol
+            const currentUserId = editUserModal.getAttribute('data-current-user-id');
+            const rolSelect = document.getElementById('edit_rol');
+            const rolHelpText = document.getElementById('edit_rol_help');
+            
+            if (currentUserId && userId && String(currentUserId) === String(userId)) {
+                rolSelect.disabled = true;
+                rolSelect.setAttribute('disabled', 'disabled');
+                if (rolHelpText) {
+                    rolHelpText.textContent = 'No puedes cambiar tu propio rol';
+                    rolHelpText.classList.add('text-danger');
+                }
+            } else {
+                rolSelect.disabled = false;
+                rolSelect.removeAttribute('disabled');
+                if (rolHelpText) {
+                    rolHelpText.textContent = '';
+                    rolHelpText.classList.remove('text-danger');
+                }
+            }
         });
     }
 });
